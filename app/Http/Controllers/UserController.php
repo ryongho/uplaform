@@ -13,18 +13,52 @@ class UserController extends Controller
     public function regist(Request $request)
     {
         //dd($request);
+        $return = new \stdClass;
 
-        User::insert([
-            'name'=> $request->name ,
-            'email' => $request->email, 
-            'password' => $request->password, 
-            'user_id' => $request->user_id,
-            'phone' => $request->phone, 
-            'user_type' => $request->user_type,
-            'created_at' => Carbon::now(),
-            'password' => Hash::make($request->password)
-            
-        ]);
+        $return->status = "500";
+        $return->msg = "관리자에게 문의";
+        $return->data = $request->user_id;
+
+        /* 중복 체크 - start*/
+        $id_cnt = User::where('user_id',$request->user_id)->count();
+        $email_cnt = User::where('email',$request->email)->count();
+        $phone_cnt = User::where('phone',$request->phone)->count();
+
+        if($id_cnt){
+            $return->status = "601";
+            $return->msg = "사용중인 아이디";
+            $return->data = $request->user_id;
+        }else if($email_cnt){
+            $return->status = "602";
+            $return->msg = "사용중인 이메일";
+            $return->data = $request->email;
+        }else if ($phone_cnt){
+            $return->status = "603";
+            $return->msg = "사용중인 폰 번호";
+            $return->data = $request->phone;
+        /* 중복 체크 - end*/
+        }else{
+            $result = User::insert([
+                'name'=> $request->name ,
+                'email' => $request->email, 
+                'password' => $request->password, 
+                'user_id' => $request->user_id,
+                'phone' => $request->phone, 
+                'user_type' => $request->user_type,
+                'created_at' => Carbon::now(),
+                'password' => Hash::make($request->password)
+                
+            ]);
+
+            if($result){
+                $return->status = "200";
+                $return->msg = "success";
+                $return->data = $request->user_id;
+            }
+        }
+        
+
+        echo(json_encode($return));
 
         //return view('user.profile', ['user' => User::findOrFail($id)]);
     }

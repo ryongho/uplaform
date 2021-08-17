@@ -34,6 +34,7 @@ Route::post('/login_check', [UserController::class, 'login_check']);
 Route::post('/find_user_id', [UserController::class, 'find_user_id']);
 
 Route::put('/partner/regist', [PartnerController::class, 'regist']);
+Route::get('/partner/list', [PartnerController::class, 'list']);
 Route::post('/partner/login', [PartnerController::class, 'login']);
 
 Route::put('/hotel/regist', [HotelController::class, 'regist']);
