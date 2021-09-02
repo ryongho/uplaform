@@ -44,14 +44,14 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
-            'hash' => false,
-        ],
-
-        'partner' => [
-            'driver' => 'session',
-            'provider' => 'partners',
             'hash' => true,
         ],
+
+        /*'partner' => [
+            'driver' => 'token',
+            'provider' => 'partners',
+            'hash' => true,
+        ],*/
     ],
 
     /*
@@ -76,15 +76,19 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        /*
         'partners' => [
             'driver' => 'eloquent',
             'model' => App\Models\Partner::class,
-        ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        ],*/
+        /*'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+       ],
+        'paertners' => [
+            'driver' => 'database',
+            'table' => 'partners',
+        ],*/
     ],
 
     /*
@@ -109,13 +113,13 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-
+        /*
         'partners' => [
             'provider' => 'partners',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
-        ],
+        ],*/
     ],
 
     /*

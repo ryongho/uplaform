@@ -65,6 +65,8 @@ class UserController extends Controller
 
     public function login(Request $request){
         $user = User::where('user_id' , $request->user_id)->first();
+
+        $return = new \stdClass;
         
         if (Hash::check($request->password, $user->password)) {
             //echo("로그인 확인");
@@ -72,15 +74,24 @@ class UserController extends Controller
             $login_user = Auth::user();
 
             $token = $login_user->createToken('user');
+
+            $return->status = "200";
+            $return->msg = "성공";
+            $return->token = $token->plainTextToken;    
             
             //dd($token->plainTextToken);    
+        }else{
+            $return->status = "500";
+            $return->msg = "아이디 또는 패스워드가 일치하지 않습니다.";
+            $return->user_id = $request->user_id;
         }
+
+        echo(json_encode($return));
     }
 
     public function logout(Request $request){
         $user = Auth::user(); 
         Auth::logout();
-        
     }
 
     public function login_check(Request $request){
@@ -98,6 +109,23 @@ class UserController extends Controller
         }else{
             echo("등록되지 않은 연락처 입니다.");       
         }
+    }
+
+    public function list(Request $request){
+        $start_no = $request->start_no;
+        $row = $request->row;
+        
+        $rows = User::where('id' ,">=", $start_no)->where('user_type','0')->orderBy('id', 'desc')->orderBy('id')->limit($row)->get();
+
+        $list = new \stdClass;
+
+        $list->status = "200";
+        $list->msg = "success";
+        $list->cnt = count($rows);
+        $list->data = $rows;
+        
+        echo(json_encode($list));
+        
     }
 
 

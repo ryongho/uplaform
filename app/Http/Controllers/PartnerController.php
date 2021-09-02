@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Partner;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
@@ -40,14 +40,16 @@ class PartnerController extends Controller
             $return->data = $request->phone;
         /* 중복 체크 - end*/
         }else{
-            $result = Partner::insert([
+            $result = User::insert([
                 'name'=> $request->name ,
                 'email' => $request->email, 
                 'password' => $request->password, 
                 'user_id' => $request->user_id,
                 'phone' => $request->phone, 
+                'user_type' => 1,
                 'created_at' => Carbon::now(),
                 'password' => Hash::make($request->password)
+                
             ]);
 
             if($result){
@@ -64,18 +66,29 @@ class PartnerController extends Controller
 
 
     public function login(Request $request){
-        $partner = Partner::where('user_id' , $request->user_id)->first();
-        
+        $partner = User::where('user_id' , $request->user_id)->where('user_type', 1 )->first();
+
+        $return = new \stdClass;
+
         if (Hash::check($request->password, $partner->password)) {
             //dd($partner);
             //echo("로그인 확인");
-            Auth::guard('partner')->loginUsingId($partner->id);
-            $login_user = Auth::guard('partner')->user();
+            Auth::loginUsingId($partner->id);
+            $login_user = Auth::user();
 
             $token = $login_user->createToken('partner');
-            
-            dd($token->plainTextToken);    
+
+            $return->status = "200";
+            $return->msg = "success";
+            $return->token = $token;
+
+        }else{
+            $return->status = "500";
+            $return->msg = "아이디 또는 패스워드가 일치하지 않습니다.";
+            $return->data = $request->user_id;
         }
+
+        echo(json_encode($return));
     }
 
     public function logout(Request $request){
@@ -85,8 +98,23 @@ class PartnerController extends Controller
     }
 
     public function login_check(Request $request){
-        $user = Auth::user(); 
-        dd($user);
+        
+        $login_user = Auth::user();
+        dd($login_user);
+        
+
+        $return = new \stdClass;
+
+        $return->status = "500";
+        $return->msg = "관리자에게 문의";
+        $return->data = $request->user_id;
+        $return->user_type = "partner";
+
+        echo(json_encode($return));
+    
+        //$result = auth('api')->check();
+        //dd($result);
+        //return $request->user();
         
     }
 
@@ -110,15 +138,16 @@ class PartnerController extends Controller
 
     public function list(Request $request){
         $start_no = $request->start_no;
-        $cnt = $request->cnt;
+        $row = $request->row;
         
-        $partners = Partner::where('id' ,">=", $start_no)->orderBy('id')->limit($cnt)->get();
+        $rows = User::where('id' ,">=", $start_no)->where('user_type','1')->orderBy('id', 'desc')->limit($row)->get();
 
         $list = new \stdClass;
 
         $list->status = "200";
         $list->msg = "success";
-        $list->data = $partners;
+        $list->cnt = count($rows);
+        $list->data = $rows;
         
         echo(json_encode($list));
         

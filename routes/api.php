@@ -27,27 +27,49 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+/*Route::middleware('auth:api')->put('/partner/hotel/regist', function (Request $request) {
+    //return $request->partner();
+});*/
+
 Route::put('/regist', [UserController::class, 'regist']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
-Route::post('/login_check', [UserController::class, 'login_check']);
+//Route::post('/login_check', [UserController::class, 'login_check']);
 Route::post('/find_user_id', [UserController::class, 'find_user_id']);
 
 Route::put('/partner/regist', [PartnerController::class, 'regist']);
-Route::get('/partner/list', [PartnerController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/partner/list', [PartnerController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/user/list', [UserController::class, 'list']);
 Route::post('/partner/login', [PartnerController::class, 'login']);
 
-Route::put('/hotel/regist', [HotelController::class, 'regist']);
-Route::put('/room/regist', [RoomController::class, 'regist']);
-Route::put('/goods/regist', [GoodsController::class, 'regist']);
-Route::put('/wish/regist', [WishController::class, 'regist']);
-Route::put('/review/regist', [ReviewController::class, 'regist']);
-Route::put('/viewlog/regist', [ViewlogController::class, 'regist']);
+Route::middleware('auth:sanctum')->post('/hotel/regist', [HotelController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/hotel/list', [HotelController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/hotel/detail', [HotelController::class, 'detail']);
+
+Route::middleware('auth:sanctum')->post('/room/regist', [RoomController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/room/list', [RoomController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/room/detail', [RoomController::class, 'detail']);
+
+Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/goods/list', [GoodsController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/goods/detail', [GoodsController::class, 'detail']);
 
 
-Route::middleware('auth:sanctum')->get('/token_check', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
+Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::class, 'regist']);
+Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
+
+
+Route::get('/login_check_partner', [PartnerController::class, 'login_check']);
+
+Route::middleware('auth:sanctum')->get('/login_check_user', function (Request $request) {
+
+    //$result = auth('api')->check();
+    //dd($result);
+    //return $request->user();
+    
 });
+
 
 
 
