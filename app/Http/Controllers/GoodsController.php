@@ -60,19 +60,18 @@ class GoodsController extends Controller
 
                 $no = 1; 
 
-                foreach($request->file() as $file){// 객실 이미지 업로드
-
-                    $file_name = Storage::disk('s3')->put("goods_images", $file,'public');     
-                    
+                $images = explode(",",$request->images);
+                foreach( $images as $image){
+                
                     $result_img = GoodsImage::insertGetId([
                         'goods_id'=> $result ,
-                        'file_name'=> $file_name ,
+                        'file_name'=> $image ,
                         'order_no'=> $no ,
                         'created_at' => Carbon::now()
                     ]);
 
                     $no++;
-                } 
+                }
 
                 $return->status = "200";
                 $return->msg = "success";

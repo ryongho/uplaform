@@ -11,6 +11,7 @@ use App\Http\Controllers\GoodsController;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ViewlogController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,10 +55,11 @@ Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class
 Route::middleware('auth:sanctum')->get('/goods/list', [GoodsController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/goods/detail', [GoodsController::class, 'detail']);
 
-
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
 Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::class, 'regist']);
 Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
+
+Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
 
 
 Route::get('/login_check_partner', [PartnerController::class, 'login_check']);

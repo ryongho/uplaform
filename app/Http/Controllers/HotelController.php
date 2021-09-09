@@ -39,6 +39,10 @@ class HotelController extends Controller
             $return->msg = "일반 회원입니다.";
             $return->data = $request->name ;
         }else{
+
+            
+
+
             $result = Hotel::insertGetId([
                 'partner_id'=> $login_user->id ,
                 'name'=> $request->name ,
@@ -55,28 +59,28 @@ class HotelController extends Controller
                 'created_at' => Carbon::now()
             ]);
 
-            if($result){ //DB 입력 성공
+            $no = 1;
+            $images = explode(",",$request->images);
+            foreach( $images as $image){
+            
+                $result_img = HotelImage::insertGetId([
+                    'hotel_id'=> $result ,
+                    'file_name'=> $image ,
+                    'order_no'=> $no ,
+                    'created_at' => Carbon::now()
+                ]);
 
-                $no = 1; 
+                $no++;
+            }
+            
 
-                foreach($request->file() as $file){// 호텔 이미지 업로드
-
-                    $file_name = Storage::disk('s3')->put("hotel_images", $file,'public');     
-                    
-                    $result_img = HotelImage::insertGetId([
-                        'hotel_id'=> $result ,
-                        'file_name'=> $file_name ,
-                        'order_no'=> $no ,
-                        'created_at' => Carbon::now()
-                    ]);
-
-                    $no++;
-                } 
-
+            if($reault){
                 $return->status = "200";
                 $return->msg = "success";
                 $return->insert_id = $result ;
+
             }
+            
         }
         
 
