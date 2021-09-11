@@ -64,11 +64,15 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
-        $user = User::where('user_id' , $request->user_id)->first();
+        $user = User::where('email' , $request->email)->first();
 
         $return = new \stdClass;
-        
-        if (Hash::check($request->password, $user->password)) {
+
+        if(!$user){
+            $return->status = "501";
+            $return->msg = "존재하지 않는 아이디 입니다.";
+            $return->email = $request->email;
+        }else if (Hash::check($request->password, $user->password)) {
             //echo("로그인 확인");
             Auth::loginUsingId($user->id);
             $login_user = Auth::user();
@@ -83,7 +87,7 @@ class UserController extends Controller
         }else{
             $return->status = "500";
             $return->msg = "아이디 또는 패스워드가 일치하지 않습니다.";
-            $return->user_id = $request->user_id;
+            $return->email = $request->email;
         }
 
         echo(json_encode($return));
