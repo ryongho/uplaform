@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Hotel;
 use App\Models\GoodsImage;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class GoodsController extends Controller
 {
@@ -98,7 +99,10 @@ class GoodsController extends Controller
         }
 
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
-                        ->select('*',Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'))         
+                        ->select('*',
+                            Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'),
+                            DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                        )         
                         ->where('goods.id','>=',$s_no)
                         ->whereBetween('hotels.latitude', [$request->a_latitude, $request->b_latitude])
                         ->whereBetween('hotels.longtitude', [$request->a_longtitude, $request->b_longtitude])
