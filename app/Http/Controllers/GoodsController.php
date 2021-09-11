@@ -86,7 +86,26 @@ class GoodsController extends Controller
         $s_no = $request->start_no;
         $row = $request->row;
 
-        $rows = Goods::where('id','>=',$s_no)->orderBy('id', 'desc')->limit($row)->get();
+        $orderby = "goods.id";
+        $order = "desc";
+
+        if($request->orderby == 'price'){
+            $orderby = "goods.price";
+            $order = "asc";
+        }else if($request->orderby == "distance"){
+            $orderby = "distance";
+            $order = "asc";
+        }
+
+        $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
+                        ->select('*',Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'))         
+                        ->where('goods.id','>=',$s_no)
+                        ->whereBetween('hotels.latitude', [$request->a_latitude, $request->b_latitude])
+                        ->whereBetween('hotels.longtitude', [$request->a_longtitude, $request->b_longtitude])
+                        ->where('start_date' ,"<=", $request->start_date)
+                        ->where('end_date' ,">=", $request->end_date)
+                        ->orderBy($orderby, $order)
+                        ->limit($row)->get();
 
         $return = new \stdClass;
 
@@ -101,7 +120,10 @@ class GoodsController extends Controller
     public function detail(Request $request){
         $id = $request->id;
 
-        $rows = Goods::where('id','=',$id)->get();
+        $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
+                ->join('rooms', 'goods.room_id', '=', 'rooms.id')
+                ->where('goods.id','=',$id)->get();
+
         $images = GoodsImage::where('goods_id','=',$id)->orderBy('order_no')->get();
 
         $return = new \stdClass;
