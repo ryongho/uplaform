@@ -56,6 +56,8 @@ class HotelController extends Controller
                 'email'=> $request->email ,
                 'traffic'=> $request->traffic ,
                 'level'=> $request->level ,
+                'latitude' => $request->latitude ,
+                'longtitude' => $request->longtitude ,
                 'created_at' => Carbon::now()
             ]);
 
@@ -74,7 +76,7 @@ class HotelController extends Controller
             }
             
 
-            if($reault){
+            if($result){
                 $return->status = "200";
                 $return->msg = "success";
                 $return->insert_id = $result ;

@@ -27,6 +27,8 @@ class Hotel extends Model
         'email',
         'traffic',
         'level',
+        'latitude',
+        'longtitude',
         'created_at'
     ];
 }
