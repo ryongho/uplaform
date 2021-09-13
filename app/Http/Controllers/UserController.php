@@ -20,15 +20,10 @@ class UserController extends Controller
         $return->data = $request->user_id;
 
         /* 중복 체크 - start*/
-        $id_cnt = User::where('user_id',$request->user_id)->count();
         $email_cnt = User::where('email',$request->email)->count();
         $phone_cnt = User::where('phone',$request->phone)->count();
 
-        if($id_cnt){
-            $return->status = "601";
-            $return->msg = "사용중인 아이디";
-            $return->data = $request->user_id;
-        }else if($email_cnt){
+        if($email_cnt){
             $return->status = "602";
             $return->msg = "사용중인 이메일";
             $return->data = $request->email;
