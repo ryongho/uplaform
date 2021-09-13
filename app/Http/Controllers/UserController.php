@@ -33,8 +33,9 @@ class UserController extends Controller
             $return->data = $request->phone;
         /* 중복 체크 - end*/
         }else{
-            $result = User::insert([
+            $result = User::insertGetId([
                 'name'=> $request->name ,
+                'nick_name'=> $request->nick_name ,
                 'email' => $request->email, 
                 'password' => $request->password, 
                 'user_id' => $request->user_id,
@@ -46,9 +47,16 @@ class UserController extends Controller
             ]);
 
             if($result){
+
+                Auth::loginUsingId($result);
+                $login_user = Auth::user();
+
+                $token = $login_user->createToken('user');
+
                 $return->status = "200";
                 $return->msg = "success";
-                $return->data = $request->user_id;
+                $return->data = $request->name;
+                $return->token = $token->plainTextToken;
             }
         }
         
