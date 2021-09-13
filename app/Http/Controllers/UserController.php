@@ -135,5 +135,49 @@ class UserController extends Controller
         
     }
 
+    public function check_email(Request $request){
+        
+        //dd($request);
+        $return = new \stdClass;
+
+        /* 중복 체크 - start*/
+        $email_cnt = User::where('email',$request->email)->count();
+
+        if($email_cnt){
+            $return->existence = "Y";
+            $return->msg = "사용중인 이메일";
+            $return->data = $request->email;
+        }else{
+            $return->existence = "N";
+            $return->msg = "사용가능 이메일";
+            $return->data = $request->email;            
+        }
+
+        echo(json_encode($return));
+
+    }  
+    
+    public function check_nickname(Request $request){
+        
+        //dd($request);
+        $return = new \stdClass;
+
+        /* 중복 체크 - start*/
+        $nickname_cnt = User::where('nickname',$request->nickname)->count();
+
+        if($email_cnt){
+            $return->existence = "Y";
+            $return->msg = "사용중인 닉네임";
+            $return->data = $request->nickname;
+        }else{
+            $return->existence = "N";
+            $return->msg = "사용가능 닉네임";
+            $return->data = $request->nickname;            
+        }
+
+        echo(json_encode($return));
+
+    }  
+
 
 }

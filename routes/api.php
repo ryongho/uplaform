@@ -36,7 +36,8 @@ Route::put('/regist', [UserController::class, 'regist']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 //Route::post('/login_check', [UserController::class, 'login_check']);
-Route::post('/find_user_id', [UserController::class, 'find_user_id']);
+Route::post('/check_email', [UserController::class, 'check_email']);
+Route::post('/check_nickname', [UserController::class, 'check_nickname']);
 
 Route::put('/partner/regist', [PartnerController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/partner/list', [PartnerController::class, 'list']);
