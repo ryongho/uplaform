@@ -5,27 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Recommend;
-use App\Models\Goods;
+use App\Models\Local;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
-class RecommendController extends Controller
+class LocalController extends Controller
 {
     public function regist(Request $request)
     {
         
         $return = new \stdClass;        
 
-        $recommend = Recommend::where('order_no',$request->order_no)->count();
+        $recommend = Local::where('order_no',$request->order_no)->count();
 
         if($recommend){
-            Recommend::where('order_no',$request->order_no)->delete();
+            Local::where('order_no',$request->order_no)->delete();
         }
     
-        $result = Recommend::insertGetId([
-            'goods_id'=> $request->goods_id ,
+        $result = Local::insertGetId([
+            'name'=> $request->name ,
+            'latitude'=> $request->latitude ,
+            'longtitude'=> $request->longtitude ,
             'order_no'=> $request->order_no ,
+            'img_src'=> $request->img_src ,
             'created_at'=> Carbon::now(),
         ]);
 
@@ -44,8 +46,7 @@ class RecommendController extends Controller
     public function list(Request $request){
 
 
-        $rows = Recommend::join('goods', 'recommends.goods_id', '=', 'goods.id')
-                        ->orderBy('order_no','asc')
+        $rows = Local::orderBy('order_no','asc')
                         ->get();
 
         $return = new \stdClass;

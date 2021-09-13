@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Recommend extends Model
+class Local extends Model
 {
     
 
@@ -15,8 +15,10 @@ class Recommend extends Model
      */
 
     protected $fillable = [
-        'goods_id',
-        'order_no',
+        'name',
+        'latitude',
+        'longtitude',
+        'image_src',
         'created_at',
     ];
 }
