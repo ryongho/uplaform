@@ -35,7 +35,7 @@ class UserController extends Controller
         }else{
             $result = User::insertGetId([
                 'name'=> $request->name ,
-                'nick_name'=> $request->nick_name ,
+                'nickname'=> $request->nickname ,
                 'email' => $request->email, 
                 'password' => $request->password, 
                 'user_id' => $request->user_id,
