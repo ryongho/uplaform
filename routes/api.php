@@ -12,6 +12,7 @@ use App\Http\Controllers\WishController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ViewlogController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\RecommendController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,9 @@ Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::clas
 Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
+
+Route::middleware('auth:sanctum')->put('/recommend/regist', [RecommendController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/recommend/list', [RecommendController::class, 'list']);
 
 
 Route::get('/login_check_partner', [PartnerController::class, 'login_check']);
