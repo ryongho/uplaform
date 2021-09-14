@@ -49,17 +49,20 @@ Route::post('/partner/login', [PartnerController::class, 'login']);
 
 Route::middleware('auth:sanctum')->post('/hotel/regist', [HotelController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/hotel/list', [HotelController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/hotel/list_by_partner', [HotelController::class, 'list_by_partner']);
 Route::middleware('auth:sanctum')->get('/hotel/detail', [HotelController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->post('/room/regist', [RoomController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/room/list', [RoomController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/room/list_for_select', [RoomController::class, 'list_for_select']);
 Route::middleware('auth:sanctum')->get('/room/list_by_hotel', [RoomController::class, 'list_by_hotel']);
+Route::middleware('auth:sanctum')->get('/room/list_by_partner', [RoomController::class, 'list_by_partner']);
 Route::middleware('auth:sanctum')->get('/room/detail', [RoomController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/goods/list', [GoodsController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/goods/list_by_hotel', [GoodsController::class, 'list_by_hotel']);
+Route::middleware('auth:sanctum')->get('/goods/list_by_partner', [GoodsController::class, 'list_by_partner']);
 Route::middleware('auth:sanctum')->get('/goods/detail', [GoodsController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
@@ -73,6 +76,8 @@ Route::middleware('auth:sanctum')->get('/recommend/list', [RecommendController::
 
 Route::middleware('auth:sanctum')->put('/local/regist', [LocalController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/local/list', [LocalController::class, 'list']);
+
+
 
 
 Route::get('/login_check_partner', [PartnerController::class, 'login_check']);

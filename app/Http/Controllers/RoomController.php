@@ -140,6 +140,26 @@ class RoomController extends Controller
 
     }
 
+    public function list_by_partner(Request $request){
+
+        $login_user = Auth::user();
+
+        $rows = Room::join('hotels', 'rooms.hotel_id', '=', 'hotels.id')
+                ->select('*',DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail'))
+                ->where('hotels.partner_id',$login_user->id)
+                ->orderBy('rooms.id', 'desc')->get();
+
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
     public function detail(Request $request){
         $id = $request->id;
 

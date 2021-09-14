@@ -110,6 +110,22 @@ class HotelController extends Controller
 
     }
 
+    public function list_by_partner(Request $request){
+
+        $login_user = Auth::user();
+
+        $rows = Hotel::where('partner_id',$login_user->id)->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
     public function detail(Request $request){
         $id = $request->id;
 

@@ -166,6 +166,30 @@ class GoodsController extends Controller
 
     }
 
+    public function list_by_partner(Request $request){
+
+        $login_user = Auth::user();
+
+        $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
+                        ->join('rooms', 'goods.room_id', '=', 'rooms.id')
+                        ->select(   '*',
+                                    DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                        )         
+                        ->where('hotels.partner_id','=',$login_user->id)
+                        ->orderBy('goods.id', 'desc')
+                        ->get();
+
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
     
 
     public function detail(Request $request){
