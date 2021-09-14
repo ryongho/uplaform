@@ -28,6 +28,8 @@ class Goods extends Model
         'amount',
         'min_nights',
         'max_nights',
+        'breakfast',
+        'parking',
         'created_at',
     ];
 }
