@@ -60,6 +60,7 @@ class HotelController extends Controller
                 'longtitude' => $request->longtitude ,
                 'type' => $request->type ,
                 'parking' => $request->parking ,
+                'refund_rule' => $request->refund_rule ,
                 'created_at' => Carbon::now()
             ]);
 
