@@ -179,5 +179,19 @@ class UserController extends Controller
 
     }  
 
+    public function info(){
+
+        $login_user = Auth::user();
+
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->data = $login_user;
+
+        echo(json_encode($return));
+
+    }
+
 
 }
