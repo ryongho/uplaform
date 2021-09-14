@@ -45,6 +45,9 @@ class RecommendController extends Controller
 
 
         $rows = Recommend::join('goods', 'recommends.goods_id', '=', 'goods.id')
+                        ->select('*',
+                            DB::raw('(select file_name from goods_images where goods_images.goods_id = recommends.goods_id order by order_no asc limit 1 ) as thumb_nail'),
+                        ) 
                         ->orderBy('order_no','asc')
                         ->get();
 
