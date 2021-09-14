@@ -29,6 +29,7 @@ class Hotel extends Model
         'level',
         'latitude',
         'longtitude',
+        'parking',
         'created_at'
     ];
 }
