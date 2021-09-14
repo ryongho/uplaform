@@ -58,6 +58,7 @@ class HotelController extends Controller
                 'level'=> $request->level ,
                 'latitude' => $request->latitude ,
                 'longtitude' => $request->longtitude ,
+                'type' => $request->type ,
                 'created_at' => Carbon::now()
             ]);
 

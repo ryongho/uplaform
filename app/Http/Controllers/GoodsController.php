@@ -99,7 +99,8 @@ class GoodsController extends Controller
         }
 
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
-                        ->select('*',
+                        ->join('rooms', 'goods.room_id', '=', 'rooms.id')
+                        ->select('*','hotels.type as shop_type',
                             Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'),
                             DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
