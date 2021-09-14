@@ -83,7 +83,8 @@ class RoomController extends Controller
     }
 
     public function list(Request $request){
-
+        $s_no = $request->start_no;
+        $row = $request->row;
 
         $rows = Room::where('id','>=',$s_no)->orderBy('id', 'desc')->limit($row)->get();
 
