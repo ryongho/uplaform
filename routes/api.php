@@ -53,6 +53,7 @@ Route::middleware('auth:sanctum')->get('/hotel/detail', [HotelController::class,
 
 Route::middleware('auth:sanctum')->post('/room/regist', [RoomController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/room/list', [RoomController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/room/list_for_select', [RoomController::class, 'list_for_select']);
 Route::middleware('auth:sanctum')->get('/room/detail', [RoomController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);

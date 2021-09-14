@@ -48,6 +48,8 @@ class RoomController extends Controller
                 'peoples'=> $request->peoples ,
                 'options'=> $request->options ,
                 'price'=> $request->price ,
+                'checkin'=> $request->checkin ,
+                'checkout'=> $request->checkout ,
                 'created_at'=> Carbon::now(),
             ]);
 
@@ -81,10 +83,27 @@ class RoomController extends Controller
     }
 
     public function list(Request $request){
-        $s_no = $request->start_no;
-        $row = $request->row;
+
 
         $rows = Room::where('id','>=',$s_no)->orderBy('id', 'desc')->limit($row)->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
+    public function list_for_select(Request $request){
+
+        $login_user = Auth::user();
+
+        $hotel_info = Hotel::where('partner_id',$login_user->id)->get();
+
+        $rows = Room::where('hotel_id',$hotel_info[0]->id)->orderBy('id', 'desc')->get();
 
         $return = new \stdClass;
 

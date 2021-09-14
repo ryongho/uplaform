@@ -23,6 +23,8 @@ class Room extends Model
         'peoples',
         'options',
         'price',
+        'checkin',
+        'checkout',
         'created_at',
     ];
 }
