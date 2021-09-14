@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Hotel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
@@ -180,14 +181,19 @@ class UserController extends Controller
     }  
 
     public function info(){
-
-        $login_user = Auth::user();
-
         //dd($request);
         $return = new \stdClass;
 
+
+        $login_user = Auth::user();
+
         $return->status = "200";
         $return->data = $login_user;
+
+        if($login_user->user_type == 1){
+            $hotel_info = Hotel::where('partner_id',$login_user->id)->first();
+            $return->hotel_id = $hotel_info->id;
+        }
 
         echo(json_encode($return));
 
