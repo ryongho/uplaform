@@ -61,6 +61,7 @@ class HotelController extends Controller
                 'type' => $request->type ,
                 'parking' => $request->parking ,
                 'refund_rule' => $request->refund_rule ,
+                'options' => $request->options ,
                 'created_at' => Carbon::now()
             ]);
 

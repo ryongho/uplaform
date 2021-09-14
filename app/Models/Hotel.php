@@ -31,6 +31,7 @@ class Hotel extends Model
         'longtitude',
         'parking',
         'refund_rule',
+        'options',
         'created_at'
     ];
 }
