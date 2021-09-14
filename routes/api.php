@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->get('/room/detail', [RoomController::class, '
 
 Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/goods/list', [GoodsController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/goods/list_by_hotel', [GoodsController::class, 'list_by_hotel']);
 Route::middleware('auth:sanctum')->get('/goods/detail', [GoodsController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);

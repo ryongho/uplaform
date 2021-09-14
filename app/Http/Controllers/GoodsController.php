@@ -130,6 +130,38 @@ class GoodsController extends Controller
 
     }
 
+    public function list_by_hotel(Request $request){
+        $hotel_id = $request->hotel_id;
+       
+        $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
+                        ->join('rooms', 'goods.room_id', '=', 'rooms.id')
+                        ->select(   'hotels.type as shop_type', 
+                                    'rooms.name as room_name',
+                                    'hotels.name as hotel_name',
+                                    'goods.goods_name as goods_name', 
+                                    'goods.price as price',
+                                    'hotels.address as address',
+                                    'goods.sale_price as sale_price',
+                                    'rooms.checkin as checkin',
+                                    'rooms.checkout as checkout',
+                                    DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                        )         
+                        ->where('hotels.id','=',$hotel_id)
+                        ->orderBy('sale_price', 'asc')
+                        ->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
+    
+
     public function detail(Request $request){
         $id = $request->id;
 
