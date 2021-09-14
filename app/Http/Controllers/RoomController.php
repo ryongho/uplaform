@@ -107,7 +107,28 @@ class RoomController extends Controller
 
         $hotel_info = Hotel::where('partner_id',$login_user->id)->get();
 
-        $rows = Room::where('hotel_id',$hotel_info[0]->id)->orderBy('id', 'desc')->get();
+        $rows = Room::select('*',DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail'))
+                ->where('hotel_id',$hotel_info[0]->id)->orderBy('id', 'desc')->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
+
+    public function list_by_hotel(Request $request){
+
+        $hotel_id = $request->hotel_id;
+
+        $hotel_info = Hotel::where('id',$hotel_id)->get();
+
+        $rows = Room::select('*',DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail'))
+                ->where('hotel_id',$hotel_info[0]->id)->orderBy('id', 'desc')->get();
 
         $return = new \stdClass;
 
