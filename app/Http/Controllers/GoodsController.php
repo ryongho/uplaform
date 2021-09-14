@@ -54,6 +54,8 @@ class GoodsController extends Controller
                 'amount'=> $request->amount ,
                 'min_nights'=> $request->min_nights ,
                 'max_nights'=> $request->max_nights ,
+                'breakfast'=> $request->breakfast ,
+                'parking'=> $request->parking ,
                 'created_at'=> Carbon::now(),
             ]);
 
@@ -109,6 +111,8 @@ class GoodsController extends Controller
                                     'goods.sale_price as sale_price',
                                     'rooms.checkin as checkin',
                                     'rooms.checkout as checkout',
+                                    'goods.breakfast as breakfast',
+                                    'goods.parking as parking',
                                     Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'),
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
@@ -144,6 +148,8 @@ class GoodsController extends Controller
                                     'goods.sale_price as sale_price',
                                     'rooms.checkin as checkin',
                                     'rooms.checkout as checkout',
+                                    'goods.breakfast as breakfast',
+                                    'goods.parking as parking',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
                         ->where('hotels.id','=',$hotel_id)
