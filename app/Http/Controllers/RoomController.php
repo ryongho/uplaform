@@ -144,11 +144,19 @@ class RoomController extends Controller
 
         $login_user = Auth::user();
 
-        $rows = Room::join('hotels', 'rooms.hotel_id', '=', 'hotels.id')
-                ->select('*',DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail'))
-                ->where('hotels.partner_id',$login_user->id)
-                ->orderBy('rooms.id', 'desc')->get();
+        $hotel_info = Hotel::select('id')->where('hotels.partner_id',$login_user->id)->get();
 
+        $rows = array();
+        $rn = 0;
+
+        foreach($hotel_info as $hotel){
+            $rows[$rn] = Room::select('*',DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail'))
+                ->where('hotel_id',$hotel->id)
+                ->orderBy('rooms.id', 'desc')->get();
+            
+            $rn++;
+
+        }        
 
         $return = new \stdClass;
 
