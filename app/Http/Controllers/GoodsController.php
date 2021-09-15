@@ -177,6 +177,7 @@ class GoodsController extends Controller
         $login_user = Auth::user();
 
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
+                        ->select('goods.id as goods_id','*',)
                         ->join('rooms', 'goods.room_id', '=', 'rooms.id')
                         ->select(   '*',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
