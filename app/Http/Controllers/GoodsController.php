@@ -233,7 +233,7 @@ class GoodsController extends Controller
                 'hotels.longtitude as longtitude',
                 'goods.id as goods_id',
                 'hotels.id as hotel_id',
-                'room.id as room_id',
+                'rooms.id as room_id',
                 'goods.options as options',
                 'goods.amount as amount',
                 )
