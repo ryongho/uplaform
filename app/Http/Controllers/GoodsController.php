@@ -177,7 +177,6 @@ class GoodsController extends Controller
         $login_user = Auth::user();
 
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
-                        ->select('goods.id as goods_id','*',)
                         ->join('rooms', 'goods.room_id', '=', 'rooms.id')
                         ->select(   'hotels.type as shop_type', 
                                     'rooms.name as room_name',
@@ -219,6 +218,23 @@ class GoodsController extends Controller
 
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
                 ->join('rooms', 'goods.room_id', '=', 'rooms.id')
+                ->select(   'hotels.type as shop_type', 
+                'rooms.name as room_name',
+                'hotels.name as hotel_name',
+                'goods.goods_name as goods_name', 
+                'goods.price as price',
+                'hotels.address as address',
+                'goods.sale_price as sale_price',
+                'rooms.checkin as checkin',
+                'rooms.checkout as checkout',
+                'goods.breakfast as breakfast',
+                'hotels.parking as parking',
+                'hotels.latitude as latitude',
+                'hotels.longtitude as longtitude',
+                'goods.id as goods_id',
+                'goods.options as options',
+                'goods.amount as amount',
+                )
                 ->where('goods.id','=',$id)->get();
 
         $images = GoodsImage::where('goods_id','=',$id)->orderBy('order_no')->get();
