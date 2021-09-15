@@ -88,7 +88,11 @@ class RoomController extends Controller
         $row = $request->row;
 
         $rows = Room::join('hotels', 'rooms.hotel_id', '=', 'hotels.id')
-                    ->select('*',DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail'))
+                    ->select('*',
+                            'rooms.options as room_options',
+                            'hotels.options as hotel_options',
+                            DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail')
+                            )
                     ->where('rooms.id','>=',$s_no)->orderBy('rooms.id', 'desc')->limit($row)->get();
 
         $return = new \stdClass;
@@ -171,7 +175,12 @@ class RoomController extends Controller
     public function detail(Request $request){
         $id = $request->id;
 
-        $rows = Room::join('hotels', 'rooms.hotel_id', '=', 'hotels.id')->where('rooms.id','=',$id)->get();
+        $rows = Room::join('hotels', 'rooms.hotel_id', '=', 'hotels.id')->select('*',
+                            'rooms.options as room_options',
+                            'hotels.options as hotel_options',
+                            DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail')
+                            )
+                    ->where('rooms.id','=',$id)->get();
         $images = RoomImage::where('room_id','=',$id)->orderBy('order_no')->get();
 
         $return = new \stdClass;
