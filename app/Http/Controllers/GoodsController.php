@@ -156,6 +156,8 @@ class GoodsController extends Controller
                                     'hotels.latitude as latitude',
                                     'hotels.longtitude as longtitude',
                                     'goods.id as goods_id',
+                                    'hotels.id as hotel_id',
+                                    'rooms.id as room_id',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
                         ->where('hotels.id','=',$hotel_id)
