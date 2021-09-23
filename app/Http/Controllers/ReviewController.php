@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Review;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -12,14 +13,50 @@ class ReviewController extends Controller
     {
         //dd($request);
 
-        Review::insert([
-            'user_id'=> $request->user_id ,
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+        $user_nickname = $login_user->getNickname();
+
+        $result = Review::insertGetId([
+            'user_id'=> $user_id ,
+            'nickname'=> $user_nickname,
             'goods_id'=> $request->goods_id ,
-            'title'=> $request->title ,
             'review'=> $request->review ,
             'created_at'=> Carbon::now(),
         ]);
+
+        $return = new \stdClass;
+
+        if($result){ //DB 입력 성공
+            $return->status = "200";
+            $return->msg = "success";
+            $return->inserted_id = $result;
+        }else{
+            $return->status = "501";
+            $return->msg = "fail";
+        }
+
+        echo(json_encode($return));
+    
     }
+
+    public function list(Request $request)
+    {
+        //dd($request);
+        $goods_id = $request->goods_id;
+
+        $rows = Review::where('goods_id',$goods_id)->orderBy('created_at','desc')->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+    }
+
+
 
 
 
