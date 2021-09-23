@@ -22,6 +22,7 @@ class ReviewController extends Controller
             'nickname'=> $user_nickname,
             'goods_id'=> $request->goods_id ,
             'review'=> $request->review ,
+            'grade'=> $request->grade ,
             'created_at'=> Carbon::now(),
         ]);
 
