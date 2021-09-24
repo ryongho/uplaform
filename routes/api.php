@@ -68,6 +68,10 @@ Route::middleware('auth:sanctum')->get('/goods/detail', [GoodsController::class,
 Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::class, 'regist']);
 Route::get('/review/list', [ReviewController::class, 'list']);
 
+Route::middleware('auth:sanctum')->put('/wish/toggle', [WishController::class, 'toggle']);
+Route::middleware('auth:sanctum')->get('/wish/list', [WishController::class, 'list']);
+
+
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
 
 Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
