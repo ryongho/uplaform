@@ -192,7 +192,10 @@ class UserController extends Controller
 
         if($login_user->user_type == 1){
             $hotel_info = Hotel::where('partner_id',$login_user->id)->first();
-            $return->hotel_id = $hotel_info->id;
+            if(count($hotel_info) > 0 ){
+                $return->hotel_id = $hotel_info->id;
+            }
+            
         }
 
         echo(json_encode($return));
