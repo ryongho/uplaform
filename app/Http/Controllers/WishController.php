@@ -7,6 +7,7 @@ use App\Models\Wish;
 use App\Models\Goods;
 use App\Models\Hotel;
 use App\Models\Room;
+use App\Models\Comparaison;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -100,6 +101,29 @@ class WishController extends Controller
 
         echo(json_encode($return));
         
+    }
+
+    public function compare(Request $request){
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+
+        $inserted_id = Comparaison::insertGetId([
+            'user_id'=> $user_id ,
+            'goods_id_1'=> $request->goods_id_1 ,
+            'goods_id_2'=> $request->goods_id_2 ,
+            'goods_id_3'=> $request->goods_id_3 ,
+            'goods_id_4'=> $request->goods_id_4 ,
+            'goods_id_5'=> $request->goods_id_5 ,  
+            'created_at'=> Carbon::now(),
+        ]);
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->inserted_id = $inserted_id;
+        echo(json_encode($return));
+
     }
 
 

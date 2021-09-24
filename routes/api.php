@@ -70,6 +70,7 @@ Route::get('/review/list', [ReviewController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/wish/toggle', [WishController::class, 'toggle']);
 Route::middleware('auth:sanctum')->get('/wish/list', [WishController::class, 'list']);
+Route::middleware('auth:sanctum')->put('/wish/compare', [WishController::class, 'compare']);
 
 
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
