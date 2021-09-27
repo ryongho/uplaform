@@ -45,6 +45,7 @@ Route::put('/partner/regist', [PartnerController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/partner/list', [PartnerController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/user/list', [UserController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/user/info', [UserController::class, 'info']);
+Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update']);
 Route::post('/partner/login', [PartnerController::class, 'login']);
 
 Route::middleware('auth:sanctum')->post('/hotel/regist', [HotelController::class, 'regist']);

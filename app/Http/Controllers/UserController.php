@@ -202,5 +202,36 @@ class UserController extends Controller
 
     }
 
+    public function update(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+
+
+        $login_user = Auth::user();
+
+        $return->status = "200";
+        $return->msg = "변경 완료";
+        $return->key = $request->key;
+        $return->value = $request->value;
+
+        $key = $request->key;
+        $value = $request->value;
+        $user_id = $login_user->id;
+
+        if($key == "password"){
+            $value = Hash::make($request->value);
+        }
+
+        $result = User::where('id', $user_id)->update([$key => $value]);
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        echo(json_encode($return));
+
+    }
+
 
 }
