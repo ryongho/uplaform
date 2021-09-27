@@ -81,11 +81,21 @@ class UserController extends Controller
             Auth::loginUsingId($user->id);
             $login_user = Auth::user();
 
-            $token = $login_user->createToken('user');
+            if($login_user->dormant == "Y"){
+                $return->status = "502";
+                $return->msg = "휴면계정 입니다.";
+                $return->dormant = $login_user->dormant;
+            }else{
+                $token = $login_user->createToken('user');
+                $return->status = "200";
+                $return->msg = "성공";
+                $return->token = $token->plainTextToken;
+                $return->dormant = $login_user->dormant;
+            }
 
-            $return->status = "200";
-            $return->msg = "성공";
-            $return->token = $token->plainTextToken;    
+            
+            
+            
             
             //dd($token->plainTextToken);    
         }else{
