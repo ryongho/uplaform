@@ -26,6 +26,9 @@ class User extends Authenticatable
         'user_id',
         'corporate_no',
         'user_type',
+        'leave',
+        'dormant',
+        'updated_at',
         'created_at'
     ];
 

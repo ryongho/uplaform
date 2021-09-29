@@ -68,7 +68,7 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
-        $user = User::where('email' , $request->email)->first();
+        $user = User::where('email' , $request->email)->where('leave','N')->first();
 
         $return = new \stdClass;
 
@@ -228,6 +228,27 @@ class UserController extends Controller
         if(!$result){
             $return->status = "500";
             $return->msg = "변경 실패";
+        }
+
+        echo(json_encode($return));
+
+    }
+
+    public function leave(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+        $login_user = Auth::user();
+
+        $return->status = "200";
+        $return->msg = "탈퇴처리 완료";
+
+        $user_id = $login_user->id;
+
+        $result = User::where('id', $user_id)->update(['leave' => 'Y']);
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "탈퇴처리 실패";
         }
 
         echo(json_encode($return));
