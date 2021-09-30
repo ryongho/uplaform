@@ -14,6 +14,7 @@ use App\Http\Controllers\ViewlogController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RecommendController;
 use App\Http\Controllers\LocalController;
+use App\Http\Controllers\NoticeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +79,9 @@ Route::middleware('auth:sanctum')->put('/wish/compare', [WishController::class, 
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
 
 Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
+
+Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/notice/list', [NoticeController::class, 'list']);
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
 
