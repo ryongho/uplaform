@@ -240,6 +240,7 @@ class GoodsController extends Controller
                 'rooms.id as room_id',
                 'goods.options as options',
                 'goods.amount as amount',
+                DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id ) as wished '),
                 )
                 ->where('goods.id','=',$id)->get();
 
