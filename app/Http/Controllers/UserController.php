@@ -24,7 +24,7 @@ class UserController extends Controller
         $email_cnt = User::where('email',$request->email)->count();
         $phone_cnt = User::where('phone',$request->phone)->count();
 
-        if($email_cnt){
+        /*if($email_cnt){
             $return->status = "602";
             $return->msg = "사용중인 이메일";
             $return->data = $request->email;
@@ -32,8 +32,8 @@ class UserController extends Controller
             $return->status = "603";
             $return->msg = "사용중인 폰 번호";
             $return->data = $request->phone;
-        /* 중복 체크 - end*/
-        }else{
+        //중복 체크 - end
+        }else{*/
             $result = User::insertGetId([
                 'name'=> $request->name ,
                 'nickname'=> $request->nickname ,
@@ -59,7 +59,7 @@ class UserController extends Controller
                 $return->data = $request->name;
                 $return->token = $token->plainTextToken;
             }
-        }
+        //}
         
 
         echo(json_encode($return));

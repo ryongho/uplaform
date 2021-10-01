@@ -82,6 +82,7 @@ Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::cl
 
 Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/notice/list', [NoticeController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/notice/detail', [NoticeController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
 

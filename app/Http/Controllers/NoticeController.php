@@ -53,6 +53,20 @@ class NoticeController extends Controller
 
     }
 
+    public function detail(Request $request){
+        $id = $request->id;
+
+        $rows = Notice::where('id','=',$id)->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
     
 
 
