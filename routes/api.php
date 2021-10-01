@@ -16,6 +16,8 @@ use App\Http\Controllers\RecommendController;
 use App\Http\Controllers\LocalController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\PolicyController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +90,10 @@ Route::middleware('auth:sanctum')->get('/notice/detail', [NoticeController::clas
 Route::middleware('auth:sanctum')->put('/faq/regist', [FaqController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/faq/list', [FaqController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/faq/detail', [FaqController::class, 'detail']);
+
+Route::middleware('auth:sanctum')->put('/policy/regist', [PolicyController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/policy/detail', [PolicyController::class, 'detail']);
+Route::middleware('auth:sanctum')->get('/policy/list', [PolicyController::class, 'list']);
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
 
