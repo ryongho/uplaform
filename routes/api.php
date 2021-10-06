@@ -17,6 +17,7 @@ use App\Http\Controllers\LocalController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\ReservationController;
 
 
 /*
@@ -94,6 +95,11 @@ Route::middleware('auth:sanctum')->get('/faq/detail', [FaqController::class, 'de
 Route::middleware('auth:sanctum')->put('/policy/regist', [PolicyController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/policy/detail', [PolicyController::class, 'detail']);
 Route::middleware('auth:sanctum')->get('/policy/list', [PolicyController::class, 'list']);
+
+Route::middleware('auth:sanctum')->put('/reservation/regist', [ReservationController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);
+Route::middleware('auth:sanctum')->get('/reservation/list', [ReservationController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/reservation/list_by_user', [ReservationController::class, 'list_by_user']);
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
 
