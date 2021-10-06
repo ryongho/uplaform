@@ -120,6 +120,8 @@ class GoodsController extends Controller
                                     Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'),
                                     DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id ) as wished '),
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                                    DB::raw('(select avg(grade) from reviews where reviews.goods_id = goods.id) as grade'),
+                                    DB::raw('(select count(grade) from reviews where reviews.goods_id = goods.id) as grade_cnt'),
                         )         
                         ->where('goods.id','>=',$s_no)
                         ->whereBetween('hotels.latitude', [$request->a_latitude, $request->b_latitude])
@@ -161,6 +163,8 @@ class GoodsController extends Controller
                                     'hotels.id as hotel_id',
                                     'rooms.id as room_id',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                                    DB::raw('(select avg(grade) from reviews where reviews.goods_id = goods.id) as grade'),
+                                    DB::raw('(select count(grade) from reviews where reviews.goods_id = goods.id) as grade_cnt'),
                         )         
                         ->where('hotels.id','=',$hotel_id)
                         ->orderBy('sale_price', 'asc')
