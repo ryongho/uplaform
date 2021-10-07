@@ -53,6 +53,8 @@ class ReservationController extends Controller
             $return->status = "200";
             $return->msg = "success";
             $return->insert_id = $result ;
+
+            Goods::where('id',$request->goods_id)->update(['amount' => $goods->amount-1]);
         }else{
             $return->status = "500";
             $return->msg = "fail";

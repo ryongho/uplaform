@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Hotel;
 use App\Models\GoodsImage;
 use App\Models\Wish;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -244,6 +245,8 @@ class GoodsController extends Controller
                 'rooms.id as room_id',
                 'goods.options as options',
                 'goods.amount as amount',
+                'goods.start_date as start_date',
+                'goods.end_date as end_date',
                 DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id ) as wished '),
                 )
                 ->where('goods.id','=',$id)->get();
