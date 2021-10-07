@@ -27,6 +27,9 @@ class Reservation extends Model
         'peoples',
         'request',
         'status',
+        'name',
+        'phone',
+        'visit_way',
         'created_at',
         'updated_at',
     ];
