@@ -255,17 +255,14 @@ class ReservationController extends Controller
                                     'goods.id as goods_id',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
-                        ->where('reservation.id',$id)
+                        ->where('reservations.id',$id)
                         ->orderBy($orderby, $order)
                         ->get();
-
-        $images = GoodsImage::where('goods_id','=',$rows->goods_id)->orderBy('order_no')->get();
 
         $return = new \stdClass;
 
         $return->status = "200";
         $return->data = $rows ;
-        $return->images = $images ;
 
         echo(json_encode($return));
 
