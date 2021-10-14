@@ -140,6 +140,7 @@ class ReservationController extends Controller
         $rows = Reservation::join('hotels', 'reservations.hotel_id', '=', 'hotels.id')
                                 ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
                                 ->join('goods', 'reservations.goods_id', '=', 'goods.id')
+                                ->leftJoin('reviews', 'reservations.id', '=', 'reviews.reservation_id')
                                 ->select(   'hotels.type as shop_type',
                                     'reservations.reservation_no as reservation_no', 
                                     'reservations.start_date as start_date', 
@@ -166,8 +167,13 @@ class ReservationController extends Controller
                                     'hotels.longtitude as longtitude',
                                     'goods.id as goods_id',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                                    'reviews.id as review_id',
+                                    'reviews.review as review',
+                                    'reviews.created_at as review_created_at',
+                                    'reviews.nickname as review_nickname',
+                                    'reviews.grade as review_grade',
                         )         
-                        ->where('user_id',$user_id)
+                        ->where('reservations.user_id',$user_id)
                         ->orderBy($orderby, $order)
                         ->get();
 

@@ -20,6 +20,7 @@ class ReviewController extends Controller
         $result = Review::insertGetId([
             'user_id'=> $user_id ,
             'nickname'=> $user_nickname,
+            'reservation_id'=> $request->reservation_id ,
             'goods_id'=> $request->goods_id ,
             'review'=> $request->review ,
             'grade'=> $request->grade ,
