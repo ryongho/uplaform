@@ -235,7 +235,7 @@ class ReservationController extends Controller
     
 
     public function detail(Request $request){
-        $id = $request->id;
+        $reservation_no = $request->reservation_no;
 
         $orderby = "reservations.created_at";
         $order = "desc";
@@ -270,7 +270,7 @@ class ReservationController extends Controller
                                     'goods.id as goods_id',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
-                        ->where('reservations.id',$id)
+                        ->where('reservations.reservation_no',$reservation_no)
                         ->orderBy($orderby, $order)
                         ->get();
 
