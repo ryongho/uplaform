@@ -42,9 +42,9 @@ class UserController extends Controller
                 'user_id' => $request->user_id,
                 'phone' => $request->phone, 
                 'user_type' => $request->user_type,
+                'push' => $request->push,
                 'created_at' => Carbon::now(),
                 'password' => Hash::make($request->password)
-                
             ]);
 
             if($result){

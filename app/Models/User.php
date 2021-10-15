@@ -28,6 +28,7 @@ class User extends Authenticatable
         'user_type',
         'leave',
         'dormant',
+        'push',
         'updated_at',
         'created_at'
     ];
