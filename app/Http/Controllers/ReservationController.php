@@ -293,6 +293,105 @@ class ReservationController extends Controller
 
     }
 
+    public function cancel(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+        $login_user = Auth::user();
+
+        $return->status = "200";
+        $return->msg = "취소 등록";
+        $return->reservation_no = $request->reservation_no;
+
+        $reservation_no = $request->reservation_no;
+        $user_id = $login_user->id;
+
+        $reservation_info = Reservation::where('reservation_no', $reservation_no)->where('user_id',$user_id)->first();
+        if(!$reservation_info){
+            $return->status = "601";
+            $return->msg = "유효한 예약 정보가 아닙니다.";
+            $return->reservation_no = $request->reservation_no;
+        }else if($reservation_info->status == "C" || $reservation_info->status == "X"){
+            $return->status = "602";
+            $return->msg = "이미 취소 처리된 예약입니다.";
+            $return->reservation_no = $request->reservation_no;
+        }else{
+            $result = Reservation::where('reservation_no', $reservation_no)->where('user_id',$user_id)->update(['status' => 'X']);
+
+            if(!$result){
+                $return->status = "500";
+                $return->msg = "변경 실패";
+            }
+        }
+
+    
+        echo(json_encode($return));
+
+    }
+
+    public function list_cancel(Request $request){
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+
+        $orderby = "reservations.created_at";
+        $order = "desc";
+    
+       
+        $rows = Reservation::join('hotels', 'reservations.hotel_id', '=', 'hotels.id')
+                                ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
+                                ->join('goods', 'reservations.goods_id', '=', 'goods.id')
+                                ->leftJoin('reviews', 'reservations.id', '=', 'reviews.reservation_id')
+                                ->select(   'hotels.type as shop_type',
+                                    'reservations.reservation_no as reservation_no', 
+                                    'reservations.start_date as start_date', 
+                                    'reservations.end_date as end_date', 
+                                    'reservations.nights as nights', 
+                                    'reservations.peoples as peoples',
+                                    'reservations.created_at as created_at',
+                                    'reservations.updated_at as updated_at',
+                                    'reservations.status as status',
+                                    'reservations.name as name',
+                                    'reservations.visit_way as visit_way',
+                                    'reservations.phone as phone', 
+                                    'reservations.id as reservation_id', 
+                                    'rooms.name as room_name',
+                                    'hotels.name as hotel_name',
+                                    'goods.goods_name as goods_name', 
+                                    'goods.price as price',
+                                    'hotels.address as address',
+                                    'goods.sale_price as sale_price',
+                                    'rooms.checkin as checkin',
+                                    'rooms.checkout as checkout',
+                                    'goods.breakfast as breakfast',
+                                    'hotels.parking as parking',
+                                    'hotels.latitude as latitude',
+                                    'hotels.longtitude as longtitude',
+                                    'goods.id as goods_id',
+                                    DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                                    'reviews.id as review_id',
+                                    'reviews.review as review',
+                                    'reviews.created_at as review_created_at',
+                                    'reviews.nickname as review_nickname',
+                                    'reviews.grade as review_grade',
+                        )         
+                        ->Where('reservations.user_id',$user_id)
+                        ->Where('reservations.status','X')
+                        ->orWhere('reservations.status','C')
+                        ->orderBy($orderby, $order)
+                        ->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        echo(json_encode($return));
+
+    }
+
+    
+
 
 
 }
