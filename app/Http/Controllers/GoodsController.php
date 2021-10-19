@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Hotel;
 use App\Models\GoodsImage;
 use App\Models\Wish;
+use App\Models\Review;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -251,6 +252,8 @@ class GoodsController extends Controller
                 )
                 ->where('goods.id','=',$id)->get();
 
+        $grade = Review::where('goods_id','=',$id)->whereNotNull('grade')->avg('grade');
+        
         $images = GoodsImage::where('goods_id','=',$id)->orderBy('order_no')->get();
 
         $return = new \stdClass;
@@ -258,7 +261,7 @@ class GoodsController extends Controller
         $return->status = "200";
         $return->data = $rows ;
         $return->images = $images ;
-
+        $return->grede = $grade;
         echo(json_encode($return));
 
     }
