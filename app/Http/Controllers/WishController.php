@@ -77,6 +77,8 @@ class WishController extends Controller
                                     'hotels.name as hotel_name',
                                     'goods.goods_name as goods_name', 
                                     'goods.price as price',
+                                    'goods.start_date as start_date',
+                                    'goods.end_date as end_date',
                                     'hotels.address as address',
                                     'goods.sale_price as sale_price',
                                     'rooms.checkin as checkin',
