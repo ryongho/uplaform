@@ -18,6 +18,7 @@ use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\PushController;
 
 
 /*
@@ -81,6 +82,10 @@ Route::middleware('auth:sanctum')->put('/wish/compare', [WishController::class, 
 
 
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
+
+
+Route::middleware('auth:sanctum')->put('/push/regist', [PushController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/push/list', [PushController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
 
