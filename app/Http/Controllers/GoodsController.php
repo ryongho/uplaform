@@ -259,9 +259,10 @@ class GoodsController extends Controller
         $return = new \stdClass;
 
         $return->status = "200";
+        $rows[0]->grade = $grade;
         $return->data = $rows ;
         $return->images = $images ;
-        $return->grede = $grade;
+        
         echo(json_encode($return));
 
     }
