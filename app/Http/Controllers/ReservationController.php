@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Goods;
 use App\Models\Hotel;
 use App\Models\Reservation;
+use App\Models\Push;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -58,6 +59,21 @@ class ReservationController extends Controller
             $return->insert_id = $result ;
 
             Goods::where('id',$request->goods_id)->update(['amount' => $goods->amount-1]);
+
+            $content = $request->name."님 ".$goods->name." 상품이 예약 되었습니다.";
+
+            $result = Push::insert([
+                'user_id'=> 1,
+                'content'=> $content ,
+                'type'=> "R" ,
+                'target_user' => $user_id ,
+                'target_id' => $result ,
+                'send_date'=> Carbon::now() ,
+                'created_at'=> Carbon::now(),
+            ]);
+            
+
+            
         }else{
             $return->status = "500";
             $return->msg = "fail";
@@ -244,7 +260,7 @@ class ReservationController extends Controller
     
 
     public function detail(Request $request){
-        $reservation_no = $request->reservation_no;
+        $id = $request->id;
 
         $orderby = "reservations.created_at";
         $order = "desc";
@@ -280,7 +296,7 @@ class ReservationController extends Controller
                                     'goods.id as goods_id',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
-                        ->where('reservations.reservation_no',$reservation_no)
+                        ->where('reservations.id',$id)
                         ->orderBy($orderby, $order)
                         ->get();
 
@@ -300,22 +316,21 @@ class ReservationController extends Controller
 
         $return->status = "200";
         $return->msg = "취소 등록";
-        $return->reservation_no = $request->reservation_no;
+        //$return->id = $request->id;
 
-        $reservation_no = $request->reservation_no;
         $user_id = $login_user->id;
 
-        $reservation_info = Reservation::where('reservation_no', $reservation_no)->where('user_id',$user_id)->first();
+        $reservation_info = Reservation::where('id', $request->id)->where('user_id',$user_id)->first();
         if(!$reservation_info){
             $return->status = "601";
             $return->msg = "유효한 예약 정보가 아닙니다.";
-            $return->reservation_no = $request->reservation_no;
+            $return->reservation_id = $request->id;
         }else if($reservation_info->status == "C" || $reservation_info->status == "X"){
             $return->status = "602";
             $return->msg = "이미 취소 처리된 예약입니다.";
-            $return->reservation_no = $request->reservation_no;
+            $return->reservation_id = $request->id;
         }else{
-            $result = Reservation::where('reservation_no', $reservation_no)->where('user_id',$user_id)->update(['status' => 'X']);
+            $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'X']);
 
             if(!$result){
                 $return->status = "500";
