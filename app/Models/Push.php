@@ -18,6 +18,7 @@ class Push extends Model
         'user_id',
         'type',
         'target_user',
+        'target_id',
         'content',
         'send_date',
         'created_at',

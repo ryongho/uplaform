@@ -28,6 +28,7 @@ class PushController extends Controller
             'content'=> $request->content  ,
             'type'=> $request->type ,
             'target_user' => $request->target_user,
+            'target_id' => $request->id,
             'send_date'=> $request->send_date  ,
             'created_at'=> Carbon::now(),
         ]);
@@ -52,7 +53,7 @@ class PushController extends Controller
         $user_id = $login_user->getId();
 
         
-        $rows = Push::whereRaw('(type = "A") or (type = "P" and target_user = "'.$user_id.'")')
+        $rows = Push::whereRaw('(type != "P") or (type = "P" and target_user = "'.$user_id.'")')
                         //->whereOr('target_user','=',$user_id)
                         ->orderBy('send_date', 'desc')
                         ->get();
