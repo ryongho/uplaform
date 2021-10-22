@@ -53,7 +53,7 @@ class PushController extends Controller
         $user_id = $login_user->getId();
 
         
-        $rows = Push::whereRaw('(type != "P") or (type = "P" and target_user = "'.$user_id.'")')
+        $rows = Push::whereRaw('(type != "P" && type != "R") or (target_user = "'.$user_id.'")')
                         //->whereOr('target_user','=',$user_id)
                         ->orderBy('send_date', 'desc')
                         ->get();
