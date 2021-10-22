@@ -19,6 +19,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\PushController;
+use App\Http\Controllers\EventController;
 
 
 /*
@@ -92,6 +93,10 @@ Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::cl
 Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/notice/list', [NoticeController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/notice/detail', [NoticeController::class, 'detail']);
+
+Route::middleware('auth:sanctum')->put('/event/regist', [EventController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/event/list', [EventController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/event/detail', [EventController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/faq/regist', [FaqController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/faq/list', [FaqController::class, 'list']);
