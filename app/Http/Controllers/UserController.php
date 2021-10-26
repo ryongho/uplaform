@@ -43,6 +43,7 @@ class UserController extends Controller
                 'phone' => $request->phone, 
                 'user_type' => $request->user_type,
                 'push' => $request->push,
+                'push_event' => $request->push_event,
                 'created_at' => Carbon::now(),
                 'password' => Hash::make($request->password)
             ]);

@@ -29,6 +29,7 @@ class User extends Authenticatable
         'leave',
         'dormant',
         'push',
+        'push_event',
         'updated_at',
         'created_at'
     ];
