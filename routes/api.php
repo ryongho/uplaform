@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->get('/goods/list_by_partner', [GoodsControlle
 Route::middleware('auth:sanctum')->get('/goods/detail', [GoodsController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/review/detail', [ReviewController::class, 'detail']);
 Route::get('/review/list', [ReviewController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/wish/toggle', [WishController::class, 'toggle']);

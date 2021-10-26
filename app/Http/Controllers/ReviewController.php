@@ -58,6 +58,20 @@ class ReviewController extends Controller
         echo(json_encode($return));
     }
 
+    public function detail(Request $request){
+        $id = $request->id;
+
+        $rows = Review::where('id','=',$id)->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->data = $rows ;
+    
+        echo(json_encode($return));
+
+    }
+
 
 
 
