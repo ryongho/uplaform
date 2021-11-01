@@ -53,6 +53,10 @@ class SMSController extends Controller
             $sms->status = "S";
             $sms->send_date = Carbon::now();
             $sms->fail_reason = $_result->result;
+            $sms->msgid = $_result->msgid;
+            $sms->ok_cnt = $_result->ok_cnt;
+            $sms->type = $_result->type;
+
         }else{
             $sms->status = "F";
             $sms->send_date = Carbon::now();
