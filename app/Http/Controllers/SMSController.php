@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class SMSController extends Controller
 {
-    public function log_regist($result){    
+    public static function log_regist($result){    
         
         SmsLog::insert([
             'phone'=> $result->phone,
@@ -25,7 +25,7 @@ class SMSController extends Controller
         ]);
     }
 
-    public function send($sms)
+    public static function send($sms)
     {    
         $_api_url = 'https://message.ppurio.com/api/send_utf8_json.php';     // UTF-8 인코딩과 JSON 응답용 호출 페이지
         
@@ -63,7 +63,7 @@ class SMSController extends Controller
             $sms->fail_reason = $_result->result;
         }
 
-        $this->log_regist($sms);
+        SMSController::log_regist($sms);
     
     }
 
