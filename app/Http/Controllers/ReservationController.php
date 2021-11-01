@@ -9,6 +9,7 @@ use App\Models\Goods;
 use App\Models\Hotel;
 use App\Models\Reservation;
 use App\Models\Push;
+use App\Http\Controllers\SMScontroller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -61,6 +62,14 @@ class ReservationController extends Controller
             Goods::where('id',$request->goods_id)->update(['amount' => $goods->amount-1]);
 
             $content = $request->name."님 ".$goods->name." 상품이 예약 되었습니다.";
+
+            $sms = new \stdClass;
+            $sms->phone = $request->phone;
+            $sms->content = $content;
+
+            $smsController = new SMScontroller();
+            $smsController->send($sms);
+            //SMScontroller::send($sms);
 
             $result = Push::insert([
                 'user_id'=> 1,
