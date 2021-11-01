@@ -9,7 +9,7 @@ use App\Models\Goods;
 use App\Models\Hotel;
 use App\Models\Reservation;
 use App\Models\Push;
-//use App\Http\Controllers\SMScontroller;
+use App\Http\Controllers\SMSController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -67,8 +67,8 @@ class ReservationController extends Controller
             $sms->phone = $request->phone;
             $sms->content = $content;
 
-            $smsController = new SMScontroller();
-            $smsController->send($sms);
+            //$smsController = new SMScontroller();
+            //$smsController->send($sms);
             //SMScontroller::send($sms);
 
             $result = Push::insert([
