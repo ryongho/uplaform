@@ -102,6 +102,8 @@ class GoodsController extends Controller
             $orderby = "distance";
             $order = "asc";
         }
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
 
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
                         ->join('rooms', 'goods.room_id', '=', 'rooms.id')
@@ -128,8 +130,14 @@ class GoodsController extends Controller
                         ->where('goods.id','>=',$s_no)
                         ->whereBetween('hotels.latitude', [$request->a_latitude, $request->b_latitude])
                         ->whereBetween('hotels.longtitude', [$request->a_longtitude, $request->b_longtitude])
-                        ->where('start_date' ,"<=", $request->start_date)
-                        ->where('end_date' ,">=", $request->end_date)
+                        ->when($start_date, function ($query, $start_date) {
+                            return $query->where('start_date' ,"<=", $start_date);
+                        })
+                        ->when($end_date, function ($query, $end_date) {
+                            return $query->where('end_date' ,">=", $end_date);
+                        })
+                        //->where('start_date' ,"<=", $request->start_date)
+                        //->where('end_date' ,">=", $request->end_date)
                         ->orderBy($orderby, $order)
                         ->limit($row)->get();
 
