@@ -64,6 +64,7 @@
         
     </body>
     <footer style="text-align:center;padding:30px;height:100px;">
-        주식회사 디앤솔루션 | 서울특별시 서초구 방배천로2길 7 (방배동, 웅지빌딩 803호 ) |   02-2039-7754 |   pm@dnsolution.kr 
+        주식회사 디앤솔루션 | 서울특별시 서초구 방배천로2길 7 (방배동, 웅지빌딩 803호 ) | pm@dnsolution.kr <br>
+        사업자등록번호 376-86-00857 | 대표자 이성훈 | 전화번호 02-2039-7754
     </footer>
 </html>

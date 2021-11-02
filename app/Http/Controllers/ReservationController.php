@@ -69,7 +69,7 @@ class ReservationController extends Controller
 
             //$smsController = new SMScontroller();
             //$smsController->send($sms);
-            SMScontroller::send($sms);
+            //SMScontroller::send($sms);
 
             $result = Push::insert([
                 'user_id'=> 1,
