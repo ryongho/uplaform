@@ -32,5 +32,6 @@ class Reservation extends Model
         'visit_way',
         'created_at',
         'updated_at',
+        'update_id',
     ];
 }

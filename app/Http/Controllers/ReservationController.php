@@ -414,6 +414,34 @@ class ReservationController extends Controller
 
     }
 
+    public function update(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "변경 완료";
+        $return->key = $request->key;
+        $return->value = $request->value;
+        $return->updated_id = $request->id;
+
+        $login_user = Auth::user();
+        $user_id = $login_user->id;
+
+        $key = $request->key;
+        $value = $request->value;
+        $id = $request->id;
+
+        $result = Reservation::where('id', $id)->update([$key => $value, 'update_user' => $user_id]);
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        echo(json_encode($return));
+
+    }
+
     
 
 
