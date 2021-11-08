@@ -104,7 +104,7 @@ Route::middleware('auth:sanctum')->put('/faq/regist', [FaqController::class, 're
 Route::middleware('auth:sanctum')->get('/faq/list', [FaqController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/faq/detail', [FaqController::class, 'detail']);
 
-Route::put('/policy/regist', [PolicyController::class, 'regist']);
+Route::middleware('auth:sanctum')->put('/policy/regist', [PolicyController::class, 'regist']);
 Route::get('/policy/detail', [PolicyController::class, 'detail']);
 Route::get('/policy/list', [PolicyController::class, 'list']);
 
