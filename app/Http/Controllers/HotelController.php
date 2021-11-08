@@ -170,7 +170,7 @@ class HotelController extends Controller
             $return->data = $request->name ;
         }else{
 
-            $result = Hotel::insertGetId([
+            $result = Hotel::where('id',$request->id)->update([
                 'partner_id'=> $login_user->id ,
                 'name'=> $request->name ,
                 'content'=> $request->content ,
@@ -189,28 +189,13 @@ class HotelController extends Controller
                 'parking' => $request->parking ,
                 'refund_rule' => $request->refund_rule ,
                 'options' => $request->options ,
-                'created_at' => Carbon::now()
             ]);
-
-            $no = 1;
-            $images = explode(",",$request->images);
-            foreach( $images as $image){
-            
-                $result_img = HotelImage::insertGetId([
-                    'hotel_id'=> $result ,
-                    'file_name'=> $image ,
-                    'order_no'=> $no ,
-                    'created_at' => Carbon::now()
-                ]);
-
-                $no++;
-            }
             
 
             if($result){
                 $return->status = "200";
                 $return->msg = "success";
-                $return->insert_id = $result ;
+                $return->updated_id = $result ;
 
             }
             
