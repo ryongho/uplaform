@@ -67,6 +67,15 @@ class PolicyController extends Controller
 
     }
 
+    public function print(Request $request){
+        $id = $request->id;
+
+        $rows = Policy::where('id','=',$id)->first();
+
+        echo(nl2br($rows->content));
+
+    }
+
     
 
 
