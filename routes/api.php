@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->get('/hotel/list_by_partner', [HotelControlle
 Route::get('/hotel/detail', [HotelController::class, 'detail']);
 Route::middleware('auth:sanctum')->put('/hotel/update', [HotelController::class, 'update']);
 Route::middleware('auth:sanctum')->put('/hotel/image_update', [HotelController::class, 'image_update']);
+Route::middleware('auth:sanctum')->delete('/hotel/image_delete', [HotelController::class, 'image_delete']);
 
 Route::middleware('auth:sanctum')->post('/room/regist', [RoomController::class, 'regist']);
 Route::get('/room/list', [RoomController::class, 'list']);
