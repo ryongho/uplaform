@@ -58,33 +58,31 @@ Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'l
 Route::post('/partner/login', [PartnerController::class, 'login']);
 
 Route::middleware('auth:sanctum')->post('/hotel/regist', [HotelController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/hotel/list', [HotelController::class, 'list']);
+Route::get('/hotel/list', [HotelController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/hotel/list_by_partner', [HotelController::class, 'list_by_partner']);
-Route::middleware('auth:sanctum')->get('/hotel/detail', [HotelController::class, 'detail']);
+Route::get('/hotel/detail', [HotelController::class, 'detail']);
 Route::middleware('auth:sanctum')->put('/hotel/update', [HotelController::class, 'update']);
 
 Route::middleware('auth:sanctum')->post('/room/regist', [RoomController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/room/list', [RoomController::class, 'list']);
+Route::get('/room/list', [RoomController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/room/list_for_select', [RoomController::class, 'list_for_select']);
-Route::middleware('auth:sanctum')->get('/room/list_by_hotel', [RoomController::class, 'list_by_hotel']);
+Route::get('/room/list_by_hotel', [RoomController::class, 'list_by_hotel']);
 Route::middleware('auth:sanctum')->get('/room/list_by_partner', [RoomController::class, 'list_by_partner']);
-Route::middleware('auth:sanctum')->get('/room/detail', [RoomController::class, 'detail']);
+Route::get('/room/detail', [RoomController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/goods/list', [GoodsController::class, 'list']);
-Route::middleware('auth:sanctum')->get('/goods/list_by_hotel', [GoodsController::class, 'list_by_hotel']);
+Route::get('/goods/list', [GoodsController::class, 'list']);
+Route::get('/goods/list_by_hotel', [GoodsController::class, 'list_by_hotel']);
 Route::middleware('auth:sanctum')->get('/goods/list_by_partner', [GoodsController::class, 'list_by_partner']);
-Route::middleware('auth:sanctum')->get('/goods/detail', [GoodsController::class, 'detail']);
+Route::get('/goods/detail', [GoodsController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/review/detail', [ReviewController::class, 'detail']);
+Route::get('/review/detail', [ReviewController::class, 'detail']);
 Route::get('/review/list', [ReviewController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/wish/toggle', [WishController::class, 'toggle']);
 Route::middleware('auth:sanctum')->get('/wish/list', [WishController::class, 'list']);
 Route::middleware('auth:sanctum')->put('/wish/compare', [WishController::class, 'compare']);
-
-
 Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, 'regist']);
 
 
@@ -92,18 +90,17 @@ Route::middleware('auth:sanctum')->put('/push/regist', [PushController::class, '
 Route::middleware('auth:sanctum')->get('/push/list', [PushController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
-
 Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/notice/list', [NoticeController::class, 'list']);
-Route::middleware('auth:sanctum')->get('/notice/detail', [NoticeController::class, 'detail']);
+Route::get('/notice/list', [NoticeController::class, 'list']);
+Route::get('/notice/detail', [NoticeController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/event/regist', [EventController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/event/list', [EventController::class, 'list']);
-Route::middleware('auth:sanctum')->get('/event/detail', [EventController::class, 'detail']);
+Route::get('/event/list', [EventController::class, 'list']);
+Route::get('/event/detail', [EventController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/faq/regist', [FaqController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/faq/list', [FaqController::class, 'list']);
-Route::middleware('auth:sanctum')->get('/faq/detail', [FaqController::class, 'detail']);
+Route::get('/faq/list', [FaqController::class, 'list']);
+Route::get('/faq/detail', [FaqController::class, 'detail']);
 
 Route::middleware('auth:sanctum')->put('/policy/regist', [PolicyController::class, 'regist']);
 Route::get('/policy/detail', [PolicyController::class, 'detail']);
@@ -122,10 +119,10 @@ Route::middleware('auth:sanctum')->put('/reservation/update', [ReservationContro
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
 
 Route::middleware('auth:sanctum')->put('/recommend/regist', [RecommendController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/recommend/list', [RecommendController::class, 'list']);
+Route::get('/recommend/list', [RecommendController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/local/regist', [LocalController::class, 'regist']);
-Route::middleware('auth:sanctum')->get('/local/list', [LocalController::class, 'list']);
+Route::get('/local/list', [LocalController::class, 'list']);
 
 
 
