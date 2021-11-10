@@ -22,6 +22,7 @@ class Hotel extends Model
         'reg_no',
         'open_date',
         'address',
+        'address_detail',
         'tel',
         'fax',
         'email',
