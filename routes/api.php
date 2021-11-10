@@ -71,6 +71,10 @@ Route::middleware('auth:sanctum')->get('/room/list_for_select', [RoomController:
 Route::get('/room/list_by_hotel', [RoomController::class, 'list_by_hotel']);
 Route::middleware('auth:sanctum')->get('/room/list_by_partner', [RoomController::class, 'list_by_partner']);
 Route::get('/room/detail', [RoomController::class, 'detail']);
+Route::middleware('auth:sanctum')->put('/room/update', [RoomController::class, 'update']);
+Route::middleware('auth:sanctum')->put('/room/image_update', [RoomController::class, 'image_update']);
+Route::middleware('auth:sanctum')->delete('/room/image_delete', [RoomController::class, 'image_delete']);
+
 
 Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);
 Route::get('/goods/list', [GoodsController::class, 'list']);
