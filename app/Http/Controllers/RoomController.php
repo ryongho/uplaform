@@ -179,6 +179,7 @@ class RoomController extends Controller
         $rows = Room::join('hotels', 'rooms.hotel_id', '=', 'hotels.id')->select('*',
                             'rooms.options as room_options',
                             'hotels.options as hotel_options',
+                            'rooms.name as name',
                             DB::raw('(select file_name from room_images where room_images.room_id = rooms.id order by order_no asc limit 1 ) as thumb_nail')
                             )
                     ->where('rooms.id','=',$id)->get();

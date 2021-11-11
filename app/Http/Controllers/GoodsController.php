@@ -249,6 +249,7 @@ class GoodsController extends Controller
                 'hotels.parking as parking',
                 'hotels.latitude as latitude',
                 'hotels.longtitude as longtitude',
+                'hotels.tel as tel',
                 'goods.id as goods_id',
                 'hotels.id as hotel_id',
                 'rooms.id as room_id',
