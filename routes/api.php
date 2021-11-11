@@ -99,9 +99,11 @@ Route::middleware('auth:sanctum')->put('/push/regist', [PushController::class, '
 Route::middleware('auth:sanctum')->get('/push/list', [PushController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
+
 Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']);
 Route::get('/notice/list', [NoticeController::class, 'list']);
 Route::get('/notice/detail', [NoticeController::class, 'detail']);
+Route::middleware('auth:sanctum')->put('/notice/update', [NoticeController::class, 'update']);
 
 Route::middleware('auth:sanctum')->put('/event/regist', [EventController::class, 'regist']);
 Route::get('/event/list', [EventController::class, 'list']);
