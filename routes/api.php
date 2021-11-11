@@ -81,6 +81,9 @@ Route::get('/goods/list', [GoodsController::class, 'list']);
 Route::get('/goods/list_by_hotel', [GoodsController::class, 'list_by_hotel']);
 Route::middleware('auth:sanctum')->get('/goods/list_by_partner', [GoodsController::class, 'list_by_partner']);
 Route::get('/goods/detail', [GoodsController::class, 'detail']);
+Route::middleware('auth:sanctum')->put('/goods/update', [GoodsController::class, 'update']);
+Route::middleware('auth:sanctum')->put('/goods/image_update', [GoodsController::class, 'image_update']);
+Route::middleware('auth:sanctum')->delete('/goods/image_delete', [GoodsController::class, 'image_delete']);
 
 Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::class, 'regist']);
 Route::get('/review/detail', [ReviewController::class, 'detail']);

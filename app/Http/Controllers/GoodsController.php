@@ -11,6 +11,7 @@ use App\Models\GoodsImage;
 use App\Models\Wish;
 use App\Models\Review;
 use App\Models\Reservation;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -273,6 +274,222 @@ class GoodsController extends Controller
         $return->images = $images ;
         
         echo(json_encode($return));
+
+    }
+
+    public function update(Request $request)
+    {
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "500";
+        $return->msg = "관리자에게 문의";
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+        $user_type = $login_user->getType();
+
+        /* 중복 체크 - start*/
+        
+        
+        $id_cnt = User::where('id',$user_id)->count();
+
+        if($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
+            $return->status = "601";
+            $return->msg = "fail";
+            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
+            $return->data = $request->name ;
+        }elseif( $user_type == 0 ){//일반회원
+            $return->status = "602";
+            $return->msg = "fail";
+            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
+
+            $return->data = $request->name ;
+        }else{
+
+            $grant = Hotel::where('id',$request->hotel_id)->where('partner_id',$user_id)->count();
+        
+            if($grant){
+
+                $result = Goods::where('id',$request->goods_id)->where('hotel_id',$request->hotel_id)->update([
+                    'hotel_id'=> $request->hotel_id ,
+                    'room_id'=> $request->room_id ,
+                    'goods_name'=> $request->goods_name ,
+                    'start_date'=> $request->start_date ,
+                    'end_date'=> $request->end_date ,
+                    'nights'=> $request->nights ,
+                    'options'=> $request->options ,
+                    'type'=> $request->type ,
+                    'price'=> $request->price ,
+                    'sale_price'=> $request->sale_price ,
+                    'amount'=> $request->amount ,
+                    'min_nights'=> $request->min_nights ,
+                    'max_nights'=> $request->max_nights ,
+                    'breakfast'=> $request->breakfast ,
+                    'parking'=> $request->parking ,
+                ]);
+
+                if($result){
+                    $return->status = "200";
+                    $return->msg = "success";
+                    $return->updated_id = $result ;
+    
+                }else{
+                    $return->status = "500";
+                    $return->msg = "fail";
+                }
+
+            }else{
+                $return->status = "500";
+                $return->msg = "fail";
+                $return->reason = "권한이 없습니다." ;
+            }            
+            
+        }
+        
+
+        echo(json_encode($return));    
+
+    }
+
+    public function image_update(Request $request)
+    {
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "500";
+        $return->msg = "관리자에게 문의";
+        $return->data = $request->name ;
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+        $user_type = $login_user->getType();
+
+        /* 중복 체크 - start*/
+        
+        
+        $id_cnt = User::where('id',$user_id)->count();
+        
+        if($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
+            $return->status = "601";
+            $return->msg = "유효하지 않은 파트너 아이디 입니다.";
+            $return->data = $request->name ;
+        }elseif( $user_type == 0 ){//일반회원
+            $return->status = "602";
+            $return->msg = "일반 회원입니다.";
+            $return->data = $request->name ;
+        }else{
+
+            $goods_id = $request->goods_id;
+            $file_name = $request->file_name;
+            $order_no = $request->order_no;
+
+            $goods_image_cnt = GoodsImage::where('goods_id',$goods_id)->where('order_no', $order_no)->count();
+            $result;
+            $goods_info = Goods::where('id',$goods_id)->first();
+
+            $grant = Hotel::where('id',$goods_info->hotel_id)->where('partner_id',$user_id)->count();
+
+            if($grant){
+
+                if($goods_image_cnt){ // 해당 호텔 이미지가 있는 경우는 update
+                    $result = GoodsImage::where('goods_id',$goods_id)->where('order_no', $order_no)->update([
+                        'goods_id'=> $goods_id,
+                        'file_name'=> $file_name ,
+                        'order_no'=> $order_no,
+                        
+                    ]);
+                }else{
+                    $result = GoodsImage::insert([
+                        'goods_id'=> $goods_id,
+                        'file_name'=> $file_name ,
+                        'order_no'=> $order_no,
+                        'created_at' => Carbon::now()
+                    ]);
+                }
+                
+    
+                if($result){
+                    $return->status = "200";
+                    $return->msg = "success";
+    
+                }else{
+                    $return->status = "500";
+                    $return->msg = "fail";
+                }
+
+            }else{
+                $return->status = "500";
+                $return->msg = "fail";
+                $return->reason = "권한이 없습니다." ;
+            }
+
+        }
+        
+
+        echo(json_encode($return));    
+
+    }
+
+    public function image_delete(Request $request)
+    {
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "500";
+        $return->msg = "관리자에게 문의";
+        $return->data = $request->name ;
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+        $user_type = $login_user->getType();
+
+        /* 중복 체크 - start*/
+        
+        
+        $id_cnt = User::where('id',$user_id)->count();
+        
+        if($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
+            $return->status = "601";
+            $return->msg = "유효하지 않은 파트너 아이디 입니다.";
+            $return->data = $request->name ;
+        }elseif( $user_type == 0 ){//일반회원
+            $return->status = "602";
+            $return->msg = "일반 회원입니다.";
+            $return->data = $request->name ;
+        }else{
+
+            $goods_id = $request->goods_id;
+            $file_name = $request->file_name;
+            $order_no = $request->order_no;
+            
+            $result;
+            $goods_info = Goods::where('id',$goods_id)->first();
+
+            $grant = Hotel::where('id',$goods_info->hotel_id)->where('partner_id',$user_id)->count();
+
+            if($grant){
+                $result = GoodsImage::where('goods_id',$goods_id)->where('order_no', $order_no)->delete();
+
+                if($result){
+                    $return->status = "200";
+                    $return->msg = "success";
+                }else{
+                    $return->status = "500";
+                    $return->msg = "fail";    
+                }
+            }else{
+                $return->status = "500";
+                $return->msg = "fail";    
+                $return->reason = "삭제 권한이 없습니다.";
+            }
+
+            
+            
+        }
+        
+
+        echo(json_encode($return));    
 
     }
 
