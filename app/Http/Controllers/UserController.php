@@ -251,6 +251,32 @@ class UserController extends Controller
 
     }
 
+    public function update_info(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "변경 완료";
+        
+        $result = User::where('id', $request->user_id)->update([
+            'name'=> $request->name ,
+            'nickname'=> $request->nickname ,
+            'email' => $request->email, 
+            'phone' => $request->phone, 
+            'user_type' => $request->user_type,
+            'push' => $request->push,
+            'push_event' => $request->push_event,
+        ]);
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        echo(json_encode($return));
+
+    }
+
     public function leave(Request $request){
         //dd($request);
         $return = new \stdClass;

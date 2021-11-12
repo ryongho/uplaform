@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->get('/partner/list', [PartnerController::clas
 Route::middleware('auth:sanctum')->get('/user/list', [UserController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/user/info', [UserController::class, 'info']);
 Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update']);
+Route::middleware('auth:sanctum')->put('/user/update_info', [UserController::class, 'update_info']);
 Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'leave']);
 Route::post('/partner/login', [PartnerController::class, 'login']);
 
