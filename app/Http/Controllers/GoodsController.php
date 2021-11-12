@@ -369,7 +369,13 @@ class GoodsController extends Controller
         
         $id_cnt = User::where('id',$user_id)->count();
 
-        if($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
+        $goods_info = Goods::where('id',$request->goods_id)->first();
+
+        if(!$goods_info){
+            $return->status = "603";
+            $return->msg = "fail";
+            $return->reason = "해당 데이터가 존재 하지 않습니다." ;
+        }elseif($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
             $return->status = "601";
             $return->msg = "fail";
             $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
@@ -381,7 +387,7 @@ class GoodsController extends Controller
 
             $return->data = $request->name ;
         }else{
-            $goods_info = Goods::where('id',$request->goods_id)->first();
+            
             
             $grant = Hotel::where('id',$goods_info->hotel_id)->where('partner_id',$user_id)->count();
             
