@@ -74,6 +74,7 @@ Route::get('/room/detail', [RoomController::class, 'detail']);
 Route::middleware('auth:sanctum')->put('/room/update', [RoomController::class, 'update']);
 Route::middleware('auth:sanctum')->put('/room/image_update', [RoomController::class, 'image_update']);
 Route::middleware('auth:sanctum')->delete('/room/image_delete', [RoomController::class, 'image_delete']);
+Route::middleware('auth:sanctum')->delete('/room/delete', [RoomController::class, 'delete']);
 
 
 Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);
@@ -84,6 +85,7 @@ Route::get('/goods/detail', [GoodsController::class, 'detail']);
 Route::middleware('auth:sanctum')->put('/goods/update', [GoodsController::class, 'update']);
 Route::middleware('auth:sanctum')->put('/goods/image_update', [GoodsController::class, 'image_update']);
 Route::middleware('auth:sanctum')->delete('/goods/image_delete', [GoodsController::class, 'image_delete']);
+Route::middleware('auth:sanctum')->delete('/goods/delete', [GoodsController::class, 'delete']);
 
 Route::middleware('auth:sanctum')->put('/review/regist', [ReviewController::class, 'regist']);
 Route::get('/review/detail', [ReviewController::class, 'detail']);
