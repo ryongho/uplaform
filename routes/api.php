@@ -114,10 +114,12 @@ Route::get('/event/detail', [EventController::class, 'detail']);
 Route::middleware('auth:sanctum')->put('/faq/regist', [FaqController::class, 'regist']);
 Route::get('/faq/list', [FaqController::class, 'list']);
 Route::get('/faq/detail', [FaqController::class, 'detail']);
+Route::middleware('auth:sanctum')->put('/faq/update', [FaqController::class, 'update']);
 
 Route::middleware('auth:sanctum')->put('/policy/regist', [PolicyController::class, 'regist']);
 Route::get('/policy/detail', [PolicyController::class, 'detail']);
 Route::get('/policy/list', [PolicyController::class, 'list']);
+Route::middleware('auth:sanctum')->put('/policy/update', [PolicyController::class, 'update']);
 
 Route::middleware('auth:sanctum')->put('/reservation/regist', [ReservationController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);

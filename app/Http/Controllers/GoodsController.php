@@ -332,7 +332,6 @@ class GoodsController extends Controller
                 if($result){
                     $return->status = "200";
                     $return->msg = "success";
-                    $return->updated_id = $result ;
     
                 }else{
                     $return->status = "500";
