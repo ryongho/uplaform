@@ -242,12 +242,14 @@ class GoodsController extends Controller
                 'hotels.name as hotel_name',
                 'goods.goods_name as goods_name', 
                 'goods.price as price',
+                'goods.min_nights as min_nights',
+                'goods.max_nights as max_nights',
                 'hotels.address as address',
                 'goods.sale_price as sale_price',
                 'rooms.checkin as checkin',
                 'rooms.checkout as checkout',
                 'goods.breakfast as breakfast',
-                'hotels.parking as parking',
+                'goods.parking as parking',
                 'hotels.latitude as latitude',
                 'hotels.longtitude as longtitude',
                 'hotels.tel as tel',
@@ -326,7 +328,6 @@ class GoodsController extends Controller
                     'min_nights'=> $request->min_nights ,
                     'max_nights'=> $request->max_nights ,
                     'breakfast'=> $request->breakfast ,
-                    'parking'=> $request->parking ,
                 ]);
 
                 if($result){
