@@ -22,6 +22,8 @@ use App\Http\Controllers\PushController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SMSController;
 
+use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +46,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::put('/regist', [UserController::class, 'regist']);
 Route::post('/login', [UserController::class, 'login']);
-Route::post('/logout', [UserController::class, 'logout']);
-//Route::post('/login_check', [UserController::class, 'login_check']);
+Route::get('login', [UserController::class, 'not_login'])->name('login');
+
+Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logout']);
+Route::middleware('auth:sanctum')->get('/login_check', [UserController::class, 'login_check']);
 Route::post('/check_email', [UserController::class, 'check_email']);
 Route::post('/check_nickname', [UserController::class, 'check_nickname']);
 

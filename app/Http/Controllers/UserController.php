@@ -100,13 +100,29 @@ class UserController extends Controller
     }
 
     public function logout(Request $request){
-        $user = Auth::user(); 
-        Auth::logout();
+        $user_info = Auth::user();
+        $user = User::where('id', $user_info->id)->first();
+        $user->tokens()->delete();
+
+        $return = new \stdClass;
+        $return->status = "200";
+        $return->msg = "success";
+
+        echo(json_encode($return));
     }
 
     public function login_check(Request $request){
-        $user = Auth::user(); 
-        dd($user);
+        
+        $return = new \stdClass;
+        //$login_user = Auth::user();
+        //$user_id = $login_user->getId();
+
+        if(Auth::check()){
+            $return->status = "200";
+            $return->login_status = "Y";
+        }    
+
+        echo(json_encode($return));
         
     }
     
@@ -255,6 +271,17 @@ class UserController extends Controller
         echo(json_encode($return));
 
     }
+
+    public function not_login(){
+        $return = new \stdClass;
+    
+        $return->status = "500";
+        $return->msg = "Not Login";
+
+        echo(json_encode($return));
+    }
+
+    
 
 
 }
