@@ -72,8 +72,8 @@ class ReservationController extends Controller
             $sms->phone = $request->phone;
             $sms->content = $content;
 
-            $smsController = new SMScontroller();
-            $smsController->send($sms);
+            //$smsController = new SMScontroller();
+            //$smsController->send($sms);
             SMScontroller::send($sms);
 
             $result = Push::insert([
