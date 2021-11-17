@@ -24,7 +24,9 @@ class SMSController extends Controller
     }
 
     public static function send($sms)
-    {    
+    {   
+        echo("dddd");
+        /* 
         $_api_url = 'https://message.ppurio.com/api/send_utf8_json.php';     // UTF-8 인코딩과 JSON 응답용 호출 페이지
         
         $_param['userid'] = 'rooming';           // [필수] 뿌리오 아이디
@@ -61,7 +63,7 @@ class SMSController extends Controller
             $sms->fail_reason = $_result->result;
         }
 
-        SMSController::log_regist($sms);
+        SMSController::log_regist($sms);*/
     
     }
 
