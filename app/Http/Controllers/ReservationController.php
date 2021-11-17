@@ -33,25 +33,30 @@ class ReservationController extends Controller
         $reservation_no = "R_".$now."_".$request->goods_id."_".$user_id;
 
         $goods = Goods::where('id',$request->goods_id)->first();
+        if(isset($goods)){
+            $result = Reservation::insertGetId([
+                'user_id'=> $user_id ,
+                'reservation_no'=> $reservation_no ,
+                'hotel_id'=> $goods->hotel_id ,
+                'room_id'=> $goods->room_id ,
+                'goods_id'=> $request->goods_id ,
+                'start_date'=> $request->start_date ,
+                'end_date'=> $request->end_date ,
+                'nights'=> $request->nights ,
+                'price'=> $goods->price ,
+                'peoples'=> $request->peoples ,
+                'name'=> $request->name ,
+                'phone'=> $request->phone ,
+                'visit_way'=> $request->visit_way ,
+                'status'=> "W" ,
+                'created_at'=> Carbon::now(),
+            ]);
 
+        }else{
+            $result =  0;
+        }
             
-        $result = Reservation::insertGetId([
-            'user_id'=> $user_id ,
-            'reservation_no'=> $reservation_no ,
-            'hotel_id'=> $goods->hotel_id ,
-            'room_id'=> $goods->room_id ,
-            'goods_id'=> $request->goods_id ,
-            'start_date'=> $request->start_date ,
-            'end_date'=> $request->end_date ,
-            'nights'=> $request->nights ,
-            'price'=> $goods->price ,
-            'peoples'=> $request->peoples ,
-            'name'=> $request->name ,
-            'phone'=> $request->phone ,
-            'visit_way'=> $request->visit_way ,
-            'status'=> "W" ,
-            'created_at'=> Carbon::now(),
-        ]);
+        
 
         if($result){ //DB 입력 성공
 
@@ -86,7 +91,6 @@ class ReservationController extends Controller
         }else{
             $return->status = "500";
             $return->msg = "fail";
-            $return->insert_id = $result ;
         }
 
         echo(json_encode($return));
