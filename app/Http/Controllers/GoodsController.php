@@ -60,6 +60,7 @@ class GoodsController extends Controller
                 'max_nights'=> $request->max_nights ,
                 'breakfast'=> $request->breakfast ,
                 'parking'=> $request->parking ,
+                'sale'=> $request->sale ,
                 'created_at'=> Carbon::now(),
             ]);
 
@@ -129,6 +130,7 @@ class GoodsController extends Controller
                                     DB::raw('(select count(grade) from reviews where reviews.goods_id = goods.id) as grade_cnt'),
                         )         
                         ->where('goods.id','>=',$s_no)
+                        ->where('goods.sale','Y')
                         ->whereBetween('hotels.latitude', [$request->a_latitude, $request->b_latitude])
                         ->whereBetween('hotels.longtitude', [$request->a_longtitude, $request->b_longtitude])
                         ->when($start_date, function ($query, $start_date) {
@@ -178,6 +180,7 @@ class GoodsController extends Controller
                                     DB::raw('(select count(grade) from reviews where reviews.goods_id = goods.id) as grade_cnt'),
                         )         
                         ->where('hotels.id','=',$hotel_id)
+                        ->where('goods.sale','Y')
                         ->orderBy('sale_price', 'asc')
                         ->get();
 
@@ -213,6 +216,7 @@ class GoodsController extends Controller
                                     'goods.id as goods_id',
                                     'goods.options as options',
                                     'goods.amount as amount',
+                                    'goods.sale as sale',
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                         )         
                         ->where('hotels.partner_id','=',$login_user->id)
@@ -262,7 +266,9 @@ class GoodsController extends Controller
                 'goods.end_date as end_date',
                 DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id ) as wished '),
                 )
-                ->where('goods.id','=',$id)->get();
+                ->where('goods.id','=',$id)
+                ->where('goods.sale','Y')
+                ->get();
 
         $grade = Review::where('goods_id','=',$id)->whereNotNull('grade')->avg('grade');
         
@@ -328,6 +334,69 @@ class GoodsController extends Controller
                     'min_nights'=> $request->min_nights ,
                     'max_nights'=> $request->max_nights ,
                     'breakfast'=> $request->breakfast ,
+                    'sale'=> $request->sale ,
+                ]);
+
+                if($result){
+                    $return->status = "200";
+                    $return->msg = "success";
+    
+                }else{
+                    $return->status = "500";
+                    $return->msg = "fail";
+                }
+
+            }else{
+                $return->status = "500";
+                $return->msg = "fail";
+                $return->reason = "권한이 없습니다." ;
+            }            
+            
+        }
+        
+
+        echo(json_encode($return));    
+
+    }
+
+    public function update_by_key(Request $request)
+    {
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "500";
+        $return->msg = "관리자에게 문의";
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+        $user_type = $login_user->getType();
+
+        /* 중복 체크 - start*/
+        
+        
+        $id_cnt = User::where('id',$user_id)->count();
+
+        if($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
+            $return->status = "601";
+            $return->msg = "fail";
+            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
+            $return->data = $request->name ;
+        }elseif( $user_type == 0 ){//일반회원
+            $return->status = "602";
+            $return->msg = "fail";
+            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
+
+            $return->data = $request->name ;
+        }else{
+
+            $goods_info = Goods::where('id',$request->goods_id)->first();
+
+            $grant = Hotel::where('id',$goods_info->hotel_id)->where('partner_id',$user_id)->count();
+        
+            if($grant){
+
+                $result = Goods::where('id',$request->goods_id)->where('hotel_id',$goods_info->hotel_id)->update([
+                    $request->key => $request->value 
                 ]);
 
                 if($result){
