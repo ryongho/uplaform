@@ -23,7 +23,7 @@ class DeviceController extends Controller
         if(!$cnt){
             $result = Device::insert([
                 'user_id'=> $user_id ,
-                'device_id'=> $request->device_id ,
+                'push_id'=> $request->push_id ,
                 'os'=> $request->os ,
                 'app_version'=> $request->app_version ,
                 'model'=> $request->model ,
@@ -34,7 +34,7 @@ class DeviceController extends Controller
         }else{
             $result = Device::where('user_id', $user_id)->update([
                 'user_id'=> $user_id ,
-                'device_id'=> $request->device_id ,
+                'push_id'=> $request->push_id ,
                 'os'=> $request->os ,
                 'app_version'=> $request->app_version ,
                 'model'=> $request->model ,
