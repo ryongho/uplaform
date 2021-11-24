@@ -22,6 +22,7 @@ use App\Http\Controllers\PushController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\QuantityController;
 
 use App\Models\User;
 
@@ -147,6 +148,7 @@ Route::middleware('auth:sanctum')->put('/local/regist', [LocalController::class,
 Route::get('/local/list', [LocalController::class, 'list']);
 
 Route::middleware('auth:sanctum')->put('/device/regist', [DeviceController::class, 'regist']);
+Route::middleware('auth:sanctum')->put('/quantity/update', [QuantityController::class, 'update']);
 
 Route::get('/login_check_partner', [PartnerController::class, 'login_check']);
 
