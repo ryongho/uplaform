@@ -21,6 +21,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\PushController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SMSController;
+use App\Http\Controllers\DeviceController;
 
 use App\Models\User;
 
@@ -145,6 +146,7 @@ Route::get('/recommend/list', [RecommendController::class, 'list']);
 Route::middleware('auth:sanctum')->put('/local/regist', [LocalController::class, 'regist']);
 Route::get('/local/list', [LocalController::class, 'list']);
 
+Route::middleware('auth:sanctum')->put('/device/regist', [DeviceController::class, 'regist']);
 
 Route::get('/login_check_partner', [PartnerController::class, 'login_check']);
 
