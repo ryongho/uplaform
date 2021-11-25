@@ -96,6 +96,7 @@ class GoodsController extends Controller
 
         $orderby = "goods.id";
         $order = "desc";
+       
 
         if($request->orderby == 'price'){
             $orderby = "goods.price";
@@ -124,7 +125,7 @@ class GoodsController extends Controller
                                     'hotels.longtitude as longtitude',
                                     'goods.id as goods_id',
                                     Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'),
-                                    DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id ) as wished '),
+                                    DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$request->user_id.'" ) as wished '),
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                                     DB::raw('(select avg(grade) from reviews where reviews.goods_id = goods.id) as grade'),
                                     DB::raw('(select count(grade) from reviews where reviews.goods_id = goods.id) as grade_cnt'),
