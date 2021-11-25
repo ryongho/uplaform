@@ -105,6 +105,15 @@ class GoodsController extends Controller
             $orderby = "distance";
             $order = "asc";
         }
+        
+        $user_id = "s";
+        
+        if($request->bearerToken() != ""){
+            $tokens = explode('|',$request->bearerToken());
+            $token_info = DB::table('personal_access_tokens')->where('id',$tokens[0])->first();
+            $user_id = $token_info->tokenable_id;
+        }
+
         $start_date = $request->start_date;
         $end_date = $request->end_date;
 
@@ -125,7 +134,7 @@ class GoodsController extends Controller
                                     'hotels.longtitude as longtitude',
                                     'goods.id as goods_id',
                                     Hotel::raw('(6371 * acos( cos( radians('.$request->target_latitude.') ) * cos( radians( hotels.latitude ) ) * cos( radians( hotels.longtitude ) - radians('.$request->target_longtitude.') ) + sin( radians('.$request->target_latitude.') ) * sin( radians( hotels.latitude ) ) ) ) as distance'),
-                                    DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$request->user_id.'" ) as wished '),
+                                    DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$user_id.'" ) as wished '),
                                     DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
                                     DB::raw('(select avg(grade) from reviews where reviews.goods_id = goods.id) as grade'),
                                     DB::raw('(select count(grade) from reviews where reviews.goods_id = goods.id) as grade_cnt'),
@@ -240,6 +249,14 @@ class GoodsController extends Controller
     public function detail(Request $request){
         $id = $request->id;
 
+        $user_id = "s";
+        
+        if($request->bearerToken() != ""){
+            $tokens = explode('|',$request->bearerToken());
+            $token_info = DB::table('personal_access_tokens')->where('id',$tokens[0])->first();
+            $user_id = $token_info->tokenable_id;
+        }
+
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
                 ->join('rooms', 'goods.room_id', '=', 'rooms.id')
                 ->select(   'hotels.type as shop_type', 
@@ -265,7 +282,7 @@ class GoodsController extends Controller
                 'goods.amount as amount',
                 'goods.start_date as start_date',
                 'goods.end_date as end_date',
-                DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$request->user_id.'" ) as wished '),
+                DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$user_id.'" ) as wished '),
                 )
                 ->where('goods.id','=',$id)
                 ->where('goods.sale','Y')
