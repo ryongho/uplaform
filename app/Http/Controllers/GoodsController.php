@@ -265,7 +265,7 @@ class GoodsController extends Controller
                 'goods.amount as amount',
                 'goods.start_date as start_date',
                 'goods.end_date as end_date',
-                DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id ) as wished '),
+                DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$request->user_id.'" ) as wished '),
                 )
                 ->where('goods.id','=',$id)
                 ->where('goods.sale','Y')
