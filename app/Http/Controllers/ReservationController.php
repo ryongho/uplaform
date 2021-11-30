@@ -10,6 +10,7 @@ use App\Models\Hotel;
 use App\Models\Reservation;
 use App\Models\Push;
 use App\Models\Sms;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -66,14 +67,26 @@ class ReservationController extends Controller
 
             Goods::where('id',$request->goods_id)->update(['amount' => $goods->amount-1]);
 
-            $content = $request->name."님 ".$goods->name." 상품이 예약 되었습니다.";
+            $reservation = Reservation::where('id',$result)->first();
+
+            $pay_info = new \stdClass;
+
+            $pay_info->goods_name = $goods->goods_name;
+            $pay_info->name = $request->name;
+            $pay_info->reservation_no = $reservation->reservation_no;
+            $pay_info->price = $goods->price;
+            $now = Carbon::now();
+
+            $pay_info->expire = $now->addMinute(30)->format('Ymd');
+
+            $hotel_info = Hotel::where('id',$goods->hotel_id)->first();
+
+            $content = $request->name."님 아래 계좌로 입금해주시면 담당자 확인 후에 예약이 완료 됩니다.\n\n입금계좌 : \n ".$hotel_info->account_number." ".$hotel_info->bank_name." (예금주 : ".$hotel_info->account_name.")";
 
             $sms = new \stdClass;
             $sms->phone = $request->phone;
             $sms->content = $content;
 
-            //$smsController = new Sms;
-            //$smsController->send($sms);
             Sms::send($sms);
 
             $result = Push::insert([

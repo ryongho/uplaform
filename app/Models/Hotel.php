@@ -33,6 +33,9 @@ class Hotel extends Model
         'parking',
         'refund_rule',
         'options',
-        'created_at'
+        'created_at',
+        'bank_name',
+        'account_name' ,
+        'account_number' ,
     ];
 }

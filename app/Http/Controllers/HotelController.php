@@ -63,6 +63,9 @@ class HotelController extends Controller
                 'parking' => $request->parking ,
                 'refund_rule' => $request->refund_rule ,
                 'options' => $request->options ,
+                'bank_name' => $request->bank_name ,
+                'account_name' => $request->account_name ,
+                'account_number' => $request->account_number ,
                 'created_at' => Carbon::now()
             ]);
 
@@ -190,6 +193,9 @@ class HotelController extends Controller
                 'parking' => $request->parking ,
                 'refund_rule' => $request->refund_rule ,
                 'options' => $request->options ,
+                'bank_name' => $request->bank_name ,
+                'account_name' => $request->account_name ,
+                'account_number' => $request->account_number ,
             ]);
             
 
