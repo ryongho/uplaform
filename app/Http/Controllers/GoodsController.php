@@ -285,7 +285,6 @@ class GoodsController extends Controller
                 DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$user_id.'" ) as wished '),
                 )
                 ->where('goods.id','=',$id)
-                ->where('goods.sale','Y')
                 ->get();
 
         $grade = Review::where('goods_id','=',$id)->whereNotNull('grade')->avg('grade');
