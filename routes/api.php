@@ -86,6 +86,7 @@ Route::middleware('auth:sanctum')->delete('/room/delete', [RoomController::class
 
 Route::middleware('auth:sanctum')->post('/goods/regist', [GoodsController::class, 'regist']);
 Route::get('/goods/list', [GoodsController::class, 'list']);
+Route::get('/goods/get_qty', [GoodsController::class, 'get_qty']);
 Route::get('/goods/list_by_hotel', [GoodsController::class, 'list_by_hotel']);
 Route::middleware('auth:sanctum')->get('/goods/list_by_partner', [GoodsController::class, 'list_by_partner']);
 Route::get('/goods/detail', [GoodsController::class, 'detail']);

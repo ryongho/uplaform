@@ -12,6 +12,7 @@ use App\Models\Wish;
 use App\Models\Review;
 use App\Models\Reservation;
 use App\Models\User;
+use App\Models\Quantity;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -304,6 +305,30 @@ class GoodsController extends Controller
         echo(json_encode($return));
 
     }
+
+    public function get_qty(Request $request){
+        $goods_id = $request->goods_id;
+        $date = $request->date;
+
+        $goods_info = Quantity::where('goods_id','=',$goods_id) 
+                ->where('date','=',$date)
+                ->first();
+    
+        $return = new \stdClass;
+
+    
+        if($goods_info){
+            $return->status = "200";
+            $return->qty = $goods_info->qty ;
+        }else{
+            $return->status = "200";
+            $return->qty = 0;
+        }
+        
+        echo(json_encode($return));
+
+    }
+
 
     public function update(Request $request)
     {
