@@ -356,8 +356,12 @@ class ReservationController extends Controller
             $return->msg = "이미 취소 처리된 예약입니다.";
             $return->reservation_id = $request->id;
         }else{
-            $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'X']);
-
+            if($reservation_info->status == "W"){ // 예약 대기 상태인 경우 
+                $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'C']); // 취소 확정
+            }else{
+                $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'X']);// 취소 신청 - 관리자 확인후 취소 가능
+            }
+            
             if(!$result){
                 $return->status = "500";
                 $return->msg = "변경 실패";
