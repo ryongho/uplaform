@@ -21,6 +21,7 @@ class Room extends Model
         'bed',
         'amount',
         'peoples',
+        'max_peoples',
         'options',
         'price',
         'checkin',
