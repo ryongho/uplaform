@@ -320,9 +320,11 @@ class GoodsController extends Controller
         if($goods_info){
             $return->status = "200";
             $return->qty = $goods_info->qty ;
+            $return->date = $goods_info->date ;
         }else{
             $return->status = "200";
             $return->qty = 0;
+            $return->qty = $goods_info->date ;
         }
         
         echo(json_encode($return));
