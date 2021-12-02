@@ -139,6 +139,7 @@ Route::middleware('auth:sanctum')->get('/reservation/list_by_goods', [Reservatio
 Route::middleware('auth:sanctum')->put('/reservation/cancel', [ReservationController::class, 'cancel']);
 Route::middleware('auth:sanctum')->get('/reservation/list_cancel', [ReservationController::class, 'list_cancel']);
 Route::middleware('auth:sanctum')->put('/reservation/update', [ReservationController::class, 'update']);
+Route::middleware('auth:sanctum')->put('/reservation/request_confirm', [ReservationController::class, 'request_confirm']);
 
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
