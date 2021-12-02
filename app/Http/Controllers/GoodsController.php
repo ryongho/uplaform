@@ -331,6 +331,32 @@ class GoodsController extends Controller
 
     }
 
+    public function get_qty_list(Request $request){
+        $goods_id = $request->goods_id;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        
+
+        $qty_info = Quantity::select('date','qty')
+                ->where('goods_id','=',$goods_id) 
+                ->where('date','>=',$start_date)
+                ->where('date','<=',$end_date)
+                ->orderBy('date','asc')
+                ->get();
+    
+        $return = new \stdClass;
+
+        if($qty_info){
+            $return->status = "200";
+            $return->qty_info = $qty_info;
+        }else{
+            $return->status = "500";
+        }
+        
+        echo(json_encode($return));
+
+    }
+
 
     public function update(Request $request)
     {
