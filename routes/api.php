@@ -135,6 +135,7 @@ Route::middleware('auth:sanctum')->put('/policy/update', [PolicyController::clas
 Route::middleware('auth:sanctum')->put('/reservation/regist', [ReservationController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);
 Route::middleware('auth:sanctum')->get('/reservation/list', [ReservationController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/reservation/list2', [ReservationController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/reservation/list_by_user', [ReservationController::class, 'list_by_user']);
 Route::middleware('auth:sanctum')->get('/reservation/list_by_goods', [ReservationController::class, 'list_by_goods']);
 Route::middleware('auth:sanctum')->put('/reservation/cancel', [ReservationController::class, 'cancel']);
