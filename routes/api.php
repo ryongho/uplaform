@@ -23,6 +23,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\QuantityController;
+use App\Http\Controllers\MailController;
 
 use App\Models\User;
 
@@ -140,9 +141,11 @@ Route::middleware('auth:sanctum')->put('/reservation/cancel', [ReservationContro
 Route::middleware('auth:sanctum')->get('/reservation/list_cancel', [ReservationController::class, 'list_cancel']);
 Route::middleware('auth:sanctum')->put('/reservation/update', [ReservationController::class, 'update']);
 Route::middleware('auth:sanctum')->put('/reservation/request_confirm', [ReservationController::class, 'request_confirm']);
+Route::middleware('auth:sanctum')->put('/reservation/confirm', [ReservationController::class, 'confirm']);
 
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']);
+Route::middleware('auth:sanctum')->post('/mail/send', [MailController::class, 'send']);
 
 Route::middleware('auth:sanctum')->put('/recommend/regist', [RecommendController::class, 'regist']);
 Route::get('/recommend/list', [RecommendController::class, 'list']);

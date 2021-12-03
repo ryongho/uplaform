@@ -525,6 +525,78 @@ class ReservationController extends Controller
 
     }
 
+    public function confirm(Request $request){
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+        $return = new \stdClass;
+
+        $reservation_id = $request->reservation_id;
+
+        $res_info = Reservation::join('hotels', 'reservations.hotel_id', '=', 'hotels.id')
+                                ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
+                                ->join('goods', 'reservations.goods_id', '=', 'goods.id')
+                                ->select(   'hotels.type as shop_type',
+                                    'reservations.reservation_no as reservation_no', 
+                                    'reservations.start_date as start_date', 
+                                    'reservations.end_date as end_date', 
+                                    'reservations.nights as nights', 
+                                    'reservations.peoples as peoples',
+                                    'reservations.created_at as created_at',
+                                    'reservations.updated_at as updated_at',
+                                    'reservations.status as status',
+                                    'reservations.name as name',
+                                    'reservations.phone as phone',
+                                    'reservations.id as reservation_id', 
+                                    'reservations.price as reservation_price', 
+                                    'rooms.name as room_name',
+                                    'goods.goods_name as goods_name', 
+                                    'goods.sale_price as sale_price',
+                                    'hotels.name as hotel_name',
+                                    'hotels.tel as hotel_tel',
+                                    'hotels.id as hotel_id',
+                                    'goods.id as goods_id',
+                                    DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
+                        )         
+                        ->where('reservations.id',$reservation_id)
+                        ->first();
+
+
+        $hotel_info = Hotel::where('id',$res_info->hotel_id)->first();
+
+        if($hotel_info->partner_id == $user_id){
+            
+            $result = Reservation::where('id', $request->reservation_id)->update(['status' => 'S']); // 취소 확정
+
+            if($result){
+                $title = "[루밍 예약 확정안내]";
+                $content = $res_info->name."님이 예약하신 '".$res_info->goods_name."' 상품의 예약이 확정되었습니다. \n\n예약번호 : ".$res_info->reservation_no."\n"."예약자 : ".$res_info->name."\n"."입금액 : ".number_format($res_info->reservation_price);
+        
+                $sms = new \stdClass;
+                $sms->phone = str_replace('-','',$res_info->phone);
+                $sms->title = $title;
+                $sms->content = $content;
+
+                Sms::send($sms);
+
+                $return->status = "200";
+                $return->msg = "예약 확인이 요청되었습니다." ;
+
+            }else{
+                $return->status = "500";
+                $return->msg = "예약 변경에 실패했습니다." ;
+            }
+            
+            
+        }else{
+            $return->status = "500";
+            $return->reason = "입금확인 요청 권한이 없습니다." ;
+        }
+
+        echo(json_encode($return));
+
+    }
+
     
 
 
