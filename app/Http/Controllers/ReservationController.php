@@ -10,7 +10,7 @@ use App\Models\Hotel;
 use App\Models\Reservation;
 use App\Models\Push;
 use App\Models\Sms;
-use App\Models\Payment;
+//use App\Models\Payment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -113,7 +113,7 @@ class ReservationController extends Controller
 
     public function list(Request $request){
 
-        header("Access-Control-Allow-Origin: *");
+        //header("Access-Control-Allow-Origin: *");
 
         $s_no = $request->start_no;
         $row = $request->row;
