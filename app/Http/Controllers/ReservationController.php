@@ -10,7 +10,6 @@ use App\Models\Hotel;
 use App\Models\Reservation;
 use App\Models\Push;
 use App\Models\Sms;
-//use App\Models\Payment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
