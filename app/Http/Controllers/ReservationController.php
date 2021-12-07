@@ -176,6 +176,9 @@ class ReservationController extends Controller
     }
 
     public function list_by_hotel(Request $request){
+
+        header("Access-Control-Allow-Origin: *");
+        
         $s_no = $request->start_no;
         $row = $request->row;
 
