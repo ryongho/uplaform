@@ -136,6 +136,7 @@ Route::middleware('auth:sanctum')->put('/reservation/regist', [ReservationContro
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);
 Route::middleware('auth:sanctum')->get('/reservation/list', [ReservationController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/reservation/list_by_user', [ReservationController::class, 'list_by_user']);
+Route::middleware('auth:sanctum')->get('/reservation/list_by_hotel', [ReservationController::class, 'list_by_hotel']);
 Route::middleware('auth:sanctum')->get('/reservation/list_by_goods', [ReservationController::class, 'list_by_goods']);
 Route::middleware('auth:sanctum')->put('/reservation/cancel', [ReservationController::class, 'cancel']);
 Route::middleware('auth:sanctum')->get('/reservation/list_cancel', [ReservationController::class, 'list_cancel']);
