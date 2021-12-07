@@ -506,6 +506,8 @@ class ReservationController extends Controller
                         ->where('reservations.user_id', $user_id)
                         ->first();
 
+            $result = Reservation::where('id', $reservation_id)->update(['status' => 'P']); // 입금확인
+
             $title = "[루밍 입금 확인 요청]";
             $content = $res_info->hotel_name." 담당자님 ".$res_info->name."님이 예약하신 '".$res_info->goods_name."' 상품에 대한 입금 확인을 요청하셨습니다. \n\n예약번호 : ".$res_info->reservation_no."\n"."예약자 : ".$res_info->name."\n"."입금액 : ".number_format($res_info->reservation_price);
     
@@ -568,7 +570,7 @@ class ReservationController extends Controller
 
         if($hotel_info->partner_id == $user_id){
             
-            $result = Reservation::where('id', $request->reservation_id)->update(['status' => 'S']); // 취소 확정
+            $result = Reservation::where('id', $request->reservation_id)->update(['status' => 'S']); // 예약 확정
 
             if($result){
                 $title = "[루밍 예약 확정안내]";

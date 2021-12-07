@@ -16,7 +16,9 @@ class MailController extends Controller
 {
     public function send(Request $request)
     {
-        mail($request->email, $request->title, $request->content, '', '-pm@dnsolution.kr');
+        $result = mail($request->email, $request->title, $request->content, '', '-pm@dnsolution.kr');
+
+        dd($result);
     }
 
     
