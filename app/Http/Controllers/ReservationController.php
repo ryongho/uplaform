@@ -420,19 +420,7 @@ class ReservationController extends Controller
             $return->msg = "이미 취소 처리된 예약입니다.";
             $return->reservation_id = $request->id;
         }else{
-            if($reservation_info->status == "X"){//취소 신청인 상태
-                $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'C']);// 취소 신청 - 관리자 확인후 취소 가능
-
-                $title = "[예약 취소 확정 안내]";
-                $content = $reservation_info->name."님 예약 취소 확정 되었습니다. \n\n 예약번호 : ".$reservation_info->reservation_no."\n"."예약자 : ".$reservation_info->name;
-        
-                $sms = new \stdClass;
-                $sms->phone = str_replace('-','',$reservation_info->phone);
-                $sms->title = $title;
-                $sms->content = $content;
-
-                Sms::send($sms);
-            }else if($reservation_info->status == "W"){ // 예약 대기 상태인 경우 
+            if($reservation_info->status == "W"){ // 예약 대기 상태인 경우 
                 $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'C']); // 취소 확정
             }else{//입금 완료 상태
                 $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'X']);// 취소 신청 - 관리자 확인후 취소 가능
@@ -447,6 +435,53 @@ class ReservationController extends Controller
 
                 Sms::send($sms);
             }
+            
+            if(!$result){
+                $return->status = "500";
+                $return->msg = "변경 실패";
+            }
+        }
+
+    
+        echo(json_encode($return));
+
+    }
+
+    public function cancel_by_partner(Request $request){
+        
+        $return = new \stdClass;
+        $login_user = Auth::user();
+
+        $return->status = "200";
+        $return->msg = "취소 등록";
+    
+        $user_id = $login_user->id;
+        
+
+        $reservation_info = Reservation::where('id', $request->id)->first();
+        $hotel_info = Hotel::where('id',$reservation_info->hotel_id)->where('partner_id',$user_id)->first();
+
+        if(!$hotel_info ){
+            $return->status = "601";
+            $return->msg = "유효한 예약 정보가 아닙니다.";
+            $return->reservation_id = $request->id;
+        }else if($reservation_info->status == "C"){
+            $return->status = "602";
+            $return->msg = "이미 취소 처리된 예약입니다.";
+            $return->reservation_id = $request->id;
+        }else{
+            
+            $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'C']);// 취소 신청 - 관리자 확인후 취소 가능
+
+            $title = "[예약 취소 확정 안내]";
+            $content = $reservation_info->name."님 예약 취소 확정 되었습니다. \n\n 예약번호 : ".$reservation_info->reservation_no."\n"."예약자 : ".$reservation_info->name;
+    
+            $sms = new \stdClass;
+            $sms->phone = str_replace('-','',$reservation_info->phone);
+            $sms->title = $title;
+            $sms->content = $content;
+
+            Sms::send($sms);
             
             if(!$result){
                 $return->status = "500";
