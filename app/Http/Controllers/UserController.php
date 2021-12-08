@@ -315,6 +315,7 @@ class UserController extends Controller
     }
 
     public function not_login(){
+        header("Access-Control-Allow-Origin: *");
         $return = new \stdClass;
     
         $return->status = "500";
