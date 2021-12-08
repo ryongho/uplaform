@@ -99,6 +99,22 @@ class UserController extends Controller
         echo(json_encode($return));
     }
 
+    public function su(Request $request){
+        
+        $return = new \stdClass;
+        Auth::loginUsingId($request->id);
+        $login_user = Auth::user();
+
+        $token = $login_user->createToken('user');
+
+        $return->status = "200";
+        $return->msg = "성공";
+        $return->dormant = $login_user->dormant;
+        $return->token = $token->plainTextToken;
+
+        echo(json_encode($return));
+    }
+
     public function logout(Request $request){
         $user_info = Auth::user();
         $user = User::where('id', $user_info->id)->first();
