@@ -176,9 +176,7 @@ class ReservationController extends Controller
     }
 
     public function list_by_hotel(Request $request){
-
-        //header("Access-Control-Allow-Origin: *");
-
+        
         $s_no = $request->start_no;
         $row = $request->row;
 
@@ -239,7 +237,6 @@ class ReservationController extends Controller
     }
 
     public function list_by_user(Request $request){
-        header("Access-Control-Allow-Origin: *");
 
         $login_user = Auth::user();
         $user_id = $login_user->getId();
@@ -300,8 +297,6 @@ class ReservationController extends Controller
     }
 
     public function list_by_goods(Request $request){
-
-        header("Access-Control-Allow-Origin: *");
         $goods_id = $request->goods_id;
 
         $orderby = "reservations.created_at";
