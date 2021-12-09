@@ -209,8 +209,6 @@ class GoodsController extends Controller
 
     public function list_by_partner(Request $request){
         
-        
-        header("Access-Control-Allow-Origin: *");
 
         $login_user = Auth::user();
 
@@ -246,7 +244,9 @@ class GoodsController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 

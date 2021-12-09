@@ -133,11 +133,6 @@ class HotelController extends Controller
             'Content-Type' => 'application/json'
         ]);;
 
-        //return response($retur, 200, ['Content-Type => application/json']);
-
-        
-        //echo(json_encode($return));
-
     }
 
     public function detail(Request $request){
