@@ -210,15 +210,7 @@ class GoodsController extends Controller
     public function list_by_partner(Request $request){
         
         
-        $http_origin = $_SERVER['HTTP_ORIGIN'];
- 
-        $allowed_origin = array('https://partner.rooming.link');
-        
-        if (in_array($http_origin, $allowed_origin))
-        {
-            header("Access-Control-Allow-Origin: {$http_origin}");
-        }
-
+        header("Access-Control-Allow-Origin: *");
 
         $login_user = Auth::user();
 
