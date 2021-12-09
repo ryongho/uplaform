@@ -134,6 +134,7 @@ class HotelController extends Controller
     }
 
     public function detail(Request $request){
+        ini_set('memory_limit','-1');
         $id = $request->id;
 
         $rows = Hotel::where('id','=',$id)->get();
