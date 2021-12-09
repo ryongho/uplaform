@@ -32,9 +32,9 @@ class ImageController extends Controller
 
         $return->status = "200";
         $return->msg = "success";
-        $return->images = $images;
+        $return->images = stripslashes($images);
 
-        return response()->json(stripslashes($return), 200)->withHeaders([
+        return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
         ]);;    
 
