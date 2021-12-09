@@ -212,7 +212,7 @@ class GoodsController extends Controller
         
         $http_origin = $_SERVER['HTTP_ORIGIN'];
  
-        $allowed_origin = array('http://partner.rooming.link');
+        $allowed_origin = array('https://partner.rooming.link');
         
         if (in_array($http_origin, $allowed_origin))
         {
