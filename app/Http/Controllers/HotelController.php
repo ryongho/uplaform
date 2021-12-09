@@ -99,7 +99,7 @@ class HotelController extends Controller
     }
 
     public function list(Request $request){
-        header("Access-Control-Allow-Origin: *");
+        
         $s_no = $request->start_no;
         $row = $request->row;
 
@@ -116,7 +116,6 @@ class HotelController extends Controller
     }
 
     public function list_by_partner(Request $request){
-        header("Access-Control-Allow-Origin: *");
 
         $login_user = Auth::user();
 
