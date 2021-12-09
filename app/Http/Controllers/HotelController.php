@@ -134,9 +134,7 @@ class HotelController extends Controller
     }
 
     public function detail(Request $request){
-        header('Content-type: application/json');
-        header("Access-Control-Allow-origin: *");
-
+        
         $id = $request->id;
 
         $rows = Hotel::where('id','=',$id)->get();
