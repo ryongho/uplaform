@@ -63,7 +63,9 @@ class UserController extends Controller
         //}
         
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
         //return view('user.profile', ['user' => User::findOrFail($id)]);
     }
@@ -96,7 +98,9 @@ class UserController extends Controller
             $return->email = $request->email;
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function su(Request $request){
@@ -112,7 +116,9 @@ class UserController extends Controller
         $return->dormant = $login_user->dormant;
         $return->token = $token->plainTextToken;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function logout(Request $request){
@@ -124,7 +130,9 @@ class UserController extends Controller
         $return->status = "200";
         $return->msg = "success";
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function login_check(Request $request){
@@ -138,7 +146,9 @@ class UserController extends Controller
             $return->login_status = "Y";
         }    
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
         
     }
     
@@ -166,7 +176,10 @@ class UserController extends Controller
         $list->cnt = count($rows);
         $list->data = $rows;
         
-        echo(json_encode($list));
+        
+        return response()->json($list, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
         
     }
 
@@ -188,7 +201,9 @@ class UserController extends Controller
             $return->email = $request->email;            
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }  
     
@@ -232,7 +247,9 @@ class UserController extends Controller
             
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -263,7 +280,9 @@ class UserController extends Controller
             $return->msg = "변경 실패";
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -289,7 +308,9 @@ class UserController extends Controller
             $return->msg = "변경 실패";
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -310,7 +331,9 @@ class UserController extends Controller
             $return->msg = "탈퇴처리 실패";
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -321,7 +344,9 @@ class UserController extends Controller
         $return->status = "500";
         $return->msg = "Not Login";
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     

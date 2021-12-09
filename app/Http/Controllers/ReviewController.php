@@ -38,7 +38,9 @@ class ReviewController extends Controller
             $return->msg = "fail";
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     
     }
 
@@ -55,7 +57,9 @@ class ReviewController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function detail(Request $request){
@@ -68,7 +72,9 @@ class ReviewController extends Controller
         $return->status = "200";
         $return->data = $rows ;
     
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 

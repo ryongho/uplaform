@@ -58,7 +58,9 @@ class WishController extends Controller
         }
 
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
         
     }
 
@@ -101,7 +103,9 @@ class WishController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
         
     }
 
@@ -124,7 +128,9 @@ class WishController extends Controller
 
         $return->status = "200";
         $return->inserted_id = $inserted_id;
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 

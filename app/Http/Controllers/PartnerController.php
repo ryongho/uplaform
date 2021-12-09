@@ -60,7 +60,9 @@ class PartnerController extends Controller
         }
         
 
-        echo(json_encode($return));        
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;     
 
     }
 
@@ -88,7 +90,9 @@ class PartnerController extends Controller
             $return->data = $request->user_id;
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function logout(Request $request){
@@ -110,7 +114,9 @@ class PartnerController extends Controller
         $return->data = $request->user_id;
         $return->user_type = "partner";
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     
         //$result = auth('api')->check();
         //dd($result);
@@ -133,7 +139,9 @@ class PartnerController extends Controller
         $return->msg = $msg;
         $return->partner_id = $partner->partner_id ;
         
-        echo(json_encode($list));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function list(Request $request){
@@ -149,7 +157,9 @@ class PartnerController extends Controller
         $list->cnt = count($rows);
         $list->data = $rows;
         
-        echo(json_encode($list));
+        return response()->json($list, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
         
     }
 }

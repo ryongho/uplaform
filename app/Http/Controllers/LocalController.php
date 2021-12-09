@@ -40,7 +40,9 @@ class LocalController extends Controller
         }
         
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function list(Request $request){
@@ -55,7 +57,9 @@ class LocalController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 

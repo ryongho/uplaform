@@ -85,7 +85,9 @@ class QuantityController extends Controller
         }
         
 
-        echo(json_encode($return));   
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;   
     }
 
 

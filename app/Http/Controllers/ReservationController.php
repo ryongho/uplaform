@@ -107,7 +107,9 @@ class ReservationController extends Controller
             $return->msg = "fail";
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function list(Request $request){
@@ -171,7 +173,9 @@ class ReservationController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -232,7 +236,9 @@ class ReservationController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -292,7 +298,9 @@ class ReservationController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -344,7 +352,9 @@ class ReservationController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -396,7 +406,9 @@ class ReservationController extends Controller
         $return->status = "200";
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -444,7 +456,9 @@ class ReservationController extends Controller
         }
 
     
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -491,7 +505,9 @@ class ReservationController extends Controller
         }
 
     
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -553,7 +569,9 @@ class ReservationController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -581,7 +599,9 @@ class ReservationController extends Controller
             $return->msg = "변경 실패";
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -643,7 +663,9 @@ class ReservationController extends Controller
             $return->reason = "입금확인 요청 권한이 없습니다." ;
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -715,7 +737,9 @@ class ReservationController extends Controller
             $return->reason = "입금확인 요청 권한이 없습니다." ;
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
