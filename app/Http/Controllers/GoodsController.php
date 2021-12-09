@@ -88,7 +88,9 @@ class GoodsController extends Controller
             }
         }
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
     }
 
     public function list(Request $request){
@@ -162,7 +164,9 @@ class GoodsController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -203,7 +207,9 @@ class GoodsController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -305,7 +311,9 @@ class GoodsController extends Controller
         $return->data = $rows ;
         $return->images = $images ;
         
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -330,7 +338,9 @@ class GoodsController extends Controller
             $return->qty = $goods_info->date ;
         }
         
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -356,7 +366,9 @@ class GoodsController extends Controller
             $return->status = "500";
         }
         
-        echo(json_encode($return));
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
     }
 
@@ -431,7 +443,9 @@ class GoodsController extends Controller
         }
         
 
-        echo(json_encode($return));    
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;    
 
     }
 
@@ -493,7 +507,9 @@ class GoodsController extends Controller
         }
         
 
-        echo(json_encode($return));    
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;    
 
     }
 
@@ -557,7 +573,9 @@ class GoodsController extends Controller
             
         }
     
-        echo(json_encode($return));    
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;    
 
     }
 
@@ -638,7 +656,9 @@ class GoodsController extends Controller
         }
         
 
-        echo(json_encode($return));    
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;   
 
     }
 
@@ -700,7 +720,9 @@ class GoodsController extends Controller
         }
         
 
-        echo(json_encode($return));    
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;    
 
     }
 

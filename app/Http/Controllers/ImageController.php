@@ -34,7 +34,9 @@ class ImageController extends Controller
         $return->msg = "success";
         $return->images = $images;
 
-        echo(stripslashes(json_encode($return)));    
+        return response()->json(stripslashes($return), 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;    
 
     }
 
