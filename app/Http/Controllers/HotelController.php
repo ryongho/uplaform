@@ -129,8 +129,11 @@ class HotelController extends Controller
         $return->cnt = count($rows);
         $return->data = $rows ;
 
-        return response()->json($return, 200);
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
 
+        
         //echo(json_encode($return));
 
     }
