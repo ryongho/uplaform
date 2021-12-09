@@ -116,6 +116,7 @@ class HotelController extends Controller
     }
 
     public function list_by_partner(Request $request){
+        
         header("Access-Control-Allow-Method: GET");
 
         $login_user = Auth::user();
