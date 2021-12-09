@@ -209,7 +209,7 @@ class GoodsController extends Controller
 
     public function list_by_partner(Request $request){
         
-        header("Access-Control-Allow-Origin:*");
+        header("Access-Control-Allow-origin","*");
 
         $login_user = Auth::user();
 
