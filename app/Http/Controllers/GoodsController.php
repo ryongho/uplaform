@@ -210,7 +210,6 @@ class GoodsController extends Controller
     public function list_by_partner(Request $request){
         
         
-        $aa = header("Access-Control-Allow-Origin");
         $http_origin = $_SERVER['HTTP_ORIGIN'];
  
         $allowed_origin = array('http://partner.rooming.link');
