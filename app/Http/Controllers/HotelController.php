@@ -151,7 +151,8 @@ class HotelController extends Controller
         $return->data = $rows ;
         $return->images = $images ;
 
-        echo(json_encode($return));
+        //echo(json_encode($return));
+        return response($return, 200, ['Content-Type => application/json']);
 
     }
 
