@@ -37,5 +37,8 @@ class Hotel extends Model
         'bank_name',
         'account_name' ,
         'account_number' ,
+        'common_info' ,
+        'cs_info' ,
+        'receipt_info' ,
     ];
 }

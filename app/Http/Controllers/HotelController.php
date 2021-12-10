@@ -66,6 +66,9 @@ class HotelController extends Controller
                 'bank_name' => $request->bank_name ,
                 'account_name' => $request->account_name ,
                 'account_number' => $request->account_number ,
+                'cs_info' => $request->cs_info ,
+                'receipt_info' => $request->receipt_info ,
+                'common_info' => $request->common_info ,
                 'created_at' => Carbon::now()
             ]);
 
@@ -206,6 +209,9 @@ class HotelController extends Controller
                 'bank_name' => $request->bank_name ,
                 'account_name' => $request->account_name ,
                 'account_number' => $request->account_number ,
+                'cs_info' => $request->cs_info ,
+                'receipt_info' => $request->receipt_info ,
+                'common_info' => $request->common_info ,
             ]);
             
 
