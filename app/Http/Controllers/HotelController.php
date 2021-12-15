@@ -108,7 +108,10 @@ class HotelController extends Controller
         $s_no = $request->start_no;
         $row = $request->row;
 
-        $rows = Hotel::where('id','>=',$s_no)->orderBy('id', 'desc')->limit($row)->get();
+        $rows = Hotel::where('id','>=',$s_no)
+        ->whereBetween('latitude', [$request->a_latitude, $request->b_latitude])
+        ->whereBetween('longtitude', [$request->a_longtitude, $request->b_longtitude])
+        ->orderBy('id', 'desc')->limit($row)->get();
 
         $return = new \stdClass;
 
