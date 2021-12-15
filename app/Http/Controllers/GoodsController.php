@@ -173,6 +173,11 @@ class GoodsController extends Controller
 
     public function list_by_hotel(Request $request){
         $hotel_id = $request->hotel_id;
+
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $sale = $request->sale;
        
         $rows = Goods::join('hotels', 'goods.hotel_id', '=', 'hotels.id')
                         ->join('rooms', 'goods.room_id', '=', 'rooms.id')
@@ -198,7 +203,15 @@ class GoodsController extends Controller
                                     DB::raw('(select count(grade) from reviews where reviews.goods_id = goods.id) as grade_cnt'),
                         )         
                         ->where('hotels.id','=',$hotel_id)
-                        ->where('goods.sale','Y')
+                        ->when($sale, function ($query, $sale) {
+                            return $query->where('goods.sale' ,"=", $sale);
+                        })
+                        ->when($start_date, function ($query, $start_date) {
+                            return $query->where('goods.start_date' ,"<=", $start_date);
+                        })
+                        ->when($end_date, function ($query, $end_date) {
+                            return $query->where('goods.end_date' ,">=", $end_date);
+                        })
                         ->orderBy('sale_price', 'asc')
                         ->get();
 
