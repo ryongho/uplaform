@@ -349,6 +349,56 @@ class UserController extends Controller
         ]);;
     }
 
+    public function certifications(Request $request){ // 본인인증 후 정보 리턴
+        $imp_uid = $request->imp_uid;
+    
+        $_api_url = 'https://api.iamport.kr/users/getToken';     // 본인인증 후 access_token 리턴
+        
+        $_param['imp_key'] = '5545083858481518';           // 아임포트 키
+        $_param['imp_secret'] = '48bf35dafb0f4c339dc5d3bc24238d6ecb1d03ba88c53857eb261535abeec5bb4c63c390b173dfad';    // 아임포트 시크릿
+       
+        $_curl = curl_init();
+        curl_setopt($_curl,CURLOPT_URL,$_api_url);
+        curl_setopt($_curl,CURLOPT_POST,true);
+        curl_setopt($_curl,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($_curl,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($_curl,CURLOPT_POSTFIELDS,$_param);
+        $_result = curl_exec($_curl);
+        //dd($_result);
+        curl_close($_curl);
+
+        $_result = json_decode($_result);
+        //dd($_result);
+        $access_token = $_result->response->access_token;
+
+        $headers = [
+            'Authorization:'.$access_token
+        ];
+        
+        $url = "https://api.iamport.kr/certifications/".$imp_uid; // 정보 요청 url - access_token 추가
+        $_curl2 = curl_init();
+        curl_setopt($_curl2,CURLOPT_URL,$url);
+        curl_setopt($_curl2, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($_curl2,CURLOPT_RETURNTRANSFER,true);
+        $_result2 = curl_exec($_curl2);
+        $_result2 = json_decode($_result2);
+            
+        $user_infos= $_result2->response;
+    
+        $return = new \stdClass;
+        $return->name = $user_infos->name;
+        $return->birthday = $user_infos->birthday;
+        //$return->phone = $user_infos->phone;
+        $return->phone = "010-000-0000";
+        curl_close($_curl2);
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+        
+
+    }
+
     
 
 
