@@ -18,6 +18,7 @@ class Goods extends Model
         'hotel_id',
         'room_id',
         'goods_name',
+        'content',
         'start_date',
         'end_date',
         'nights',
