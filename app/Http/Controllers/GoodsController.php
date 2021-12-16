@@ -167,7 +167,7 @@ class GoodsController extends Controller
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
-        ]);;
+        ]);
 
     }
 
@@ -428,6 +428,7 @@ class GoodsController extends Controller
                 $result = Goods::where('id',$request->goods_id)->where('hotel_id',$request->hotel_id)->update([
                     'hotel_id'=> $request->hotel_id ,
                     'room_id'=> $request->room_id ,
+                    'goods_name'=> $request->goods_name ,
                     'content'=> $request->content ,
                     'start_date'=> $request->start_date ,
                     'end_date'=> $request->end_date ,

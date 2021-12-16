@@ -188,6 +188,7 @@ class RoomController extends Controller
         $id = $request->id;
 
         $rows = Room::join('hotels', 'rooms.hotel_id', '=', 'hotels.id')->select('*',
+                            'rooms.id as room_id',
                             'rooms.options as room_options',
                             'hotels.options as hotel_options',
                             'rooms.name as name',
