@@ -388,8 +388,8 @@ class UserController extends Controller
         $return = new \stdClass;
         $return->name = $user_infos->name;
         $return->birthday = $user_infos->birthday;
-        //$return->phone = $user_infos->phone;
-        $return->phone = "010-000-0000";
+        $return->phone = $user_infos->phone;
+        //$return->phone = "010-000-0000";
         curl_close($_curl2);
 
         return response()->json($return, 200)->withHeaders([
