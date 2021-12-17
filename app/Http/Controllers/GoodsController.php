@@ -313,6 +313,10 @@ class GoodsController extends Controller
                 'goods.start_date as start_date',
                 'goods.end_date as end_date',
                 'goods.sale as sale',
+                'rooms.peoples as room_peoples',
+                'rooms.bed as room_bed',
+                'rooms.amount as room_amount',
+                'rooms.options as room_options',
                 DB::raw('(select count(*) from wishes where goods.id = wishes.goods_id and wishes.user_id="'.$user_id.'" ) as wished '),
                 )
                 ->where('goods.id','=',$id)
