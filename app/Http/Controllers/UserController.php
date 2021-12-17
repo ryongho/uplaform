@@ -286,6 +286,75 @@ class UserController extends Controller
 
     }
 
+    public function update_password(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->key = $request->key;
+        $return->value = $request->value;
+
+        $key = $request->key;
+        $value = $request->value;
+        $email = $request->email;
+
+        $user_info = User::where('email',$email)->first(); // 변경 요청 된 고객 정보
+        $user_id= $user_info->id;
+
+        $imp_uid = $request->imp_uid;
+
+        
+        $_api_url = env('IMPORT_GETTOKEN_URL');     // 본인인증 후 access_token 리턴
+        $_param['imp_key'] = env('IMPORT_KEY');
+        $_param['imp_secret'] = env('IMPORT_SECRET');    // 아임포트 시크릿
+       
+        $_curl = curl_init();
+        curl_setopt($_curl,CURLOPT_URL,$_api_url);
+        curl_setopt($_curl,CURLOPT_POST,true);
+        curl_setopt($_curl,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($_curl,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($_curl,CURLOPT_POSTFIELDS,$_param);
+        $_result = curl_exec($_curl);
+        curl_close($_curl);
+        $_result = json_decode($_result);
+        
+        $access_token = $_result->response->access_token;
+        $headers = [
+            'Authorization:'.$access_token
+        ];
+        $url = "https://api.iamport.kr/certifications/".$imp_uid; // 정보 요청 url - access_token 추가
+        $_curl2 = curl_init();
+        curl_setopt($_curl2,CURLOPT_URL,$url);
+        curl_setopt($_curl2, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($_curl2,CURLOPT_RETURNTRANSFER,true);
+        $_result2 = curl_exec($_curl2);
+        $_result2 = json_decode($_result2);
+            
+        $user_infos= $_result2->response; // 인증 후 고객 정보
+        
+        $return = new \stdClass;
+        
+        $user_infos->phone = str_replace ( "-", "", $user_infos->phone); 
+        
+        if($user_infos->phone == $user_info->phone ){
+            $value = Hash::make($request->password);
+            $result = User::where('id', $user_id)->update(['password' => $value]);
+            $return->status = "200";
+            $return->updated_id = $user_id;
+            $return->updated_email = $email;
+
+        }else{
+            $return->status = "500";
+            $return->msg = "인증된 정보와 회원정보가 일치하지 않습니다.";
+            $return->updated_id = $user_id;
+            $return->updated_email = $email;
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
     public function update_info(Request $request){
         //dd($request);
         $return = new \stdClass;
@@ -351,11 +420,10 @@ class UserController extends Controller
 
     public function certifications(Request $request){ // 본인인증 후 정보 리턴
         $imp_uid = $request->imp_uid;
-    
-        $_api_url = 'https://api.iamport.kr/users/getToken';     // 본인인증 후 access_token 리턴
-        
-        $_param['imp_key'] = '5545083858481518';           // 아임포트 키
-        $_param['imp_secret'] = '48bf35dafb0f4c339dc5d3bc24238d6ecb1d03ba88c53857eb261535abeec5bb4c63c390b173dfad';    // 아임포트 시크릿
+
+        $_api_url = env('IMPORT_GETTOKEN_URL');     // 본인인증 후 access_token 리턴
+        $_param['imp_key'] = env('IMPORT_KEY');
+        $_param['imp_secret'] = env('IMPORT_SECRET');    // 아임포트 시크릿
        
         $_curl = curl_init();
         curl_setopt($_curl,CURLOPT_URL,$_api_url);
@@ -384,7 +452,7 @@ class UserController extends Controller
         $_result2 = json_decode($_result2);
             
         $user_infos= $_result2->response;
-    
+        
         $return = new \stdClass;
         $return->name = $user_infos->name;
         $return->birthday = $user_infos->birthday;
@@ -394,7 +462,7 @@ class UserController extends Controller
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
-        ]);;
+        ]);
         
 
     }

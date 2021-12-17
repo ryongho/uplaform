@@ -28,8 +28,10 @@ class Sms extends Model
         
         $_api_url = 'https://message.ppurio.com/api/send_utf8_json.php';     // UTF-8 인코딩과 JSON 응답용 호출 페이지
         
+        
         $_param['userid'] = 'rooming';           // [필수] 뿌리오 아이디
-        $_param['callback'] = '01062328507';    // [필수] 발신번호 - 숫자만
+        $_param['userid'] = env('SMS_USER_ID');           // [필수] 뿌리오 아이디
+        $_param['callback'] = env('SMS_CALLBACK');    // [필수] 발신번호 - 숫자만
         $_param['phone'] = $sms->phone;       // [필수] 수신번호 - 여러명일 경우 |로 구분 '010********|010********|010********'
         $_param['msg'] = $sms->content;   // [필수] 문자내용 - 이름(names)값이 있다면 [*이름*]가 치환되서 발송됨
         //$_param['names'] = '홍길동';            // [선택] 이름 - 여러명일 경우 |로 구분 '홍길동|이순신|김철수'
