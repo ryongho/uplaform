@@ -54,6 +54,7 @@ Route::get('su', [UserController::class, 'su']);
 Route::middleware('auth:sanctum')->post('/logout', [UserController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('/login_check', [UserController::class, 'login_check']);
 Route::post('/check_email', [UserController::class, 'check_email']);
+Route::post('/check_user', [UserController::class, 'check_user']);
 Route::post('/check_nickname', [UserController::class, 'check_nickname']);
 Route::get('/user/certifications', [UserController::class, 'certifications']);
 

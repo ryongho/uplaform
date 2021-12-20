@@ -205,7 +205,33 @@ class UserController extends Controller
             'Content-Type' => 'application/json'
         ]);;
 
-    }  
+    }
+    
+    public function check_user(Request $request){
+        
+        //dd($request);
+        $return = new \stdClass;
+
+        /* 중복 체크 - start*/
+        $email_cnt = User::where('email',$request->email)->count();
+
+        if($email_cnt){
+            $return->usable = "Y";
+            $return->msg = "존재하는 아이디";
+            $return->email = $request->email;
+            $return->status = 200;
+        }else{
+            $return->usable = "Y";
+            $return->msg = "존재하지 않는 이메일 입니다.";
+            $return->email = $request->email;            
+            $return->status = 500;
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
     
     public function check_nickname(Request $request){
         
