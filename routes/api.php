@@ -114,7 +114,7 @@ Route::middleware('auth:sanctum')->put('/wish/regist', [WishController::class, '
 Route::middleware('auth:sanctum')->put('/push/regist', [PushController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/push/list', [PushController::class, 'list']);
 
-Route::middleware('auth:sanctum')->put('/viewlog/regist', [ViewlogController::class, 'regist']);
+Route::post('/viewlog/regist', [ViewlogController::class, 'regist']);
 
 Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']);
 Route::get('/notice/list', [NoticeController::class, 'list']);

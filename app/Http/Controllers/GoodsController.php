@@ -91,7 +91,7 @@ class GoodsController extends Controller
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
-        ]);;
+        ]);
     }
 
     public function list(Request $request){

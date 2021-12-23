@@ -12,10 +12,26 @@ class ViewlogController extends Controller
     {
         //dd($request);
 
-        Viewlog::insert([
+        $return = new \stdClass;
+
+        $result = Viewlog::insertGetId([
             'user_id'=> $request->user_id ,
             'goods_id'=> $request->goods_id ,
             'created_at'=> Carbon::now(),
+        ]);
+
+        if($result){ //DB 입력 성공
+
+            $return->status = "200";
+            $return->msg = "success";
+            $return->insert_id = $result ;
+        }else{
+            $return->status = "500";
+            $return->msg = "fail";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
         ]);
     }
 
