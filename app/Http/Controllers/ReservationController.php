@@ -9,6 +9,7 @@ use App\Models\Goods;
 use App\Models\Hotel;
 use App\Models\Reservation;
 use App\Models\Push;
+use App\Models\User;
 use App\Models\Sms;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
