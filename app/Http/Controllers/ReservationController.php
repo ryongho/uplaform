@@ -73,7 +73,7 @@ class ReservationController extends Controller
             $hotel_info = Hotel::where('id',$goods->hotel_id)->first();
 
             $title = "[루밍 예약 입금안내]";
-            $content = $user_info->name."님 아래 계좌로 입금해주시면 담당자 확인 후에 예약이 완료 됩니다.\n\n입금액 : ".$sale_price." 입금계좌 : \n ".$hotel_info->account_number." ".$hotel_info->bank_name." (예금주 : ".$hotel_info->account_name.")";
+            $content = $user_info->name."님 아래 계좌로 입금해주시면 담당자 확인 후에 예약이 완료 됩니다.\n\n입금액 : ".$goods->sale_price." 입금계좌 : \n ".$hotel_info->account_number." ".$hotel_info->bank_name." (예금주 : ".$hotel_info->account_name.")";
 
             $sms = new \stdClass;
             $sms->phone = $user_info->phone;
