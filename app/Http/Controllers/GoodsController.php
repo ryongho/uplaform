@@ -447,6 +447,8 @@ class GoodsController extends Controller
                     'min_nights'=> $request->min_nights ,
                     'max_nights'=> $request->max_nights ,
                     'breakfast'=> $request->breakfast ,
+                    'checkin'=> $request->checkin ,
+                    'checkout'=> $request->checkout ,
                     'sale'=> $request->sale ,
                 ]);
 
