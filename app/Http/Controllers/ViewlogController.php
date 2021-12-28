@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Viewlog;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ViewlogController extends Controller
 {
@@ -12,10 +13,18 @@ class ViewlogController extends Controller
     {
         //dd($request);
 
+        $user_id = 0;
+        
+        if($request->bearerToken() != ""){
+            $tokens = explode('|',$request->bearerToken());
+            $token_info = DB::table('personal_access_tokens')->where('id',$tokens[0])->first();
+            $user_id = $token_info->tokenable_id;
+        }
+
         $return = new \stdClass;
 
         $result = Viewlog::insertGetId([
-            'user_id'=> $request->user_id ,
+            'user_id'=> $user_id ,
             'goods_id'=> $request->goods_id ,
             'created_at'=> Carbon::now(),
         ]);
