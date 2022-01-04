@@ -5,26 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Hotel;
+use App\Models\AreaInfo;
+use App\Models\PartnerInfo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function regist(Request $request)
+    public function regist_user(Request $request)
     {
         //dd($request);
         $return = new \stdClass;
 
         $return->status = "500";
         $return->msg = "관리자에게 문의";
-        $return->data = $request->user_id;
 
         /* 중복 체크 - start*/
         $email_cnt = User::where('email',$request->email)->count();
         $phone_cnt = User::where('phone',$request->phone)->count();
 
-        /*if($email_cnt){
+        if($email_cnt){
             $return->status = "602";
             $return->msg = "사용중인 이메일";
             $return->data = $request->email;
@@ -33,22 +33,43 @@ class UserController extends Controller
             $return->msg = "사용중인 폰 번호";
             $return->data = $request->phone;
         //중복 체크 - end
-        }else{*/
+        }else{
             $result = User::insertGetId([
                 'name'=> $request->name ,
-                'nickname'=> $request->nickname ,
                 'email' => $request->email, 
                 'password' => $request->password, 
-                'user_id' => $request->user_id,
                 'phone' => $request->phone, 
-                'user_type' => $request->user_type,
+                'user_type' => 0,
+                'reg_no'=> $request->reg_no,
+                'birthday'=> $request->birthday,
+                'gender'=> $request->gender,
                 'push' => $request->push,
                 'push_event' => $request->push_event,
                 'created_at' => Carbon::now(),
                 'password' => Hash::make($request->password)
             ]);
 
-            if($result){
+            $result2 = AreaInfo::insertGetId([
+                'user_id'=> $result,
+                'position'=> $request->position ,
+                'interest_service'=> $request->interest_service ,
+                'house_type'=> $request->house_type ,
+                'peoples'=> $request->peoples ,
+                'house_size'=> $request->house_size ,
+                'area_size'=> $request->area_size ,
+                'address'=> $request->address ,
+                'tel'=> $request->tel ,
+                'shop_type'=> $request->shop_type ,
+                'shop_size'=> $request->shop_size ,
+                'kitchen_size'=> $request->kitchen_size ,
+                'refrigerator'=> $request->refrigerator ,
+                'shop_name'=> $request->shop_name ,
+                'ceo_name'=> $request->ceo_name ,
+                'created_at' => Carbon::now(),
+            ]);
+
+        
+            if($result && $result2){
 
                 Auth::loginUsingId($result);
                 $login_user = Auth::user();
@@ -57,10 +78,86 @@ class UserController extends Controller
 
                 $return->status = "200";
                 $return->msg = "success";
-                $return->data = $request->name;
                 $return->token = $token->plainTextToken;
             }
-        //}
+        }
+        
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+        //return view('user.profile', ['user' => User::findOrFail($id)]);
+    }
+
+    public function regist_partner(Request $request)
+    {
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "500";
+        $return->msg = "관리자에게 문의";
+
+        /* 중복 체크 - start*/
+        $email_cnt = User::where('email',$request->email)->count();
+        $phone_cnt = User::where('phone',$request->phone)->count();
+
+        if($email_cnt){
+            $return->status = "602";
+            $return->msg = "사용중인 이메일";
+            $return->data = $request->email;
+        }else if ($phone_cnt){
+            $return->status = "603";
+            $return->msg = "사용중인 폰 번호";
+            $return->data = $request->phone;
+        //중복 체크 - end
+        }else{
+            $result = User::insertGetId([
+                'name'=> $request->name ,
+                'email' => $request->email, 
+                'password' => $request->password, 
+                'phone' => $request->phone, 
+                'user_type' => 0,
+                'reg_no'=> $request->reg_no,
+                'birthday'=> $request->birthday,
+                'gender'=> $request->gender,
+                'push' => $request->push,
+                'push_event' => $request->push_event,
+                'created_at' => Carbon::now(),
+                'password' => Hash::make($request->password)
+            ]);
+
+            $result2 = PartnerInfo::insertGetId([
+                'user_id'=> $result,
+                'service_type'=> $request->service_type,
+                'partner_type'=> $request->partner_type,
+                'confirm_history'=> $request->confirm_history,
+                'activity_distance'=> $request->activity_distance,
+                'license_img'=> $request->license_img,
+                'reg_img'=> $request->reg_img,
+                'biz_type'=> $request->biz_type,
+                'reg_no'=> $request->biz_reg_no,
+                'biz_name'=> $request->biz_name,
+                'address'=> $request->address,
+                'ceo_name'=> $request->ceo_name,
+                'tel'=> $request->tel,
+                'position'=> $request->position,
+                'created_at' => Carbon::now(),
+            ]);
+
+        
+            if($result && $result2){
+
+                Auth::loginUsingId($result);
+                $login_user = Auth::user();
+
+                $token = $login_user->createToken('user');
+
+                $return->status = "200";
+                $return->msg = "success";
+                $return->token = $token->plainTextToken;
+            }
+        }
         
 
         return response()->json($return, 200)->withHeaders([
@@ -89,6 +186,7 @@ class UserController extends Controller
             $return->status = "200";
             $return->msg = "성공";
             $return->dormant = $login_user->dormant;
+            $return->type = $login_user->user_type;
             $return->token = $token->plainTextToken;
             
             //dd($token->plainTextToken);    
@@ -233,28 +331,6 @@ class UserController extends Controller
 
     }
     
-    public function check_nickname(Request $request){
-        
-        //dd($request);
-        $return = new \stdClass;
-
-        /* 중복 체크 - start*/
-        $nickname_cnt = User::where('nickname',$request->nickname)->count();
-
-        if($nickname_cnt){
-            $return->usable = "N";
-            $return->msg = "사용중인 닉네임";
-            $return->nickname = $request->nickname;
-        }else{
-            $return->usable = "Y";
-            $return->msg = "사용가능 닉네임";
-            $return->nickname = $request->nickname;            
-        }
-
-        echo(json_encode($return));
-
-    }  
-
     public function info(){
         //dd($request);
         $return = new \stdClass;

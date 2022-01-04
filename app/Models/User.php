@@ -19,12 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'nickname',
         'email',
         'password',
         'phone',
-        'user_id',
-        'corporate_no',
+        'reg_no',
+        'birthday',
+        'gender',
         'user_type',
         'leave',
         'dormant',
@@ -59,9 +59,5 @@ class User extends Authenticatable
 
     public function getType(){
         return $this->user_type;
-    }
-
-    public function getNickname(){
-        return $this->nickname;
     }
 }
