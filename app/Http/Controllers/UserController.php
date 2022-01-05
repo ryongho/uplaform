@@ -64,6 +64,7 @@ class UserController extends Controller
                 'shop_size'=> $request->shop_size ,
                 'kitchen_size'=> $request->kitchen_size ,
                 'refrigerator'=> $request->refrigerator ,
+                'refrigerator_size'=> $request->refrigerator_size ,
                 'shop_name'=> $request->shop_name ,
                 'ceo_name'=> $request->ceo_name ,
                 'created_at' => Carbon::now(),
