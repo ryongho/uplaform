@@ -38,7 +38,11 @@ Route::middleware('auth:sanctum')->post('/user/logout', [UserController::class, 
 Route::middleware('auth:sanctum')->get('/user/login_check', [UserController::class, 'login_check']); // 로그인 상태 체크
 Route::put('/user/find_id', [UserController::class, 'find_id']); // 아이디 찾기
 Route::put('/user/find_password', [UserController::class, 'find_password']);//비밀번호 찾기
+
 Route::middleware('auth:sanctum')->get('/user/info', [UserController::class, 'info']); //유저 정보 가져오기
+Route::middleware('auth:sanctum')->get('/user/partner_info', [UserController::class, 'partner_info']); //파트너 정보 가져오기
+Route::middleware('auth:sanctum')->get('/user/area_info', [UserController::class, 'area_info']); //회원 추가 정보 가져오기
+
 Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update']);// 유저정보 업데이트
 Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'leave']); // 회원 탈퇴
 

@@ -26,6 +26,7 @@ class AreaInfo extends Model
         'shop_size',
         'kitchen_size',
         'refrigerator',
+        'refrigerator_size',
         'shop_name',
         'ceo_name',
         'updated_at',

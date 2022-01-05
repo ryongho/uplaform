@@ -367,18 +367,57 @@ class UserController extends Controller
         //dd($request);
         $return = new \stdClass;
 
-
         $login_user = Auth::user();
 
         $return->status = "200";
         $return->data = $login_user;
 
-        if($login_user->user_type == 1){
-            $hotel_info = Hotel::where('partner_id',$login_user->id)->first();
-            if($hotel_info){
-                $return->hotel_id = $hotel_info->id;
-            }
-            
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
+    public function partner_info(){
+        //dd($request);
+        $return = new \stdClass;
+
+        $login_user = Auth::user();
+
+        
+    
+        $partner_info = PartnerInfo::where('user_id',$login_user->id)->first();
+        
+        if($partner_info){
+            $return->status = "200";
+            $return->data = $partner_info;
+
+        }else{
+            $return->status = "500";
+            $return->msg = "파트너 정보가 없습니다.";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
+    public function area_info(){
+        //dd($request);
+        $return = new \stdClass;
+
+        $login_user = Auth::user();
+
+        $area_info = AreaInfo::where('user_id',$login_user->id)->first();
+        
+        if($area_info){
+            $return->status = "200";
+            $return->data = $area_info;
+
+        }else{
+            $return->status = "500";
+            $return->msg = "회원의 공간 정보가 없습니다.";
         }
 
         return response()->json($return, 200)->withHeaders([
