@@ -35,6 +35,7 @@ class UserController extends Controller
         //중복 체크 - end
         }else{
             $result = User::insertGetId([
+                'sns_key'=> $request->sns_key ,
                 'name'=> $request->name ,
                 'email' => $request->email, 
                 'password' => $request->password, 
@@ -113,6 +114,7 @@ class UserController extends Controller
         //중복 체크 - end
         }else{
             $result = User::insertGetId([
+                'sns_key'=> $request->sns_key ,
                 'name'=> $request->name ,
                 'email' => $request->email, 
                 'password' => $request->password, 
@@ -194,6 +196,36 @@ class UserController extends Controller
             $return->status = "500";
             $return->msg = "아이디 또는 패스워드가 일치하지 않습니다.";
             $return->email = $request->email;
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+    }
+
+    public function sns_login(Request $request){
+        $user = User::where('sns_key' , $request->sns_key)->where('leave','N')->first();
+
+        $return = new \stdClass;
+
+        if(!$user){
+            $return->status = "501";
+            $return->msg = "존재하지 않는 아이디 입니다.";
+            $return->email = $request->email;
+        }else{
+            //echo("로그인 확인");
+            Auth::loginUsingId($user->id);
+            $login_user = Auth::user();
+
+            $token = $login_user->createToken('user');
+
+            $return->status = "200";
+            $return->msg = "성공";
+            $return->dormant = $login_user->dormant;
+            $return->type = $login_user->user_type;
+            $return->token = $token->plainTextToken;
+            
+            //dd($token->plainTextToken);    
         }
 
         return response()->json($return, 200)->withHeaders([

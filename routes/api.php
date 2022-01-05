@@ -31,6 +31,7 @@ use App\Models\User;
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록
 Route::post('/partner/regist', [UserController::class, 'regist_partner']); // 파트너 등록 
 Route::post('/user/login', [UserController::class, 'login']);// 로그인
+Route::post('/user/sns_login', [UserController::class, 'sns_login']);// sns 로그인
 Route::get('login', [UserController::class, 'not_login'])->name('login');// 비로그인 시 
 Route::get('/su', [UserController::class, 'su']);// 슈펴로그인
 Route::middleware('auth:sanctum')->post('/user/logout', [UserController::class, 'logout']); // 로그아웃
