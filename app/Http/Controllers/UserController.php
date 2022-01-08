@@ -53,6 +53,7 @@ class UserController extends Controller
             $result2 = AreaInfo::insertGetId([
                 'user_id'=> $result,
                 'position'=> $request->position ,
+                'job'=> $request->job ,
                 'interest_service'=> $request->interest_service ,
                 'house_type'=> $request->house_type ,
                 'peoples'=> $request->peoples ,
@@ -145,6 +146,7 @@ class UserController extends Controller
                 'ceo_name'=> $request->ceo_name,
                 'tel'=> $request->tel,
                 'position'=> $request->position,
+                'job'=> $request->job,
                 'created_at' => Carbon::now(),
             ]);
 

@@ -28,6 +28,7 @@ class PartnerInfo extends Model
         'ceo_name',
         'tel',
         'position',
+        'job',
         'updated_at',
         'created_at'
     ];
