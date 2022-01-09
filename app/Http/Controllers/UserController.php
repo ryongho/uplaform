@@ -120,7 +120,7 @@ class UserController extends Controller
                 'email' => $request->email, 
                 'password' => $request->password, 
                 'phone' => $request->phone, 
-                'user_type' => 0,
+                'user_type' => 1,
                 'reg_no'=> $request->reg_no,
                 'birthday'=> $request->birthday,
                 'gender'=> $request->gender,
