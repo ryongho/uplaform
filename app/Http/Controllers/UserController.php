@@ -80,6 +80,7 @@ class UserController extends Controller
 
                 $return->status = "200";
                 $return->msg = "success";
+                $return->type = $login_user->user_type;
                 $return->token = $token->plainTextToken;
             }
         }
@@ -159,6 +160,7 @@ class UserController extends Controller
 
                 $return->status = "200";
                 $return->msg = "success";
+                $return->type = $login_user->user_type;
                 $return->token = $token->plainTextToken;
             }
         }
