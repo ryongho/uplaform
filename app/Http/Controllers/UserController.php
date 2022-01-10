@@ -173,6 +173,8 @@ class UserController extends Controller
         //return view('user.profile', ['user' => User::findOrFail($id)]);
     }
 
+    
+
     public function login(Request $request){
         $user = User::where('email' , $request->email)->where('leave','N')->first();
 
@@ -235,6 +237,102 @@ class UserController extends Controller
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
         ]);;
+    }
+
+    public function update_user(Request $request){
+
+        $login_user = Auth::user();
+        
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "변경 성공";
+    
+        $result = User::where('id', $login_user->id)->update([
+            'name'=> $request->name ,
+            'phone' => $request->phone, 
+            'reg_no'=> $request->reg_no,
+            'birthday'=> $request->birthday,
+            'gender'=> $request->gender,
+        ]);
+ 
+        $result2 = AreaInfo::updateOrInsert(['user_id'=> $login_user->id],[
+            'position'=> $request->position ,
+            'interest_service'=> $request->interest_service ,
+            'house_type'=> $request->house_type ,
+            'peoples'=> $request->peoples ,
+            'house_size'=> $request->house_size ,
+            'area_size'=> $request->area_size ,
+            'address'=> $request->address ,
+            'tel'=> $request->tel ,
+            'shop_type'=> $request->shop_type ,
+            'shop_size'=> $request->shop_size ,
+            'kitchen_size'=> $request->kitchen_size ,
+            'refrigerator'=> $request->refrigerator ,
+            'refrigerator_size'=> $request->refrigerator_size ,
+            'shop_name'=> $request->shop_name ,
+            'ceo_name'=> $request->ceo_name ,
+        ]);
+ 
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
+    public function update_partner(Request $request)
+    {
+        $login_user = Auth::user();
+        
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "변경 성공";
+
+        
+        $result = User::where('id', $login_user->id)->update([
+            'name'=> $request->name ,
+            'phone' => $request->phone, 
+            'reg_no'=> $request->reg_no,
+            'birthday'=> $request->birthday,
+            'gender'=> $request->gender,
+        ]);
+
+        $result2 = PartnerInfo::updateOrInsert(['user_id'=> $login_user->id],[
+            'service_type'=> $request->service_type,
+            'partner_type'=> $request->partner_type,
+            'confirm_history'=> $request->confirm_history,
+            'activity_distance'=> $request->activity_distance,
+            'license_img'=> $request->license_img,
+            'reg_img'=> $request->reg_img,
+            'biz_type'=> $request->biz_type,
+            'reg_no'=> $request->biz_reg_no,
+            'biz_name'=> $request->biz_name,
+            'address'=> $request->address,
+            'ceo_name'=> $request->ceo_name,
+            'tel'=> $request->tel,
+            'position'=> $request->position,
+            'job'=> $request->job,
+        ]);
+
+
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+        //return view('user.profile', ['user' => User::findOrFail($id)]);
     }
 
     public function su(Request $request){
@@ -532,33 +630,7 @@ class UserController extends Controller
 
     }
 
-    public function update_info(Request $request){
-        //dd($request);
-        $return = new \stdClass;
-
-        $return->status = "200";
-        $return->msg = "변경 완료";
-        
-        $result = User::where('id', $request->user_id)->update([
-            'name'=> $request->name ,
-            'nickname'=> $request->nickname ,
-            'email' => $request->email, 
-            'phone' => $request->phone, 
-            'user_type' => $request->user_type,
-            'push' => $request->push,
-            'push_event' => $request->push_event,
-        ]);
-
-        if(!$result){
-            $return->status = "500";
-            $return->msg = "변경 실패";
-        }
-
-        return response()->json($return, 200)->withHeaders([
-            'Content-Type' => 'application/json'
-        ]);;
-
-    }
+    
 
     public function leave(Request $request){
         //dd($request);

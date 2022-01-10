@@ -43,11 +43,9 @@ Route::middleware('auth:sanctum')->get('/user/info', [UserController::class, 'in
 Route::middleware('auth:sanctum')->get('/user/partner_info', [UserController::class, 'partner_info']); //파트너 정보 가져오기
 Route::middleware('auth:sanctum')->get('/user/area_info', [UserController::class, 'area_info']); //회원 추가 정보 가져오기
 
-Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update']);// 유저정보 업데이트
+Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update_user']);// 유저정보 업데이트
+Route::middleware('auth:sanctum')->put('/partner/update', [UserController::class, 'update_partner']);// 파트너정보 업데이트
 Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'leave']); // 회원 탈퇴
-
-Route::middleware('auth:sanctum')->get('/partner/info', [UserController::class, 'partner_info']); //파트너 정보
-Route::middleware('auth:sanctum')->put('/partner/update', [UserController::class, 'partner_update']); // 파트너 정보 업데이트
 
 Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']); // 이미지 업로드
 
