@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, '
 Route::middleware('auth:sanctum')->put('/partner/update', [UserController::class, 'update_partner']);// 파트너정보 업데이트
 Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'leave']); // 회원 탈퇴
 
-Route::middleware('auth:sanctum')->post('/image/upload', [ImageController::class, 'upload']); // 이미지 업로드
+Route::post('/image/upload', [ImageController::class, 'upload']); // 이미지 업로드
 
 Route::middleware('auth:sanctum')->post('/device/regist', [DeviceController::class, 'regist']);//디바이스 정보 등록
 
