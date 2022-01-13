@@ -37,7 +37,7 @@ Route::get('/su', [UserController::class, 'su']);// 슈펴로그인
 Route::middleware('auth:sanctum')->post('/user/logout', [UserController::class, 'logout']); // 로그아웃
 Route::middleware('auth:sanctum')->get('/user/login_check', [UserController::class, 'login_check']); // 로그인 상태 체크
 Route::put('/user/find_id', [UserController::class, 'find_id']); // 아이디 찾기
-Route::put('/user/find_password', [UserController::class, 'find_password']);//비밀번호 찾기
+
 
 Route::middleware('auth:sanctum')->get('/user/info', [UserController::class, 'info']); //유저 정보 가져오기
 Route::middleware('auth:sanctum')->get('/user/partner_info', [UserController::class, 'partner_info']); //파트너 정보 가져오기
@@ -46,6 +46,8 @@ Route::middleware('auth:sanctum')->get('/user/area_info', [UserController::class
 Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update_user']);// 유저정보 업데이트
 Route::middleware('auth:sanctum')->put('/partner/update', [UserController::class, 'update_partner']);// 파트너정보 업데이트
 Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'leave']); // 회원 탈퇴
+
+Route::middleware('auth:sanctum')->put('/user/update/password', [UserController::class, 'update_password']);
 
 Route::post('/image/upload', [ImageController::class, 'upload']); // 이미지 업로드
 

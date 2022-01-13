@@ -562,66 +562,28 @@ class UserController extends Controller
     }
 
     public function update_password(Request $request){
-        //dd($request);
+
         $return = new \stdClass;
+        $login_user = Auth::user();
+        $user_id = $login_user->id;
 
-        $return->key = $request->key;
-        $return->value = $request->value;
+        $user = User::where('id' , $user_id)->first();
 
-        $key = $request->key;
-        $value = $request->value;
-        $email = $request->email;
-
-        $user_info = User::where('email',$email)->first(); // 변경 요청 된 고객 정보
-        $user_id= $user_info->id;
-
-        $imp_uid = $request->imp_uid;
-
-        
-        $_api_url = env('IMPORT_GETTOKEN_URL');     // 본인인증 후 access_token 리턴
-        $_param['imp_key'] = env('IMPORT_KEY');
-        $_param['imp_secret'] = env('IMPORT_SECRET');    // 아임포트 시크릿
-       
-        $_curl = curl_init();
-        curl_setopt($_curl,CURLOPT_URL,$_api_url);
-        curl_setopt($_curl,CURLOPT_POST,true);
-        curl_setopt($_curl,CURLOPT_SSL_VERIFYPEER,false);
-        curl_setopt($_curl,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($_curl,CURLOPT_POSTFIELDS,$_param);
-        $_result = curl_exec($_curl);
-        curl_close($_curl);
-        $_result = json_decode($_result);
-        
-        $access_token = $_result->response->access_token;
-        $headers = [
-            'Authorization:'.$access_token
-        ];
-        $url = "https://api.iamport.kr/certifications/".$imp_uid; // 정보 요청 url - access_token 추가
-        $_curl2 = curl_init();
-        curl_setopt($_curl2,CURLOPT_URL,$url);
-        curl_setopt($_curl2, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($_curl2,CURLOPT_RETURNTRANSFER,true);
-        $_result2 = curl_exec($_curl2);
-        $_result2 = json_decode($_result2);
+        if(Hash::check($request->old_password, $user->password)){
             
-        $user_infos= $_result2->response; // 인증 후 고객 정보
-        
-        $return = new \stdClass;
-        
-        $user_infos->phone = str_replace ( "-", "", $user_infos->phone); 
-        
-        if($user_infos->phone == $user_info->phone ){
-            $value = Hash::make($request->password);
+            $value = Hash::make($request->new_password);
             $result = User::where('id', $user_id)->update(['password' => $value]);
-            $return->status = "200";
-            $return->updated_id = $user_id;
-            $return->updated_email = $email;
-
+            
+            if($result){
+                $return->status = "200";
+                $return->msg = "패스워드 변경 성공";
+            }else{
+                $return->status = "500";
+                $return->msg = "패스워드 변경 실패";
+            }   
         }else{
-            $return->status = "500";
-            $return->msg = "인증된 정보와 회원정보가 일치하지 않습니다.";
-            $return->updated_id = $user_id;
-            $return->updated_email = $email;
+            $return->status = "601";
+            $return->msg = "패스워드가 일치하지 않습니다.";
         }
 
         return response()->json($return, 200)->withHeaders([
