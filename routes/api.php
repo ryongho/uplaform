@@ -57,9 +57,7 @@ Route::get('/service/list', [ServiceController::class, 'list']);// 서비스 리
 
 Route::middleware('auth:sanctum')->post('/device/regist', [DeviceController::class, 'regist']);//디바이스 정보 등록
 
-Route::middleware('auth:sanctum')->post('/reservation/regist/cs', [ReservationController::class, 'regist_cs']); //음식점 위생관리 예약
-Route::middleware('auth:sanctum')->post('/reservation/regist/cr', [ReservationController::class, 'regist_cr']); // 공간 정리 예약 
-Route::middleware('auth:sanctum')->post('/reservation/regist/lc', [ReservationController::class, 'regist_lc']); // 정리 교육 예약
+Route::middleware('auth:sanctum')->post('/reservation/regist', [ReservationController::class, 'regist']); //예약하기
 
 Route::middleware('auth:sanctum')->put('/reservation/payment', [ReservationController::class, 'payment']); // 결제하기
 

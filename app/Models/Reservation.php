@@ -15,23 +15,20 @@ class Reservation extends Model
      */
 
     protected $fillable = [
-        'user_id',
         'reservation_no',
-        'goods_id',
-        'hotel_id',
-        'room_id',
+        'reservation_type',
+        'services',
+        'service_detail',
+        'service_date',
+        'service_time',
+        'service_addr',
         'start_date',
-        'end_date',
-        'nights',
-        'price',
-        'peoples',
-        'request',
-        'status',
-        'name',
         'phone',
-        'visit_way',
+        'memo',
+        'price',
+        'learn_day',
+        'status',
         'created_at',
         'updated_at',
-        'update_id',
     ];
 }

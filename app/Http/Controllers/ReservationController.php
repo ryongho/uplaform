@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Goods;
-use App\Models\Hotel;
 use App\Models\Reservation;
-use App\Models\Push;
+use App\Models\Service;
 use App\Models\User;
-use App\Models\Sms;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -27,28 +24,32 @@ class ReservationController extends Controller
 
         $login_user = Auth::user();
         $user_id = $login_user->getId();
-        $user_type = $login_user->getType();
 
         $now = date('ymdHis');
         
-        $reservation_no = "R_".$now."_".$request->goods_id."_".$user_id;
+        $reservation_no = "R_".$now."_".$user_id;
 
-        $goods = Goods::where('id',$request->goods_id)->first();
-        if(isset($goods)){
+        $service_arr = explode(",",$request->services);
+        $services = Service::whereIn('id',$service_arr )->get();
+        $service_detail = "";
+
+        foreach($services as $service){
+            $service_detail .= $service->service_name." (".$service->price."),";
+        }
+
+        if(isset($services )){
             $result = Reservation::insertGetId([
-                'user_id'=> $user_id ,
+                'reservation_type'=> $request->reservation_type ,
                 'reservation_no'=> $reservation_no ,
-                'hotel_id'=> $goods->hotel_id ,
-                'room_id'=> $goods->room_id ,
-                'goods_id'=> $request->goods_id ,
-                'start_date'=> $request->start_date ,
-                'end_date'=> $request->end_date ,
-                'nights'=> $request->nights ,
-                'price'=> $goods->sale_price ,
-                'peoples'=> $request->peoples ,
-                'name'=> $request->name ,
+                'services'=> $request->services ,
+                'service_detail'=> $service_detail ,
+                'service_date'=> $request->service_date ,
+                'service_time'=> $request->service_time ,
+                'service_addr'=> $request->service_addr ,
                 'phone'=> $request->phone ,
-                'visit_way'=> $request->visit_way ,
+                'memo'=> $request->memo ,
+                'price'=> $request->price ,
+                'learn_day'=> $request->learn_day ,
                 'status'=> "W" ,
                 'created_at'=> Carbon::now(),
             ]);
@@ -64,35 +65,6 @@ class ReservationController extends Controller
             $return->status = "200";
             $return->msg = "success";
             $return->insert_id = $result ;
-
-            Goods::where('id',$request->goods_id)->update(['amount' => $goods->amount-1]);
-
-            $reservation = Reservation::where('id',$result)->first();
-            $user_info = User::where('id',$user_id )->first();
-
-            $hotel_info = Hotel::where('id',$goods->hotel_id)->first();
-
-            $title = "[루밍 예약 입금안내]";
-            $content = $user_info->name."님 아래 계좌로 입금해주시면 담당자 확인 후에 예약이 완료 됩니다.\n\n입금액 : ".number_format($goods->sale_price)."원 \n 입금계좌 : \n ".$hotel_info->account_number." ".$hotel_info->bank_name." (예금주 : ".$hotel_info->account_name.")";
-
-            $sms = new \stdClass;
-            $sms->phone = $user_info->phone;
-            $sms->content = $content;
-            $sms->title = $title;
-
-            Sms::send($sms);
-
-            $result = Push::insert([
-                'user_id'=> 1,
-                'content'=> $content ,
-                'type'=> "R" ,
-                'target_user' => $user_id ,
-                'target_id' => $result ,
-                'send_date'=> Carbon::now() ,
-                'created_at'=> Carbon::now(),
-            ]);
-            
-
             
         }else{
             $return->status = "500";
