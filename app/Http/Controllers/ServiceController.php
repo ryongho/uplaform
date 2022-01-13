@@ -15,17 +15,17 @@ class ServiceController extends Controller
 
     public function list(Request $request){
 
-        $service_type = $request_service_type;
-        $service_sub_type = $service_sub_type;
-        $service_part = $request_service_part;
+        $service_type = $request->service_type;
+        $service_sub_type = $request->service_sub_type;
+        $service_part = $request->service_part;
 
 
         $rows = Service::select(   
                             'id',  
                             'service_type', 
                             'service_sub_type', 
-                            'request_service_part', 
-                            'goods_name', 
+                            'service_part', 
+                            'service_name', 
                             'price', 
                                     
                         )         

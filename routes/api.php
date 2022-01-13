@@ -13,6 +13,8 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\PushController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\ServiceController;
+
 
 use App\Models\User;
 
@@ -50,6 +52,8 @@ Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'l
 Route::middleware('auth:sanctum')->put('/user/update/password', [UserController::class, 'update_password']);
 
 Route::post('/image/upload', [ImageController::class, 'upload']); // 이미지 업로드
+
+Route::get('/service/list', [ServiceController::class, 'list']);// 서비스 리스트
 
 Route::middleware('auth:sanctum')->post('/device/regist', [DeviceController::class, 'regist']);//디바이스 정보 등록
 
