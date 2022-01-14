@@ -61,8 +61,7 @@ Route::middleware('auth:sanctum')->post('/reservation/regist', [ReservationContr
 
 Route::middleware('auth:sanctum')->put('/reservation/payment', [ReservationController::class, 'payment']); // 결제하기
 
-Route::middleware('auth:sanctum')->get('/reservation/list/ing', [ReservationController::class, 'list_ing']);// 진행중 예약 리스트
-Route::middleware('auth:sanctum')->get('/reservation/list/end', [ReservationController::class, 'list_end']);// 지난 예약 리스트
+Route::middleware('auth:sanctum')->get('/reservation/list/user', [ReservationController::class, 'list_by_user']);// 예약 리스트
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);// 예약 상세 내용
 Route::middleware('auth:sanctum')->put('/reservation/cancel', [ReservationController::class, 'cancel']);// 예약 취소
 Route::middleware('auth:sanctum')->get('/reservation/payment/list', [ReservationController::class, 'payment_list']);// 결제 내역
