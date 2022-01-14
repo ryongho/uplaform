@@ -21,6 +21,8 @@ class Service extends Model
         'service_name',
         'price',
         'memo',
+        'visit_count',
+        'time',
         'send_date',
         'created_at',
         'updated_at',

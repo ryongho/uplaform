@@ -26,6 +26,9 @@ class ServiceController extends Controller
                             'service_sub_type', 
                             'service_part', 
                             'service_name', 
+                            'memo', 
+                            'visit_count', 
+                            'time', 
                             'price', 
                                     
                         )         
