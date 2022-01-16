@@ -135,7 +135,8 @@ class ReservationController extends Controller
                                 'service_detail',
                                 'learn_day',
                                 'price',
-                                'finished_date',
+                                'created_at',
+                                'finished_at',
                         )         
                         ->where('id' , $id)
                         ->first();
