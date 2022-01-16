@@ -118,9 +118,6 @@ class ReservationController extends Controller
     }
 
     
-
-    
-
     public function detail(Request $request){
     
         $id = $request->reservation_id;
@@ -138,6 +135,7 @@ class ReservationController extends Controller
                                 'service_detail',
                                 'learn_day',
                                 'price',
+                                'finished_date',
                         )         
                         ->where('id' , $id)
                         ->first();
