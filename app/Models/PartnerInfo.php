@@ -25,6 +25,7 @@ class PartnerInfo extends Model
         'reg_no',
         'biz_name',
         'address',
+        'address2',
         'ceo_name',
         'tel',
         'position',

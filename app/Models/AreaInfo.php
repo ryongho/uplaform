@@ -21,6 +21,7 @@ class AreaInfo extends Model
         'house_size',
         'area_size',
         'address',
+        'address2',
         'tel',
         'shop_type',
         'shop_size',
