@@ -158,13 +158,11 @@ class ReservationController extends Controller
         $return = new \stdClass;
         $login_user = Auth::user();
 
-        $return->status = "200";
-        $return->msg = "취소 등록";
-        //$return->id = $request->id;
 
         $user_id = $login_user->id;
 
-        $reservation_info = Reservation::where('id', $request->id)->where('user_id',$user_id)->first();
+        $reservation_info = Reservation::where('id', $request->reservation_id)->first();
+
         if(!$reservation_info){
             $return->status = "601";
             $return->msg = "유효한 예약 정보가 아닙니다.";
@@ -174,25 +172,15 @@ class ReservationController extends Controller
             $return->msg = "이미 취소 처리된 예약입니다.";
             $return->reservation_id = $request->id;
         }else{
-            if($reservation_info->status == "W"){ // 예약 대기 상태인 경우 
-                $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'C']); // 취소 확정
-            }else{//입금 완료 상태
-                $result = Reservation::where('id', $request->id)->where('user_id',$user_id)->update(['status' => 'X']);// 취소 신청 - 관리자 확인후 취소 가능
-
-                $title = "[예약 취소 신청 안내]";
-                $content = $reservation_info->name."님의 예약이 취소 요청 되었습니다. \n\n 담당자 확인 후 취소 처리 예정입니다. \n\n 예약번호 : ".$reservation_info->reservation_no."\n"."예약자 : ".$reservation_info->name;
-        
-                $sms = new \stdClass;
-                $sms->phone = str_replace('-','',$reservation_info->phone);
-                $sms->title = $title;
-                $sms->content = $content;
-
-                Sms::send($sms);
-            }
+            
+            $result = Reservation::where('id', $request->reservation_id)->update(['status' => 'C']); // 취소 
             
             if(!$result){
                 $return->status = "500";
-                $return->msg = "변경 실패";
+                $return->msg = "취소처리 실패 실패";
+            }else{
+                $return->status = "200";
+                $return->msg = "취소 완료";
             }
         }
 
