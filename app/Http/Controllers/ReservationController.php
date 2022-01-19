@@ -91,6 +91,7 @@ class ReservationController extends Controller
                                 'reservation_type',
                                 'service_date',
                                 'service_time',
+                                'learn_day',
                                 'status',    
                         )         
                         ->where('id' ,">", $s_no)
