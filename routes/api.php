@@ -14,6 +14,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\PushController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ApplyController;
 
 
 use App\Models\User;
@@ -65,11 +66,16 @@ Route::middleware('auth:sanctum')->get('/reservation/list/user', [ReservationCon
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);// 예약 상세 내용
 Route::middleware('auth:sanctum')->put('/reservation/cancel', [ReservationController::class, 'cancel']);// 예약 취소
 Route::middleware('auth:sanctum')->get('/reservation/payment/list', [ReservationController::class, 'payment_list']);// 결제 내역
+
+Route::middleware('auth:sanctum')->get('/request/list/', [ReservationController::class, 'reqeust_list']);// 서비스 요청 리스트
+Route::middleware('auth:sanctum')->get('/request/detail', [ReservationController::class, 'request_detail']);// 서비스 요청 상세 내용
+Route::middleware('auth:sanctum')->post('/apply/regist', [ApplyController::class, 'regist']);// 지원하기
+
 /*
 Route::middleware('auth:sanctum')->post('/service/regist', [ServiceController::class, 'regist']); //서비스 지원
 Route::middleware('auth:sanctum')->get('/service/list/ing', [ServiceController::class, 'list_ing']);// 진행중 서비스 리스트
 Route::middleware('auth:sanctum')->get('/service/list/end', [ServiceController::class, 'list_end']);// 지난 서비스 리스트
-Route::middleware('auth:sanctum')->get('/service/detail', [ServiceController::class, 'detail']);// 서비스 상세 내용
+
 Route::middleware('auth:sanctum')->put('/service/cancel', [ServiceController::class, 'cancel']);// 서비스 취소
 Route::middleware('auth:sanctum')->get('/service/sale/list', [ReservationController::class, 'sale_list']);// 정산 내역
 Route::middleware('auth:sanctum')->get('/service/sale/detail', [ReservationController::class, 'sale_detail']);// 정산 내역 상세

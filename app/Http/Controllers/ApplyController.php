@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
-use App\Models\Service;
+use App\Models\Apply;
 use App\Models\User;
 use App\Models\PartnerInfo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
-class ReservationController extends Controller
+class ApplyController extends Controller
 {
     public function regist(Request $request)
     {
@@ -26,41 +26,13 @@ class ReservationController extends Controller
         $login_user = Auth::user();
         $user_id = $login_user->getId();
 
-        $now = date('ymdHis');
-        
-        $reservation_no = "R_".$now."_".$user_id;
+        $result = Apply::insertGetId([
+            'user_id' => $user_id,
+            'reservation_id'=> $request->reservation_id ,
+            'status'=> "A" ,
+            'created_at'=> Carbon::now(),
+        ]);
 
-        $service_arr = explode(",",$request->services);
-        $services = Service::whereIn('id',$service_arr )->get();
-        $service_detail = "";
-
-        foreach($services as $service){
-            $service_detail .= $service->service_name." (".number_format($service->price)."원),";
-        }
-
-        if(isset($services )){
-            $result = Reservation::insertGetId([
-                'user_id' => $user_id,
-                'reservation_type'=> $request->reservation_type ,
-                'reservation_no'=> $reservation_no ,
-                'services'=> $request->services ,
-                'service_detail'=> $service_detail ,
-                'service_date'=> $request->service_date ,
-                'service_time'=> $request->service_time ,
-                'service_addr'=> $request->service_addr ,
-                'phone'=> $request->phone ,
-                'memo'=> $request->memo ,
-                'price'=> $request->price ,
-                'learn_day'=> $request->learn_day ,
-                'status'=> "W" ,
-                'created_at'=> Carbon::now(),
-            ]);
-
-        }else{
-            $result =  0;
-        }
-            
-        
 
         if($result){ //DB 입력 성공
 
@@ -177,7 +149,6 @@ class ReservationController extends Controller
                                 'service_date',
                                 'service_time',
                                 'learn_day',    
-                                DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
                         )         
                         ->where('id' ,">", $s_no)
                         ->where('status', 'W')
@@ -221,7 +192,6 @@ class ReservationController extends Controller
                                 'price',
                                 'created_at',
                                 'finished_at',
-                                DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
                         )         
                         ->where('id' , $id)
                         ->first();
