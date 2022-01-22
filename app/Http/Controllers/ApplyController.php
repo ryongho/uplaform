@@ -59,21 +59,22 @@ class ApplyController extends Controller
         $row = $request->row;
         $type = $request->type;
 
-        $rows = Reservation::select(   
-                                'id as reservation_id',
-                                'reservation_type',
-                                'service_date',
-                                'service_time',
-                                'learn_day',
-                                'status',    
+        $rows = apply::join('reservations', 'reservations.id', '=', 'applies.reservation_id')
+                        ->select(   
+                                'applies.id as apply_id',
+                                'reservations.reservation_type',
+                                'reservations.service_date',
+                                'reservations.service_time',
+                                'reservations.learn_day',
+                                'applies.status',    
                         )         
-                        ->where('id' ,">", $s_no)
-                        ->where('user_id', $user_id)
+                        ->where('applies.id' ,">", $s_no)
+                        ->where('applies.user_id', $user_id)
                         ->when($type, function ($query, $type) {
                             if($type == "ing"){
-                                return $query->whereIn('status', ['W','R']);
+                                return $query->whereIn('applies.status', ['A']);
                             }else if($type == "end"){
-                                return $query->whereIn('status', ['S','C']);
+                                return $query->whereIn('applies.status', ['S','C']);
                             }
                             
                         })
@@ -94,25 +95,27 @@ class ApplyController extends Controller
     
     public function detail(Request $request){
     
-        $id = $request->reservation_id;
+        $id = $request->apply_id;
 
-        $rows = Reservation::select(   
-                                'id as reservation_id',
-                                'reservation_type',
-                                'service_date',
-                                'service_time',
-                                'status',
-                                'reservation_no',    
-                                'service_addr',
-                                'memo',
-                                'phone',
-                                'service_detail',
-                                'learn_day',
-                                'price',
-                                'created_at',
-                                'finished_at',
+        $rows = apply::join('reservations', 'reservations.id', '=', 'applies.reservation_id')
+                        ->select(      
+                                'applies.id as apply_id',
+                                'reservations.reservation_type',
+                                'reservations.service_date',
+                                'reservations.service_time',
+                                'reservations.learn_day',
+                                'applies.status',
+                                'reservations.reservation_no',    
+                                'reservations.service_addr',
+                                'reservations.memo',
+                                'reservations.phone',
+                                'reservations.service_detail',
+                                'reservations.learn_day',
+                                'reservations.price',
+                                'reservations.created_at',
+                                'reservations.finished_at',
                         )         
-                        ->where('id' , $id)
+                        ->where('applies.id' , $id)
                         ->first();
 
         $return = new \stdClass;
@@ -127,108 +130,27 @@ class ApplyController extends Controller
 
     }
 
-    public function reqeust_list(Request $request){
-
-        $login_user = Auth::user();
-        $user_id = $login_user->id;
-
-        $s_no = $request->start_no;
-        $row = $request->row;
-        $type = $request->type;
-
-        $user_info = User::where('id',$user_id)->first();
-        $partner_info = PartnerInfo::where('user_id',$user_id)->first();
-        $partner_type = $partner_info['partner_type'];
-        $addrs = explode(' ',$partner_info['address']);
-        $addr = $addrs[0].' '.$addrs[1];
-
-
-        $rows = Reservation::select(   
-                                'id as reservation_id',
-                                'reservation_type',
-                                'service_date',
-                                'service_time',
-                                'learn_day',    
-                        )         
-                        ->where('id' ,">", $s_no)
-                        ->where('status', 'W')
-                        ->where('reservation_type', $partner_type)
-                        ->when($type, function ($query, $type) {
-                            if($type == "local"){
-                                return $query->where('service', 'like', "%".$addr."%");
-                            }
-                            
-                        })
-                        ->limit($row)->get();
-
-        $return = new \stdClass;
-
-        $return->status = "200";
-        $return->cnt = count($rows);
-        $return->data = $rows ;
-
-        return response()->json($return, 200)->withHeaders([
-            'Content-Type' => 'application/json'
-        ]);
-
-    }
-
-    public function request_detail(Request $request){
-    
-        $id = $request->reservation_id;
-
-        $rows = Reservation::select(   
-                                'id as reservation_id',
-                                'reservation_type',
-                                'service_date',
-                                'service_time',
-                                'status',
-                                'reservation_no',    
-                                'service_addr',
-                                'memo',
-                                'phone',
-                                'service_detail',
-                                'learn_day',
-                                'price',
-                                'created_at',
-                                'finished_at',
-                        )         
-                        ->where('id' , $id)
-                        ->first();
-
-        $return = new \stdClass;
-
-        $return->status = "200";
-        $return->data = $rows ;
-
-        return response()->json($return, 200)->withHeaders([
-            'Content-Type' => 'application/json'
-        ]);
-
-
-    }
 
     public function cancel(Request $request){
         //dd($request);
         $return = new \stdClass;
         $login_user = Auth::user();
 
-
         $user_id = $login_user->id;
 
-        $reservation_info = Reservation::where('id', $request->reservation_id)->first();
-
-        if(!$reservation_info){
+        $apply_info = Apply::where('id', $request->apply_id)->where('user_id', $user_id)->first();
+        
+        if(!$apply_info){
             $return->status = "601";
-            $return->msg = "유효한 예약 정보가 아닙니다.";
-            $return->reservation_id = $request->id;
-        }else if($reservation_info->status == "C"){
+            $return->msg = "유효한 지원 정보가 아닙니다.";
+            $return->apply_id = $request->apply_id;
+        }else if($apply_info->status == "C"){
             $return->status = "602";
-            $return->msg = "이미 취소 처리된 예약입니다.";
-            $return->reservation_id = $request->id;
+            $return->msg = "이미 취소 처리된 지원입니다.";
+            $return->apply_id = $request->apply_id;
         }else{
             
-            $result = Reservation::where('id', $request->reservation_id)->update(['status' => 'C']); // 취소 
+            $result = Apply::where('id', $request->apply_id)->where('user_id', $user_id)->update(['status' => 'C']); // 취소 
             
             if(!$result){
                 $return->status = "500";
@@ -278,143 +200,7 @@ class ApplyController extends Controller
 
     }
 
-    public function request_confirm(Request $request){
-
-        $login_user = Auth::user();
-        $user_id = $login_user->getId();
-        $return = new \stdClass;
-
-        $reservation_id = $request->reservation_id;
-
-        $res_user_id = Reservation::select('user_id')->where('reservations.id',$reservation_id)->first();
-
-        if($res_user_id->user_id == $user_id){
-            $res_info = Reservation::join('hotels', 'reservations.hotel_id', '=', 'hotels.id')
-                                ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
-                                ->join('goods', 'reservations.goods_id', '=', 'goods.id')
-                                ->select(   'hotels.type as shop_type',
-                                    'reservations.reservation_no as reservation_no', 
-                                    'reservations.start_date as start_date', 
-                                    'reservations.end_date as end_date', 
-                                    'reservations.nights as nights', 
-                                    'reservations.peoples as peoples',
-                                    'reservations.created_at as created_at',
-                                    'reservations.updated_at as updated_at',
-                                    'reservations.status as status',
-                                    'reservations.name as name',
-                                    'reservations.phone as phone',
-                                    'reservations.id as reservation_id', 
-                                    'reservations.price as reservation_price', 
-                                    'rooms.name as room_name',
-                                    'goods.goods_name as goods_name', 
-                                    'goods.sale_price as sale_price',
-                                    'hotels.name as hotel_name',
-                                    'hotels.tel as hotel_tel',
-                                    'goods.id as goods_id',
-                                    DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
-                        )         
-                        ->where('reservations.id',$reservation_id)
-                        ->where('reservations.user_id', $user_id)
-                        ->first();
-
-            $result = Reservation::where('id', $reservation_id)->update(['status' => 'P']); // 입금확인
-
-            $title = "[루밍 입금 확인 요청]";
-            $content = $res_info->hotel_name." 담당자님 ".$res_info->name."님이 예약하신 '".$res_info->goods_name."' 상품에 대한 입금 확인을 요청하셨습니다. \n\n예약번호 : ".$res_info->reservation_no."\n"."예약자 : ".$res_info->name."\n"."입금액 : ".number_format($res_info->reservation_price)."원";
     
-            $sms = new \stdClass;
-            $sms->phone = str_replace('-','',$res_info->hotel_tel);
-            $sms->title = $title;
-            $sms->content = $content;
-
-            Sms::send($sms);
-
-            $return->status = "200";
-            $return->msg = "예약 확인이 요청되었습니다." ;
-        }else{
-            $return->status = "500";
-            $return->reason = "입금확인 요청 권한이 없습니다." ;
-        }
-
-        return response()->json($return, 200)->withHeaders([
-            'Content-Type' => 'application/json'
-        ]);;
-
-    }
-
-    public function confirm(Request $request){
-
-        $login_user = Auth::user();
-        $user_id = $login_user->getId();
-        $return = new \stdClass;
-
-        $reservation_id = $request->reservation_id;
-
-        $res_info = Reservation::join('hotels', 'reservations.hotel_id', '=', 'hotels.id')
-                                ->join('rooms', 'reservations.room_id', '=', 'rooms.id')
-                                ->join('goods', 'reservations.goods_id', '=', 'goods.id')
-                                ->select(   'hotels.type as shop_type',
-                                    'reservations.reservation_no as reservation_no', 
-                                    'reservations.start_date as start_date', 
-                                    'reservations.end_date as end_date', 
-                                    'reservations.nights as nights', 
-                                    'reservations.peoples as peoples',
-                                    'reservations.created_at as created_at',
-                                    'reservations.updated_at as updated_at',
-                                    'reservations.status as status',
-                                    'reservations.name as name',
-                                    'reservations.phone as phone',
-                                    'reservations.id as reservation_id', 
-                                    'reservations.price as reservation_price', 
-                                    'rooms.name as room_name',
-                                    'goods.goods_name as goods_name', 
-                                    'goods.sale_price as sale_price',
-                                    'hotels.name as hotel_name',
-                                    'hotels.tel as hotel_tel',
-                                    'hotels.id as hotel_id',
-                                    'goods.id as goods_id',
-                                    DB::raw('(select file_name from goods_images where goods_images.goods_id = goods.id order by order_no asc limit 1 ) as thumb_nail'),
-                        )         
-                        ->where('reservations.id',$reservation_id)
-                        ->first();
-
-
-        $hotel_info = Hotel::where('id',$res_info->hotel_id)->first();
-
-        if($hotel_info->partner_id == $user_id){
-            
-            $result = Reservation::where('id', $request->reservation_id)->update(['status' => 'S']); // 예약 확정
-
-            if($result){
-                $title = "[루밍 예약 확정안내]";
-                $content = $res_info->name."님이 예약하신 '".$res_info->goods_name."' 상품의 예약이 확정되었습니다. \n\n예약번호 : ".$res_info->reservation_no."\n"."예약자 : ".$res_info->name."\n"."입금액 : ".number_format($res_info->reservation_price);
-        
-                $sms = new \stdClass;
-                $sms->phone = str_replace('-','',$res_info->phone);
-                $sms->title = $title;
-                $sms->content = $content;
-
-                Sms::send($sms);
-
-                $return->status = "200";
-                $return->msg = "예약 확인이 요청되었습니다." ;
-
-            }else{
-                $return->status = "500";
-                $return->msg = "예약 변경에 실패했습니다." ;
-            }
-            
-            
-        }else{
-            $return->status = "500";
-            $return->reason = "입금확인 요청 권한이 없습니다." ;
-        }
-
-        return response()->json($return, 200)->withHeaders([
-            'Content-Type' => 'application/json'
-        ]);;
-
-    }
 
     
 
