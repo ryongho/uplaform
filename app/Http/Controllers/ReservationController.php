@@ -207,6 +207,7 @@ class ReservationController extends Controller
             }else{
                 $rows[$i]['applied'] = "N";
             }
+            $i++;
         }
 
         $return = new \stdClass;
