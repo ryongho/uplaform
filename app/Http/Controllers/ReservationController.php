@@ -107,10 +107,20 @@ class ReservationController extends Controller
                         })
                         ->limit($row)->get();
 
+        $cnt = Reservation::where('user_id', $user_id)
+            ->when($type, function ($query, $type) {
+                if($type == "ing"){
+                    return $query->whereIn('status', ['W','R']);
+                }else if($type == "end"){
+                    return $query->whereIn('status', ['S','C']);
+                }
+            
+        })->count();
+
         $return = new \stdClass;
 
         $return->status = "200";
-        $return->cnt = count($rows);
+        $return->cnt = $cnt;
         $return->data = $rows ;
 
         return response()->json($return, 200)->withHeaders([
@@ -197,7 +207,7 @@ class ReservationController extends Controller
                             
                         })
                         ->limit($row)->get();
-                        
+
         $cnt = Reservation::where('status', 'W')
                 ->where('reservation_type', $partner_type)
                 ->when($flag, function ($query, $flag) {

@@ -79,11 +79,21 @@ class ApplyController extends Controller
                             
                         })
                         ->limit($row)->get();
-
+        
+        $cnt = apply::join('reservations', 'reservations.id', '=', 'applies.reservation_id')
+        ->where('applies.user_id', $user_id)
+        ->when($type, function ($query, $type) {
+            if($type == "ing"){
+                return $query->whereIn('applies.status', ['A']);
+            }else if($type == "end"){
+                return $query->whereIn('applies.status', ['S','C']);
+            }
+            
+        })->count();
         $return = new \stdClass;
 
         $return->status = "200";
-        $return->cnt = count($rows);
+        $return->cnt = $cnt;
         $return->data = $rows ;
 
         return response()->json($return, 200)->withHeaders([
