@@ -129,6 +129,7 @@ class ReservationController extends Controller
                                 'reservation_type',
                                 'service_date',
                                 'service_time',
+                                'services',
                                 'status',
                                 'reservation_no',    
                                 'service_addr',
@@ -224,6 +225,9 @@ class ReservationController extends Controller
 
     public function request_detail(Request $request){
     
+        $login_user = Auth::user();
+        $user_id = $login_user->id;
+
         $id = $request->reservation_id;
 
         $rows = Reservation::select(   
@@ -231,6 +235,7 @@ class ReservationController extends Controller
                                 'reservation_type',
                                 'service_date',
                                 'service_time',
+                                'services',
                                 'status',
                                 'reservation_no',    
                                 'service_addr',
@@ -242,10 +247,20 @@ class ReservationController extends Controller
                                 'created_at',
                                 'finished_at',
                                 DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
+                                DB::raw('(select count(*) from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied'),
+                                DB::raw('(select created_at from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied_at'),
                         )         
                         ->where('id' , $id)
                         ->first();
 
+        
+        if($rows['applied'] > 0){
+            $rows['applied'] = "Y";
+        }else{
+            $rows['applied'] = "N";
+        }
+        
+        
         $return = new \stdClass;
 
         $return->status = "200";
