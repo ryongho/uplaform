@@ -197,7 +197,15 @@ class ReservationController extends Controller
                             
                         })
                         ->limit($row)->get();
-
+                        
+        $cnt = Reservation::where('status', 'W')
+                ->where('reservation_type', $partner_type)
+                ->when($flag, function ($query, $flag) {
+                    if($flag->type == "local"){
+                        return $query->where('service_addr', 'like', "%".$flag->addr."%");
+                    }
+                    
+                })->count();
          $i = 0;
 
         foreach($rows as $row){
@@ -214,7 +222,7 @@ class ReservationController extends Controller
         $return = new \stdClass;
 
         $return->status = "200";
-        $return->cnt = count($rows);
+        $return->cnt = $cnt;
         $return->data = $rows ;
 
         return response()->json($return, 200)->withHeaders([
