@@ -170,6 +170,11 @@ class ReservationController extends Controller
         $addrs = explode(' ',$partner_info['address']);
         $addr = $addrs[0].' '.$addrs[1];
 
+        $flag = new \stdClass;
+
+        $flag->type = $type;
+        $flag->addr = $addr;
+
 
         $rows = Reservation::select(   
                                 'id as reservation_id',
@@ -178,17 +183,31 @@ class ReservationController extends Controller
                                 'service_time',
                                 'learn_day',    
                                 DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
+                                DB::raw('(select count(*) from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied'),
+                                'service_addr'
                         )         
                         ->where('id' ,">", $s_no)
                         ->where('status', 'W')
                         ->where('reservation_type', $partner_type)
-                        ->when($type, function ($query, $type) {
-                            if($type == "local"){
-                                return $query->where('service', 'like', "%".$addr."%");
+                        ->when($flag, function ($query, $flag) {
+                            if($flag->type == "local"){
+                                return $query->where('service_addr', 'like', "%".$flag->addr."%");
                             }
                             
                         })
                         ->limit($row)->get();
+
+         $i = 0;
+
+        foreach($rows as $row){
+            $service_addrs = explode(' ',$row['service_addr']);
+            $rows[$i]['service_addr'] = $service_addrs[0].' '.$service_addrs[1];
+            if($row['applied'] > 0){
+                $rows[$i]['applied'] = "Y";
+            }else{
+                $rows[$i]['applied'] = "N";
+            }
+        }
 
         $return = new \stdClass;
 
