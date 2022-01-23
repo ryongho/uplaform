@@ -187,7 +187,8 @@ class ReservationController extends Controller
         $flag->addr = $addr;
 
 
-        $rows = Reservation::select(   
+        $rows = Reservation::select(
+
                                 'id as reservation_id',
                                 'reservation_type',
                                 'service_date',
@@ -195,6 +196,7 @@ class ReservationController extends Controller
                                 'learn_day',    
                                 DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
                                 DB::raw('(select count(*) from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied'),
+                                DB::raw('(select id from applies where reservation_id = reservations.id and user_id = '.$user_id.') as apply_id'),
                                 'service_addr'
                         )         
                         ->where('id' ,">", $s_no)
@@ -267,6 +269,7 @@ class ReservationController extends Controller
                                 DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
                                 DB::raw('(select count(*) from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied'),
                                 DB::raw('(select created_at from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied_at'),
+                                DB::raw('(select id from applies where reservation_id = reservations.id and user_id = '.$user_id.') as apply_id'),
                         )         
                         ->where('id' , $id)
                         ->first();

@@ -71,6 +71,7 @@ Route::middleware('auth:sanctum')->get('/request/list/', [ReservationController:
 Route::middleware('auth:sanctum')->get('/request/detail', [ReservationController::class, 'request_detail']);// 서비스 요청 상세 내용
 Route::middleware('auth:sanctum')->post('/apply/regist', [ApplyController::class, 'regist']);// 지원하기
 Route::middleware('auth:sanctum')->put('/apply/cancel', [ApplyController::class, 'cancel']);// 지원 취소
+Route::middleware('auth:sanctum')->put('/apply/complete', [ApplyController::class, 'complete']);// 서비스완료 취소
 Route::middleware('auth:sanctum')->get('/apply/list/user', [ApplyController::class, 'list_by_user']);// 예약 리스트
 Route::middleware('auth:sanctum')->get('/apply/detail', [ApplyController::class, 'detail']);// 예약 상세 내용
 

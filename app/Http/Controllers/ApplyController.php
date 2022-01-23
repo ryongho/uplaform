@@ -74,7 +74,7 @@ class ApplyController extends Controller
                             if($type == "ing"){
                                 return $query->whereIn('applies.status', ['A']);
                             }else if($type == "end"){
-                                return $query->whereIn('applies.status', ['S','C']);
+                                return $query->whereIn('applies.status', ['S','C','E']);
                             }
                             
                         })
@@ -124,6 +124,11 @@ class ApplyController extends Controller
                                 'reservations.price',
                                 'reservations.created_at',
                                 'reservations.finished_at',
+                                'canceled_at',
+                                'matched_at',
+                                'cancel_comment',
+                                'service_comment',
+
                         )         
                         ->where('applies.id' , $id)
                         ->first();
@@ -160,14 +165,58 @@ class ApplyController extends Controller
             $return->apply_id = $request->apply_id;
         }else{
             
-            $result = Apply::where('id', $request->apply_id)->where('user_id', $user_id)->update(['status' => 'C']); // 취소 
-            
+            $result = Apply::where('id', $request->apply_id)->where('user_id', $user_id)
+                    ->update([
+                        'status' => 'C',
+                        'canceled_at' => Carbon::now(),
+                        'cancel_comment' => $request->comment,
+                    ]); // 취소 
             if(!$result){
                 $return->status = "500";
                 $return->msg = "취소처리 실패 실패";
             }else{
                 $return->status = "200";
                 $return->msg = "취소 완료";
+            }
+        }
+
+    
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
+    public function complete(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+        $login_user = Auth::user();
+
+        $user_id = $login_user->id;
+
+        $apply_info = Apply::where('id', $request->apply_id)->where('user_id', $user_id)->first();
+        
+        if(!$apply_info){
+            $return->status = "601";
+            $return->msg = "유효한 지원 정보가 아닙니다.";
+            $return->apply_id = $request->apply_id;
+        }else if($apply_info->status == "C"){
+            $return->status = "602";
+            $return->msg = "취소 처리된 지원입니다.";
+            $return->apply_id = $request->apply_id;
+        }else{
+            
+            $result = Apply::where('id', $request->apply_id)->where('user_id', $user_id)
+                    ->update([
+                        'status' => 'E',
+                        'service_comment' => $request->comment,
+                    ]); // 완료
+            if(!$result){
+                $return->status = "500";
+                $return->msg = "완료 처리 실패 실패";
+            }else{
+                $return->status = "200";
+                $return->msg = "처리 완료";
             }
         }
 

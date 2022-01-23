@@ -20,5 +20,9 @@ class Apply extends Model
         'status',
         'created_at',
         'updated_at',
+        'canceled_at',
+        'matched_at',
+        'cancel_comment',
+        'service_comment',
     ];
 }
