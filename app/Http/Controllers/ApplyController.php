@@ -124,6 +124,7 @@ class ApplyController extends Controller
                                 'reservations.price',
                                 'reservations.created_at',
                                 'reservations.finished_at',
+                                'reservations.services',
                                 'canceled_at',
                                 'matched_at',
                                 'cancel_comment',
