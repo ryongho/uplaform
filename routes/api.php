@@ -16,6 +16,7 @@ use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ApplyController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PayController;
 
 
 use App\Models\User;
@@ -50,6 +51,7 @@ Route::middleware('auth:sanctum')->get('/user/area_info', [UserController::class
 Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update_user']);// 유저정보 업데이트
 Route::middleware('auth:sanctum')->put('/partner/update', [UserController::class, 'update_partner']);// 파트너정보 업데이트
 Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'leave']); // 회원 탈퇴
+Route::middleware('auth:sanctum')->put('/user/change/type', [UserController::class, 'change_user_type']);// 유저타입 전환
 
 Route::middleware('auth:sanctum')->put('/user/update/password', [UserController::class, 'update_password']);
 
@@ -63,6 +65,8 @@ Route::middleware('auth:sanctum')->post('/reservation/regist', [ReservationContr
 
 Route::middleware('auth:sanctum')->post('/payment/regist', [PaymentController::class, 'regist']); // 결제내역 등록
 Route::middleware('auth:sanctum')->get('/payment/list/user', [PaymentController::class, 'list_by_user']);// 결제 리스트
+Route::middleware('auth:sanctum')->get('/pay/list/user', [PayController::class, 'list_by_user']);// 정산 리스트
+Route::middleware('auth:sanctum')->get('/pay/detail', [PayController::class, 'detail']);// 정산 상세
 
 Route::middleware('auth:sanctum')->get('/reservation/list/user', [ReservationController::class, 'list_by_user']);// 예약 리스트
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);// 예약 상세 내용

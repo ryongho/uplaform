@@ -682,6 +682,33 @@ class UserController extends Controller
 
     }
 
+    public function change_user_type(Request $request){ // 유저타입 전환 
+        $return = new \stdClass;
+        
+        $user_type = $request->user_type;//일반 : 0, 기업 1
+
+        $login_user = Auth::user();
+
+        $return->status = "200";
+        $return->msg = "변경 완료";
+        
+        $user_id = $login_user->id;
+
+        $result = User::where('id', $user_id)->update(['user_type' => $user_type]);
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+        
+
+    }
+
     
 
 

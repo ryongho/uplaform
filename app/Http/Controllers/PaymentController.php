@@ -76,7 +76,8 @@ class PaymentController extends Controller
                             'reservations.price',
                             'payments.pay_type',
                     )
-                    ->where('payments.id','>',$start_no) 
+                    ->where('payments.id','>',$start_no)
+                    ->where('payments.user_id',$user_id) 
                     ->orderby('payments.id','desc')
                     ->get();
     

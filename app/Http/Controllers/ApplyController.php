@@ -9,6 +9,7 @@ use App\Models\Reservation;
 use App\Models\Apply;
 use App\Models\User;
 use App\Models\PartnerInfo;
+use App\Models\Pay;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -196,6 +197,7 @@ class ApplyController extends Controller
         $user_id = $login_user->id;
 
         $apply_info = Apply::where('id', $request->apply_id)->where('user_id', $user_id)->first();
+        $reservation_info = Reservation::where('id', $apply_info->reservation_id)->first();
         
         if(!$apply_info){
             $return->status = "601";
@@ -211,10 +213,23 @@ class ApplyController extends Controller
                     ->update([
                         'status' => 'E',
                         'service_comment' => $request->comment,
+                        'serviced_at' => Carbon::now(),
                     ]); // 완료
-            if(!$result){
+                   
+
+            
+            $result2 = Pay::insert([
+                'user_id' => $user_id,
+                'reservation_id'=> $apply_info->reservation_id ,
+                'state'=> "W" ,
+                'price'=> $reservation_info->price ,
+                'amount'=> ($reservation_info->price * 0.8) ,
+                'created_at'=> Carbon::now(),
+            ]);
+
+            if(!$result || !$result2){
                 $return->status = "500";
-                $return->msg = "완료 처리 실패 실패";
+                $return->msg = "완료 처리 실패";
             }else{
                 $return->status = "200";
                 $return->msg = "처리 완료";
