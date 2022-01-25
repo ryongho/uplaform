@@ -15,6 +15,7 @@ use App\Http\Controllers\PushController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ApplyController;
+use App\Http\Controllers\PaymentController;
 
 
 use App\Models\User;
@@ -60,7 +61,8 @@ Route::middleware('auth:sanctum')->post('/device/regist', [DeviceController::cla
 
 Route::middleware('auth:sanctum')->post('/reservation/regist', [ReservationController::class, 'regist']); //예약하기
 
-Route::middleware('auth:sanctum')->put('/reservation/payment', [ReservationController::class, 'payment']); // 결제하기
+Route::middleware('auth:sanctum')->post('/payment/regist', [PaymentController::class, 'regist']); // 결제내역 등록
+Route::middleware('auth:sanctum')->get('/payment/list/user', [PaymentController::class, 'list_by_user']);// 결제 리스트
 
 Route::middleware('auth:sanctum')->get('/reservation/list/user', [ReservationController::class, 'list_by_user']);// 예약 리스트
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);// 예약 상세 내용
