@@ -80,7 +80,7 @@ class PaymentController extends Controller
 
         $rows = Payment::join('reservations', 'reservations.id', '=', 'payments.reservation_id')
                     ->select('payments.id as payment_id',
-                            'created_at as paid_at',
+                            'payments.created_at as paid_at',
                             'reservations.reservation_type',
                             'reservations.services',
                             'reservations.price',
