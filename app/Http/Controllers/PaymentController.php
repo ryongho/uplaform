@@ -25,21 +25,31 @@ class PaymentController extends Controller
         
         $result = Payment::insert([
             'reservation_id'=> $request->reservation_id ,
-            'imp_uid'=> $request->imp_uid ,
-            'merchant_uid'=> $request->merchant_uid ,
-            'order_name'=> $request->order_name ,
             'user_id'=> $user_id ,
-            'price'=> $request->price ,
-            'pay_type'=> $request->pay_type ,
-            'pg'=> $request->pg ,
-            'pg_orderno'=> $request->pg_orderno ,
-            'detail'=> $request->detail ,
-            'payed_at'=> $request->payed_at ,
-            'status'=> $request->status ,
+            'imp_uid'=> $request->imp_uid ,
+            'pay_method'=> $request->pay_method ,
+            'merchant_uid'=> $request->merchant_uid ,
+            'name'=> $request->order_name ,
+            'paid_amount'=> $request->paid_amount ,
+            'currency'=> $request->currency ,
+            'pg_provider'=> $request->pg_provider ,
+            'pg_type'=> $request->pg_type ,
+            'pg_tid'=> $request->pg_tid ,
+            'apply_num'=> $request->apply_num ,
             'buyer_name'=> $request->buyer_name ,
-            'buyer_phone'=> $request->buyer_phone ,
+            'buyer_tel'=> $request->buyer_tel ,
             'buyer_email'=> $request->buyer_email ,
             'buyer_addr'=> $request->buyer_addr ,
+            'custom_data'=> $request->custom_data ,
+            'paid_at'=> $request->paid_at ,
+            'status'=> $request->status ,
+            'receipt_url'=> $request->receipt_url ,
+            'cpid'=> $request->cpid ,
+            'data'=> $request->data ,
+            'card_name'=> $request->card_name ,
+            'bank_name'=> $request->bank_name ,
+            'card_quota'=> $request->card_quota ,
+            'card_number'=> $request->card_number ,
             'created_at' => Carbon::now(),
         ]);
 
@@ -70,11 +80,13 @@ class PaymentController extends Controller
 
         $rows = Payment::join('reservations', 'reservations.id', '=', 'payments.reservation_id')
                     ->select('payments.id as payment_id',
-                            'payed_at',
+                            'created_at as paid_at',
                             'reservations.reservation_type',
                             'reservations.services',
                             'reservations.price',
-                            'payments.pay_type',
+                            'payments.pay_method',
+                            'payments.card_name',
+                            'payments.card_number',
                     )
                     ->where('payments.id','>',$start_no)
                     ->where('payments.user_id',$user_id) 
@@ -141,7 +153,7 @@ class PaymentController extends Controller
         $return = new \stdClass;
         
          
-        $rows = Payment::select('status','pg','pg_orderno','apply_id','buyer_name','buyer_phone','buyer_email','pay_type','payed_at','status','price')
+        $rows = Payment::select('status','pg_provider','pg_tid','imp_504552668921','buyer_name','buyer_tel','buyer_email','pay_method','created_at','status','paid_amount')
                     ->where('id',$payment_id) 
                     ->first();
 
