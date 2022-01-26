@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Push;
-use App\Models\Goods;
-use App\Models\Hotel;
-use App\Models\Room;
 use App\Models\Comparaison;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;

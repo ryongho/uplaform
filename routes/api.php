@@ -72,6 +72,8 @@ Route::middleware('auth:sanctum')->get('/reservation/list/user', [ReservationCon
 Route::middleware('auth:sanctum')->get('/reservation/detail', [ReservationController::class, 'detail']);// 예약 상세 내용
 Route::middleware('auth:sanctum')->put('/reservation/cancel', [ReservationController::class, 'cancel']);// 예약 취소
 Route::middleware('auth:sanctum')->get('/reservation/payment/list', [ReservationController::class, 'payment_list']);// 결제 내역
+Route::middleware('auth:sanctum')->delete('/reservation/delete', [ReservationController::class, 'delete']);// 예약 삭제
+
 
 Route::middleware('auth:sanctum')->get('/request/list/', [ReservationController::class, 'reqeust_list']);// 서비스 요청 리스트
 Route::middleware('auth:sanctum')->get('/request/detail', [ReservationController::class, 'request_detail']);// 서비스 요청 상세 내용
@@ -95,7 +97,7 @@ Route::middleware('auth:sanctum')->post('/card/regist', [CardController::class, 
 Route::middleware('auth:sanctum')->get('/card/list', [CardController::class, 'list']); //카드 리스트
 Route::middleware('auth:sanctum')->put('/card/regist/default_card', [CardController::class, 'regist_default_card']); //기본카드 등록
 
-Route::middleware('auth:sanctum')->put('/push/regist', [PushController::class, 'regist']); // 푸시 등록
+Route::middleware('auth:sanctum')->post('/push/regist', [PushController::class, 'regist']); // 푸시 등록
 Route::middleware('auth:sanctum')->get('/push/list', [PushController::class, 'list']); // 푸시 리스트
 
 Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']); // 공지 등록

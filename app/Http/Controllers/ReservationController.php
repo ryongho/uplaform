@@ -368,6 +368,26 @@ class ReservationController extends Controller
 
     }
 
+    public function delete(Request $request)
+    {
+        $return = new \stdClass;        
+    
+        $id = $request->reservation_id;
+        $result = Reservation::where('id',$id)->delete();
+
+        if($result){
+            $return->status = "200";
+            $return->msg = "success";
+
+        }else{
+            $return->status = "500";
+            $return->msg = "fail";
+        }
+
+        echo(json_encode($return));    
+
+    }
+
     
 
 

@@ -21,6 +21,7 @@ class Push extends Model
         'target_id',
         'content',
         'send_date',
+        'state',
         'created_at',
         'updated_at',
     ];
