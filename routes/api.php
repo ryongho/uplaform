@@ -18,7 +18,7 @@ use App\Http\Controllers\ApplyController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayController;
 use App\Http\Controllers\QnaController;
-
+use App\Http\Controllers\AreaController;
 
 
 use App\Models\User;
@@ -37,6 +37,8 @@ use App\Models\User;
 
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록
 Route::post('/partner/regist', [UserController::class, 'regist_partner']); // 파트너 등록 
+Route::post('/partner/regist_info', [PartnerController::class, 'regist']); // 파트너 정보 추가
+Route::post('/area/regist_info', [AreaController::class, 'regist']); // 유저 정보 추가
 Route::post('/user/login', [UserController::class, 'login']);// 로그인
 Route::post('/user/sns_login', [UserController::class, 'sns_login']);// sns 로그인
 Route::get('login', [UserController::class, 'not_login'])->name('login');// 비로그인 시 
@@ -49,6 +51,7 @@ Route::put('/user/find_id', [UserController::class, 'find_id']); // 아이디 �
 Route::middleware('auth:sanctum')->get('/user/info', [UserController::class, 'info']); //유저 정보 가져오기
 Route::middleware('auth:sanctum')->get('/user/partner_info', [UserController::class, 'partner_info']); //파트너 정보 가져오기
 Route::middleware('auth:sanctum')->get('/user/area_info', [UserController::class, 'area_info']); //회원 추가 정보 가져오기
+
 
 Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update_user']);// 유저정보 업데이트
 Route::middleware('auth:sanctum')->put('/partner/update', [UserController::class, 'update_partner']);// 파트너정보 업데이트
