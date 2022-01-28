@@ -19,7 +19,6 @@ class NoticeController extends Controller
 
         $login_user = Auth::user();
         
-
         $result = Notice::insertGetId([
             'title'=> $request->title ,
             'content'=> $request->content ,
@@ -43,8 +42,10 @@ class NoticeController extends Controller
 
     public function list(Request $request){
 
+        $s_no = $request->start_no;
+        $row = $request->row;
 
-        $rows = Notice::select(DB::raw('*','(select nickname from users where notices.writer = users.id order by order_no asc limit 1 ) as writer'))->get();
+        $rows = Notice::select('id as notice_id','created_at', 'title')->where('id','>',$s_no)->limit($row)->get();
 
         $return = new \stdClass;
 
@@ -59,14 +60,19 @@ class NoticeController extends Controller
     }
 
     public function detail(Request $request){
-        $id = $request->id;
+        $notice_id = $request->notice_id;
 
-        $rows = Notice::where('id','=',$id)->get();
+        $rows = Notice::select('id as notice_id','created_at', 'title','content')->where('id','=',$notice_id)->get();
+
+        $pre = Notice::select('id as notice_id','title')->where('id','<',$notice_id)->orderby('id','desc')->limit(1)->first();
+        $next = Notice::select('id as notice_id','title')->where('id','>',$notice_id)->orderby('id','asc')->limit(1)->first();
 
         $return = new \stdClass;
 
         $return->status = "200";
         $return->data = $rows ;
+        $return->pre_data = $pre ;
+        $return->next_data = $next ;
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'

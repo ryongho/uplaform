@@ -17,6 +17,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ApplyController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayController;
+use App\Http\Controllers\QnaController;
+
 
 
 use App\Models\User;
@@ -83,6 +85,12 @@ Route::middleware('auth:sanctum')->put('/apply/complete', [ApplyController::clas
 Route::middleware('auth:sanctum')->get('/apply/list/user', [ApplyController::class, 'list_by_user']);// 예약 리스트
 Route::middleware('auth:sanctum')->get('/apply/detail', [ApplyController::class, 'detail']);// 예약 상세 내용
 
+Route::middleware('auth:sanctum')->post('/notice/regist', [NoticeController::class, 'regist']); // 공지 등록
+Route::get('/notice/list', [NoticeController::class, 'list']); // 공지 리스트
+Route::get('/notice/detail', [NoticeController::class, 'detail']); // 공지 내용 
+Route::middleware('auth:sanctum')->put('/notice/update', [NoticeController::class, 'update']);//공지 수정
+
+
 /*
 Route::middleware('auth:sanctum')->post('/service/regist', [ServiceController::class, 'regist']); //서비스 지원
 Route::middleware('auth:sanctum')->get('/service/list/ing', [ServiceController::class, 'list_ing']);// 진행중 서비스 리스트
@@ -105,16 +113,16 @@ Route::get('/notice/list', [NoticeController::class, 'list']); // 공지 리스�
 Route::get('/notice/detail', [NoticeController::class, 'detail']); // 공지 내용 
 Route::middleware('auth:sanctum')->put('/notice/update', [NoticeController::class, 'update']);//공지 수정
 
-Route::middleware('auth:sanctum')->put('/faq/regist', [FaqController::class, 'regist']); //faq 등록
+Route::middleware('auth:sanctum')->post('/faq/regist', [FaqController::class, 'regist']); //faq 등록
 Route::get('/faq/list', [FaqController::class, 'list']);//faq 리스트
 Route::get('/faq/detail', [FaqController::class, 'detail']); //faq 내용
 Route::middleware('auth:sanctum')->put('/faq/update', [FaqController::class, 'update']);//faq 수정
-/*
-Route::middleware('auth:sanctum')->put('/qna/regist', [QnaController::class, 'regist']);
-Route::get('/qna/list', [QnaController::class, 'list']);
-Route::get('/qna/detail', [QnaController::class, 'detail']);
+
+Route::middleware('auth:sanctum')->post('/qna/regist', [QnaController::class, 'regist']);
+Route::middleware('auth:sanctum')->get('/qna/list', [QnaController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/qna/detail', [QnaController::class, 'detail']);
 Route::middleware('auth:sanctum')->put('/qna/update', [QnaController::class, 'update']);
-*/
+
 
 /*
 Route::middleware('auth:sanctum')->get('/partner/list', [PartnerController::class, 'list']);

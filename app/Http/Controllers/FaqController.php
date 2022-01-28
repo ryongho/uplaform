@@ -21,6 +21,7 @@ class FaqController extends Controller
         
 
         $result = Faq::insertGetId([
+            'type'=> $request->type ,
             'title'=> $request->title ,
             'content'=> $request->content ,
             'writer'=> $login_user->getId(),
@@ -43,8 +44,16 @@ class FaqController extends Controller
 
     public function list(Request $request){
 
+        $type = $request->type;
 
-        $rows = Faq::select(DB::raw('*','(select nickname from users where faqs.writer = users.id order by order_no asc limit 1 ) as writer'))->get();
+        $rows = Faq::select('id as faq_id','type','title','created_at')
+                ->when($type , function ($query, $type) {
+                    if($type != "전체"){
+                        return $query->where('type', $type);
+                    }
+                    
+                })
+                ->get();
 
         $return = new \stdClass;
 
@@ -59,14 +68,19 @@ class FaqController extends Controller
     }
 
     public function detail(Request $request){
-        $id = $request->id;
+        $faq_id = $request->faq_id;
 
-        $rows = Faq::where('id','=',$id)->get();
+        $rows = Faq::select('id as faq_id','type','title','created_at')->where('id','=',$faq_id)->get();
 
         $return = new \stdClass;
 
+        $pre = Faq::select('id as faq_id','title')->where('id','<',$faq_id)->orderby('id','desc')->limit(1)->first();
+        $next = Faq::select('id as faq_id','title')->where('id','>',$faq_id)->orderby('id','asc')->limit(1)->first();
+
         $return->status = "200";
         $return->data = $rows ;
+        $return->pre_data = $pre ;
+        $return->next_data = $next ;
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'

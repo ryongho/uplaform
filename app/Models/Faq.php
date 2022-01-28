@@ -15,6 +15,7 @@ class Faq extends Model
      */
 
     protected $fillable = [
+        'type',
         'title',
         'content',
         'writer',
