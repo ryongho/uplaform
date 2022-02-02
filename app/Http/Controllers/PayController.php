@@ -87,6 +87,7 @@ class PayController extends Controller
                     ->select(
                         DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m-%d" ) as date'),
                         'reservations.reservation_no',
+                        'reservations.reservation_type',
                         'pays.amount',
                         'reservations.price',
                         'pays.state',

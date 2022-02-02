@@ -70,7 +70,7 @@ class FaqController extends Controller
     public function detail(Request $request){
         $faq_id = $request->faq_id;
 
-        $rows = Faq::select('id as faq_id','type','title','created_at')->where('id','=',$faq_id)->get();
+        $rows = Faq::select('id as faq_id','type','title','content','created_at')->where('id','=',$faq_id)->get();
 
         $return = new \stdClass;
 
