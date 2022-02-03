@@ -19,6 +19,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayController;
 use App\Http\Controllers\QnaController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\FcmController;
 
 
 use App\Models\User;
@@ -93,21 +94,6 @@ Route::get('/notice/list', [NoticeController::class, 'list']); // 공지 리스�
 Route::get('/notice/detail', [NoticeController::class, 'detail']); // 공지 내용 
 Route::middleware('auth:sanctum')->put('/notice/update', [NoticeController::class, 'update']);//공지 수정
 
-
-/*
-Route::middleware('auth:sanctum')->post('/service/regist', [ServiceController::class, 'regist']); //서비스 지원
-Route::middleware('auth:sanctum')->get('/service/list/ing', [ServiceController::class, 'list_ing']);// 진행중 서비스 리스트
-Route::middleware('auth:sanctum')->get('/service/list/end', [ServiceController::class, 'list_end']);// 지난 서비스 리스트
-
-Route::middleware('auth:sanctum')->put('/service/cancel', [ServiceController::class, 'cancel']);// 서비스 취소
-Route::middleware('auth:sanctum')->get('/service/sale/list', [ReservationController::class, 'sale_list']);// 정산 내역
-Route::middleware('auth:sanctum')->get('/service/sale/detail', [ReservationController::class, 'sale_detail']);// 정산 내역 상세
-*/
-
-Route::middleware('auth:sanctum')->post('/card/regist', [CardController::class, 'regist']); //카드 등록
-Route::middleware('auth:sanctum')->get('/card/list', [CardController::class, 'list']); //카드 리스트
-Route::middleware('auth:sanctum')->put('/card/regist/default_card', [CardController::class, 'regist_default_card']); //기본카드 등록
-
 Route::middleware('auth:sanctum')->post('/push/regist', [PushController::class, 'regist']); // 푸시 등록
 Route::middleware('auth:sanctum')->get('/push/list', [PushController::class, 'list']); // 푸시 리스트
 
@@ -126,20 +112,9 @@ Route::middleware('auth:sanctum')->get('/qna/list', [QnaController::class, 'list
 Route::middleware('auth:sanctum')->get('/qna/detail', [QnaController::class, 'detail']);
 Route::middleware('auth:sanctum')->put('/qna/update', [QnaController::class, 'update']);
 
+Route::put('/fcm/update', [FcmController::class, 'update']);// fcm토큰 업데이트
 
-/*
-Route::middleware('auth:sanctum')->get('/partner/list', [PartnerController::class, 'list']);
-Route::middleware('auth:sanctum')->get('/user/list', [UserController::class, 'list']);
-Route::put('/user/update_password', [UserController::class, 'update_password']);
-Route::middleware('auth:sanctum')->put('/user/update_info', [UserController::class, 'update_info']);
 
-Route::middleware('auth:sanctum')->put('/policy/regist', [PolicyController::class, 'regist']);
-Route::get('/policy/detail', [PolicyController::class, 'detail']);
-Route::get('/policy/list', [PolicyController::class, 'list']);
-Route::middleware('auth:sanctum')->put('/policy/update', [PolicyController::class, 'update']);
-
-Route::get('/login_check_partner', [PartnerController::class, 'login_check']);
-*/
 
 
 
