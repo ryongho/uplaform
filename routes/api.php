@@ -20,6 +20,7 @@ use App\Http\Controllers\PayController;
 use App\Http\Controllers\QnaController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\FcmController;
+use App\Http\Controllers\AdminController;
 
 
 use App\Models\User;
@@ -35,6 +36,10 @@ use App\Models\User;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+Route::get('/admin/login', [AdminController::class, 'login']);
+Route::get('/admin/logout', [AdminController::class, 'logout']);
 
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록
 Route::post('/partner/regist', [UserController::class, 'regist_partner']); // 파트너 등록 
