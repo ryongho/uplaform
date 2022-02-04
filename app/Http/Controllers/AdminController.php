@@ -63,7 +63,7 @@ class AdminController extends Controller
 
     public function login(Request $request){
 
-        $user = User::where('email' , $request->user_id)->first();
+        $user = User::where('email' , $request->email)->where('user_type', 3)->first();
 
         $return = new \stdClass;
 
