@@ -90,45 +90,87 @@ class ReservationController extends Controller
         $search_type = $request->search_type;
         $search_keyword = $request->search_keyword;
 
-        $rows = Reservation::select(   
-                                'id as reservation_id',
-                                'reservation_type',
-                                'service_date',
-                                'service_time',
-                                'learn_day',
-                                'status',    
+        if($search_type == "phone"){
+            $search_type = "users.phone";
+        }
+
+        $rows = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
+                        ->select(   
+                                'reservations.id as reservation_id',
+                                'reservations.reservation_type',
+                                'reservations.service_date',
+                                'reservations.service_time',
+                                'reservations.learn_day',
+                                'reservations.status',    
                         )         
-                        ->where('id' ,">", $s_no)
-                        ->where('reservation_type' , $reservation_type)
+                        ->where('reservations.id' ,">", $s_no)
+                        ->where('reservations.reservation_type' , $reservation_type)
                         ->when($type, function ($query, $type) {
                             if($type == "W"){//확정대기
-                                return $query->whereIn('status', ['W','R','C']);
+                                return $query->whereIn('reservations.status', ['W','R','C']);
                             }else if($type == "i"){//진행중
-                                return $query->whereIn('status', ['R']);
+                                return $query->whereIn('reservations.status', ['R']);
                             }else if($type == "S"){//완료
-                                return $query->whereIn('status', ['S']);
+                                return $query->whereIn('reservations.status', ['S']);
                             }
                             
                         })
                         ->when($status, function ($query, $status) {    
-                            return $query->where('status', $status);
+                            return $query->where('reservations.status', $status);
                         })
-                        ->where('created_at','>=', $start_date)
-                        ->where('created_at','<=', $end_date.' 23:59:59')
+                        ->where('reservations.created_at','>=', $start_date)
+                        ->where('reservations.created_at','<=', $end_date.' 23:59:59')
                         ->where( $search_type, 'like', "%".$search_keyword."%")
                         ->limit($row)->get();
 
-        $w_cnt = Reservation::where('reservation_type' , $reservation_type)
-            ->whereIn('status', ['W','R','C'])
-            ->count();
 
-        $i_cnt = Reservation::where('reservation_type' , $reservation_type)
-            ->whereIn('status', ['R'])
-            ->count();
+        $w_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
+                            ->select(   
+                                    'reservations.id as reservation_id',
+                                    'reservations.reservation_type',
+                                    'reservations.service_date',
+                                    'reservations.service_time',
+                                    'reservations.learn_day',
+                                    'reservations.status',    
+                            )         
+                            ->where('reservations.id' ,">", $s_no)
+                            ->where('reservations.reservation_type' , $reservation_type)
+                            ->whereIn('reservations.status', ['W','C'])
+                            ->where('reservations.created_at','>=', $start_date)
+                            ->where('reservations.created_at','<=', $end_date.' 23:59:59')
+                            ->where( $search_type, 'like', "%".$search_keyword."%")->count();
+
+        $i_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
+                            ->select(   
+                                    'reservations.id as reservation_id',
+                                    'reservations.reservation_type',
+                                    'reservations.service_date',
+                                    'reservations.service_time',
+                                    'reservations.learn_day',
+                                    'reservations.status',    
+                            )         
+                            ->where('reservations.id' ,">", $s_no)
+                            ->where('reservations.reservation_type' , $reservation_type)
+                            ->whereIn('reservations.status', ['R'])
+                            ->where('reservations.created_at','>=', $start_date)
+                            ->where('reservations.created_at','<=', $end_date.' 23:59:59')
+                            ->where( $search_type, 'like', "%".$search_keyword."%")->count();
         
-        $s_cnt = Reservation::where('reservation_type' , $reservation_type)
-            ->whereIn('status', ['S'])
-            ->count();
+        $s_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
+                            ->select(   
+                                    'reservations.id as reservation_id',
+                                    'reservations.reservation_type',
+                                    'reservations.service_date',
+                                    'reservations.service_time',
+                                    'reservations.learn_day',
+                                    'reservations.status',    
+                            )         
+                            ->where('reservations.id' ,">", $s_no)
+                            ->where('reservations.reservation_type' , $reservation_type)
+                            ->whereIn('reservations.status', ['C'])
+                            ->where('reservations.created_at','>=', $start_date)
+                            ->where('reservations.created_at','<=', $end_date.' 23:59:59')
+                            ->where($search_type, 'like', "%".$search_keyword."%")->count();
 
         $return = new \stdClass;
 
@@ -136,7 +178,7 @@ class ReservationController extends Controller
         $return->w_cnt = $w_cnt;
         $return->i_cnt = $i_cnt;
         $return->s_cnt = $s_cnt;
-        
+
         $return->data = $rows ;
 
         return response()->json($return, 200)->withHeaders([
