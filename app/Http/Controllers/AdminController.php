@@ -84,10 +84,10 @@ class AdminController extends Controller
             $return->token = $token->plainTextToken;
             $return->user_type = $login_user->user_type;
 
-            User::where('email',$request->user_id)->update([
+            /*User::where('email',$request->user_id)->update([
                 'last_login' =>Carbon::now(),
                 'last_ip' =>$request->getClientIp(),
-            ]);
+            ]);*/
             
             //dd($token->plainTextToken);    
         }else{
