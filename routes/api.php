@@ -40,7 +40,9 @@ use App\Models\User;
 
 Route::get('/admin/login', [AdminController::class, 'login']);
 Route::get('/admin/logout', [AdminController::class, 'logout']);
-Route::get('/admin/reservation/list', [ReservationController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/admin/apply/list', [ApplyController::class, 'list']);
+Route::middleware('auth:sanctum')->put('/admin/apply/match', [ApplyController::class, 'match']);
 
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록
 Route::post('/partner/regist', [UserController::class, 'regist_partner']); // 파트너 등록 

@@ -51,6 +51,32 @@ class ApplyController extends Controller
         ]);;
     }
 
+    public function list(Request $request){
+
+        
+        $rows = apply::join('reservations', 'reservations.id', '=', 'applies.reservation_id')
+                        ->select(   
+                                'applies.id as apply_id',
+                                'reservations.reservation_type',
+                                'reservations.service_date',
+                                'reservations.service_time',
+                                'reservations.learn_day',
+                                'applies.status',    
+                        )         
+                        ->where('reservations.id', $request->reservation_id)
+                        ->get();
+        
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+    }
+
     public function list_by_user(Request $request){
 
         $login_user = Auth::user();
@@ -274,6 +300,29 @@ class ApplyController extends Controller
         ]);;
 
     }
+
+    public function match(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "매칭 완료";
+    
+        $result = Reservation::where('id', $request->reservation_id)->update(['status' => 'R']);
+        $result2 = apply::where('id', $request->apply_id)->update(['status' => 'S','matched_at' => Carbon::now()]);
+
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
 
     
 
