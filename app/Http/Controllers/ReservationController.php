@@ -101,7 +101,7 @@ class ReservationController extends Controller
                                 'reservations.service_date',
                                 'reservations.service_time',
                                 'reservations.learn_day',
-                                'reservations.searvice_detail',
+                                'reservations.service_detail',
                                 'reservations.status',
                                 'reservations.created_at as created_at',
                                 'reservations.reservation_no',
