@@ -101,7 +101,13 @@ class ReservationController extends Controller
                                 'reservations.service_date',
                                 'reservations.service_time',
                                 'reservations.learn_day',
-                                'reservations.status',    
+                                'reservations.searvice_detail',
+                                'reservations.status',
+                                'reservations.created_at as created_at',
+                                'reservations.reservation_no',
+                                'reservations.service_addr',
+                                'users.name as name',
+                                'users.email as email',   
                         )         
                         ->where('reservations.id' ,">", $s_no)
                         ->where('reservations.reservation_type' , $reservation_type)
