@@ -144,11 +144,35 @@ class ReservationController extends Controller
                         })
                         ->limit($row)->get();
 
+        $cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')        
+                        ->where('reservations.reservation_type' , $reservation_type)
+                        ->when($type, function ($query, $type) {
+                            if($type == "W"){//확정대기
+                                return $query->whereIn('reservations.status', ['W','R','C']);
+                            }else if($type == "i"){//진행중
+                                return $query->whereIn('reservations.status', ['R']);
+                            }else if($type == "S"){//완료
+                                return $query->whereIn('reservations.status', ['S']);
+                            }
+                            
+                        })
+                        ->when($status, function ($query, $status) {    
+                            return $query->where('reservations.status', $status);
+                        })
+                        ->where('reservations.created_at','>=', $start_date)
+                        ->where('reservations.created_at','<=', $end_date.' 23:59:59')
+                        ->when($search, function ($query, $search) {    
+                            if($search->type != ""){
+                                return $query->where( $search->type, 'like', "%".$search->keyword."%");
+                            }
+                        })
+                        ->count();
+
 
         $return = new \stdClass;
 
         $return->status = "200";
-        $return->cnt = count($rows);
+        $return->cnt = $cnt;
 
         $return->data = $rows ;
 
