@@ -96,7 +96,7 @@ class ReservationController extends Controller
             $search_type = "users.phone";
         }
 
-        $return = new \stdClass;
+        $search = new \stdClass;
 
         $search->type = $search_type;
         $search->keyword = $search_keyword;
