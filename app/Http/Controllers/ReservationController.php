@@ -128,7 +128,7 @@ class ReservationController extends Controller
                         })
                         ->where('reservations.created_at','>=', $start_date)
                         ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                        ->when($search_type, function ($query, $status) {    
+                        ->when($search_type, function ($query, $search_type) {    
                             if($search_type != ""){
                                 return $query->where( $search_type, 'like', "%".$search_keyword."%");
                             }
@@ -150,7 +150,7 @@ class ReservationController extends Controller
                             ->whereIn('reservations.status', ['W','C'])
                             ->where('reservations.created_at','>=', $start_date)
                             ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search_type, function ($query, $status) {    
+                            ->when($search_type, function ($query, $search_type) {    
                                 if($search_type != ""){
                                     return $query->where( $search_type, 'like', "%".$search_keyword."%");
                                 }
@@ -171,7 +171,7 @@ class ReservationController extends Controller
                             ->whereIn('reservations.status', ['R'])
                             ->where('reservations.created_at','>=', $start_date)
                             ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search_type, function ($query, $status) {    
+                            ->when($search_type, function ($query, $search_type) {    
                                 if($search_type != ""){
                                     return $query->where( $search_type, 'like', "%".$search_keyword."%");
                                 }
@@ -192,7 +192,7 @@ class ReservationController extends Controller
                             ->whereIn('reservations.status', ['C'])
                             ->where('reservations.created_at','>=', $start_date)
                             ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search_type, function ($query, $status) {    
+                            ->when($search_type, function ($query, $search_type) {    
                                 if($search_type != ""){
                                     return $query->where( $search_type, 'like', "%".$search_keyword."%");
                                 }
