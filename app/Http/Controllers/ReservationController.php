@@ -90,9 +90,18 @@ class ReservationController extends Controller
         $search_type = $request->search_type;
         $search_keyword = $request->search_keyword;
 
+
+
         if($search_type == "phone"){
             $search_type = "users.phone";
         }
+
+        $return = new \stdClass;
+
+        $search->type = $search_type;
+        $search->keyword = $search_keyword;
+
+
 
         $rows = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
                         ->select(   
@@ -128,9 +137,9 @@ class ReservationController extends Controller
                         })
                         ->where('reservations.created_at','>=', $start_date)
                         ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                        ->when($search_type, function ($query, $search_type) {    
-                            if($search_type != ""){
-                                return $query->where( $search_type, 'like', "%".$search_keyword."%");
+                        ->when($search, function ($query, $search) {    
+                            if($search->type != ""){
+                                return $query->where( $search->type, 'like', "%".$search->keyword."%");
                             }
                         })
                         ->limit($row)->get();
@@ -150,9 +159,9 @@ class ReservationController extends Controller
                             ->whereIn('reservations.status', ['W','C'])
                             ->where('reservations.created_at','>=', $start_date)
                             ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search_type, function ($query, $search_type) {    
-                                if($search_type != ""){
-                                    return $query->where( $search_type, 'like', "%".$search_keyword."%");
+                            ->when($search, function ($query, $search) {    
+                                if($search->type != ""){
+                                    return $query->where( $search->type, 'like', "%".$search->keyword."%");
                                 }
                             })
                             ->count();
@@ -171,9 +180,9 @@ class ReservationController extends Controller
                             ->whereIn('reservations.status', ['R'])
                             ->where('reservations.created_at','>=', $start_date)
                             ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search_type, function ($query, $search_type) {    
-                                if($search_type != ""){
-                                    return $query->where( $search_type, 'like', "%".$search_keyword."%");
+                            ->when($search, function ($query, $search) {    
+                                if($search->type != ""){
+                                    return $query->where( $search->type, 'like', "%".$search->keyword."%");
                                 }
                             })
                             ->count();
@@ -192,9 +201,9 @@ class ReservationController extends Controller
                             ->whereIn('reservations.status', ['C'])
                             ->where('reservations.created_at','>=', $start_date)
                             ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search_type, function ($query, $search_type) {    
-                                if($search_type != ""){
-                                    return $query->where( $search_type, 'like', "%".$search_keyword."%");
+                            ->when($search, function ($query, $search) {    
+                                if($search->type != ""){
+                                    return $query->where( $search->type, 'like', "%".$search->keyword."%");
                                 }
                             })
                             ->count();
