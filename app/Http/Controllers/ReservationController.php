@@ -206,8 +206,6 @@ class ReservationController extends Controller
         $return->i_cnt = $i_cnt;
         $return->s_cnt = $s_cnt;
 
-        $return->data = $rows ;
-
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
         ]);
