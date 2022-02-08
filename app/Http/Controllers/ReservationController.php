@@ -168,7 +168,7 @@ class ReservationController extends Controller
                                     'reservations.learn_day',
                                     'reservations.status',    
                             )         
-                            ->where('reservations.reservation_type' , $reqeust->reservation_type)
+                            ->where('reservations.reservation_type' , $request->reservation_type)
                             ->whereIn('reservations.status', ['W','C'])
                             ->count();
 
@@ -181,7 +181,7 @@ class ReservationController extends Controller
                                     'reservations.learn_day',
                                     'reservations.status',    
                             )         
-                            ->where('reservations.reservation_type' , $reqeust->reservation_type)
+                            ->where('reservations.reservation_type' , $request->reservation_type)
                             ->whereIn('reservations.status', ['W','C'])
                             ->count();
         
@@ -194,7 +194,7 @@ class ReservationController extends Controller
                                     'reservations.learn_day',
                                     'reservations.status',    
                             )         
-                            ->where('reservations.reservation_type' , $reqeust->reservation_type)
+                            ->where('reservations.reservation_type' , $request->reservation_type)
                             ->whereIn('reservations.status', ['W','C'])
                             ->count(); 
 
