@@ -125,7 +125,7 @@ class ReservationController extends Controller
                         ->when($type, function ($query, $type) {
                             if($type == "W"){//확정대기
                                 return $query->whereIn('reservations.status', ['W','R','C']);
-                            }else if($type == "i"){//진행중
+                            }else if($type == "I"){//진행중
                                 return $query->whereIn('reservations.status', ['R']);
                             }else if($type == "S"){//완료
                                 return $query->whereIn('reservations.status', ['S']);
@@ -150,7 +150,7 @@ class ReservationController extends Controller
                         ->when($type, function ($query, $type) {
                             if($type == "W"){//확정대기
                                 return $query->whereIn('reservations.status', ['W','R','C']);
-                            }else if($type == "i"){//진행중
+                            }else if($type == "I"){//진행중
                                 return $query->whereIn('reservations.status', ['R']);
                             }else if($type == "S"){//완료
                                 return $query->whereIn('reservations.status', ['S']);
