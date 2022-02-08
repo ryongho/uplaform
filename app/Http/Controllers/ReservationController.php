@@ -80,7 +80,7 @@ class ReservationController extends Controller
 
     public function list(Request $request){
 
-        $s_no = $request->start_no;
+        $page_no = $request->page_no;
         $row = $request->row;
         $type = $request->type;
         $reservation_type = $request->reservation_type;
@@ -89,6 +89,7 @@ class ReservationController extends Controller
         $end_date = $request->end_date;
         $search_type = $request->search_type;
         $search_keyword = $request->search_keyword;
+        $offset = (($page_no-1) * $row);
 
 
 
@@ -120,7 +121,6 @@ class ReservationController extends Controller
                                 'users.name as name',
                                 'users.email as email',   
                         )         
-                        ->where('reservations.id' ,">", $s_no)
                         ->where('reservations.reservation_type' , $reservation_type)
                         ->when($type, function ($query, $type) {
                             if($type == "W"){//확정대기
@@ -142,6 +142,7 @@ class ReservationController extends Controller
                                 return $query->where( $search->type, 'like', "%".$search->keyword."%");
                             }
                         })
+                        ->offset($offset)
                         ->limit($row)->get();
 
         $cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')        
