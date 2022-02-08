@@ -145,6 +145,20 @@ class ReservationController extends Controller
                         ->limit($row)->get();
 
 
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+    }
+    public function list_cnt(Request $request){
+
         $w_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
                             ->select(   
                                     'reservations.id as reservation_id',
@@ -154,16 +168,8 @@ class ReservationController extends Controller
                                     'reservations.learn_day',
                                     'reservations.status',    
                             )         
-                            ->where('reservations.id' ,">", $s_no)
                             ->where('reservations.reservation_type' , $reservation_type)
                             ->whereIn('reservations.status', ['W','C'])
-                            ->where('reservations.created_at','>=', $start_date)
-                            ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search, function ($query, $search) {    
-                                if($search->type != ""){
-                                    return $query->where( $search->type, 'like', "%".$search->keyword."%");
-                                }
-                            })
                             ->count();
 
         $i_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
@@ -175,16 +181,8 @@ class ReservationController extends Controller
                                     'reservations.learn_day',
                                     'reservations.status',    
                             )         
-                            ->where('reservations.id' ,">", $s_no)
                             ->where('reservations.reservation_type' , $reservation_type)
-                            ->whereIn('reservations.status', ['R'])
-                            ->where('reservations.created_at','>=', $start_date)
-                            ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search, function ($query, $search) {    
-                                if($search->type != ""){
-                                    return $query->where( $search->type, 'like', "%".$search->keyword."%");
-                                }
-                            })
+                            ->whereIn('reservations.status', ['W','C'])
                             ->count();
         
         $s_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
@@ -196,21 +194,14 @@ class ReservationController extends Controller
                                     'reservations.learn_day',
                                     'reservations.status',    
                             )         
-                            ->where('reservations.id' ,">", $s_no)
                             ->where('reservations.reservation_type' , $reservation_type)
-                            ->whereIn('reservations.status', ['C'])
-                            ->where('reservations.created_at','>=', $start_date)
-                            ->where('reservations.created_at','<=', $end_date.' 23:59:59')
-                            ->when($search, function ($query, $search) {    
-                                if($search->type != ""){
-                                    return $query->where( $search->type, 'like', "%".$search->keyword."%");
-                                }
-                            })
-                            ->count();
+                            ->whereIn('reservations.status', ['W','C'])
+                            ->count(); 
 
         $return = new \stdClass;
 
         $return->status = "200";
+
         $return->w_cnt = $w_cnt;
         $return->i_cnt = $i_cnt;
         $return->s_cnt = $s_cnt;
@@ -220,7 +211,6 @@ class ReservationController extends Controller
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
         ]);
-
     }
 
     public function list_by_user(Request $request){

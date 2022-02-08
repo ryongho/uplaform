@@ -41,6 +41,7 @@ use App\Models\User;
 Route::get('/admin/login', [AdminController::class, 'login']);
 Route::get('/admin/logout', [AdminController::class, 'logout']);
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
+Route::middleware('auth:sanctum')->get('/admin/reservation/list_cnt', [ReservationController::class, 'list_cnt']);
 Route::middleware('auth:sanctum')->get('/admin/apply/list', [ApplyController::class, 'list']);
 Route::middleware('auth:sanctum')->put('/admin/apply/match', [ApplyController::class, 'match']);
 
