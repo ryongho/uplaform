@@ -182,7 +182,7 @@ class ReservationController extends Controller
                                     'reservations.status',    
                             )         
                             ->where('reservations.reservation_type' , $request->reservation_type)
-                            ->whereIn('reservations.status', ['W','C'])
+                            ->whereIn('reservations.status', ['R'])
                             ->count();
         
         $s_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
@@ -195,7 +195,7 @@ class ReservationController extends Controller
                                     'reservations.status',    
                             )         
                             ->where('reservations.reservation_type' , $request->reservation_type)
-                            ->whereIn('reservations.status', ['W','C'])
+                            ->whereIn('reservations.status', ['S'])
                             ->count(); 
 
         $return = new \stdClass;
