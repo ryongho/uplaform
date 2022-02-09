@@ -120,7 +120,7 @@ class ReservationController extends Controller
                                 'reservations.service_addr',
                                 'users.name as name',
                                 'users.email as email',  
-                                DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),   
+                                DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
                         ->when($type, function ($query, $type) {
@@ -169,7 +169,18 @@ class ReservationController extends Controller
                             }
                         })
                         ->count();
-
+        
+        if($type == "I"){ //타입이 진행중인경우 추가 리턴
+            $x = 0;
+            foreach($rows as $row){
+                $app_info = Applies::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
+                $user_info = PartnerInfos::where('user_id',$app_info['id'])->fitst();
+                $rows[$x]['matched_name'] = $user_info['ceo_name'];
+                $rows[$x]['phone'] = $user_info['tel'];
+                $rows[$x]['address'] = $user_info['address'];
+                $x++;
+            }
+        }
 
         $return = new \stdClass;
 
