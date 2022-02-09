@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
 use App\Models\Service;
+use App\Models\Applies;
 use App\Models\User;
 use App\Models\PartnerInfo;
 use Illuminate\Support\Facades\Storage;
