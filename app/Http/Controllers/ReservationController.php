@@ -341,40 +341,42 @@ class ReservationController extends Controller
         $partner_info = PartnerInfo::where('user_id',$user_id)->first();
         $partner_type = $partner_info['partner_type'];
         $addr = "";
+
+        $rows = array();        
+
         if(isset($partner_info['address']) && $partner_info['address'] != ""){
             $addrs = explode(' ',$partner_info['address']);
-            $addr = $addrs[0].' '.$addrs[1];    
+            $addr = $addrs[0].' '.$addrs[1];
+            
+            $flag = new \stdClass;
+
+            $flag->type = $type;
+            $flag->addr = $addr;
+
+            $rows = Reservation::select(
+
+                'id as reservation_id',
+                'reservation_type',
+                'service_date',
+                'service_time',
+                'learn_day',    
+                DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
+                DB::raw('(select count(*) from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied'),
+                DB::raw('(select id from applies where reservation_id = reservations.id and user_id = '.$user_id.') as apply_id'),
+                'service_addr'
+            )         
+            ->where('id' ,">", $s_no)
+            ->where('status', 'W')
+            ->where('reservation_type', $partner_type)
+            ->when($flag, function ($query, $flag) {
+                if($flag->type == "local"){
+                    return $query->where('service_addr', 'like', "%".$flag->addr."%");
+                }
+                
+            })
+            ->limit($row)->get();
         }
         
-
-        $flag = new \stdClass;
-
-        $flag->type = $type;
-        $flag->addr = $addr;
-
-
-        $rows = Reservation::select(
-
-                                'id as reservation_id',
-                                'reservation_type',
-                                'service_date',
-                                'service_time',
-                                'learn_day',    
-                                DB::raw('(select count(*) from applies where reservation_id = reservations.id) as apply_cnt'),
-                                DB::raw('(select count(*) from applies where reservation_id = reservations.id and user_id = '.$user_id.') as applied'),
-                                DB::raw('(select id from applies where reservation_id = reservations.id and user_id = '.$user_id.') as apply_id'),
-                                'service_addr'
-                        )         
-                        ->where('id' ,">", $s_no)
-                        ->where('status', 'W')
-                        ->where('reservation_type', $partner_type)
-                        ->when($flag, function ($query, $flag) {
-                            if($flag->type == "local"){
-                                return $query->where('service_addr', 'like', "%".$flag->addr."%");
-                            }
-                            
-                        })
-                        ->limit($row)->get();
 
         $cnt = Reservation::where('status', 'W')
                 ->where('reservation_type', $partner_type)
