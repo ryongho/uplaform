@@ -59,6 +59,7 @@ class ApplyController extends Controller
                         ->select(
                                 'applies.id as reservation_id',   
                                 'applies.id as apply_id',
+                                'partner_infos.ceo_name',
                                 'partner_infos.partner_type',
                                 'partner_infos.address',
                                 'partner_infos.activity_distance',
