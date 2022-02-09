@@ -375,10 +375,8 @@ class ReservationController extends Controller
                 
             })
             ->limit($row)->get();
-        }
-        
 
-        $cnt = Reservation::where('status', 'W')
+            $cnt = Reservation::where('status', 'W')
                 ->where('reservation_type', $partner_type)
                 ->when($flag, function ($query, $flag) {
                     if($flag->type == "local"){
@@ -386,18 +384,20 @@ class ReservationController extends Controller
                     }
                     
                 })->count();
-         $i = 0;
+            $i = 0;
 
-        foreach($rows as $row){
-            $service_addrs = explode(' ',$row['service_addr']);
-            $rows[$i]['service_addr'] = $service_addrs[0].' '.$service_addrs[1];
-            if($row['applied'] > 0){
-                $rows[$i]['applied'] = "Y";
-            }else{
-                $rows[$i]['applied'] = "N";
+            foreach($rows as $row){
+                $service_addrs = explode(' ',$row['service_addr']);
+                $rows[$i]['service_addr'] = $service_addrs[0].' '.$service_addrs[1];
+                if($row['applied'] > 0){
+                    $rows[$i]['applied'] = "Y";
+                }else{
+                    $rows[$i]['applied'] = "N";
+                }
+                $i++;
             }
-            $i++;
         }
+        
 
         $return = new \stdClass;
 
