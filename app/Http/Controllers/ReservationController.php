@@ -330,6 +330,7 @@ class ReservationController extends Controller
 
     public function reqeust_list(Request $request){
 
+        $return = new \stdClass;
         $login_user = Auth::user();
         $user_id = $login_user->id;
 
@@ -396,13 +397,11 @@ class ReservationController extends Controller
                 }
                 $i++;
             }
+            $return->cnt = $cnt;
         }
-        
-
-        $return = new \stdClass;
 
         $return->status = "200";
-        $return->cnt = $cnt;
+        
         $return->data = $rows ;
 
         return response()->json($return, 200)->withHeaders([
