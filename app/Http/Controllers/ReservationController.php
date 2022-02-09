@@ -340,8 +340,12 @@ class ReservationController extends Controller
         $user_info = User::where('id',$user_id)->first();
         $partner_info = PartnerInfo::where('user_id',$user_id)->first();
         $partner_type = $partner_info['partner_type'];
-        $addrs = explode(' ',$partner_info['address']);
-        $addr = $addrs[0].' '.$addrs[1];
+        $addr = "";
+        if(isset($partner_info['address'])){
+            $addrs = explode(' ',$partner_info['address']);
+            $addr = $addrs[0].' '.$addrs[1];    
+        }
+        
 
         $flag = new \stdClass;
 
