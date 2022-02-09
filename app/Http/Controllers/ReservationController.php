@@ -119,7 +119,8 @@ class ReservationController extends Controller
                                 'reservations.reservation_no',
                                 'reservations.service_addr',
                                 'users.name as name',
-                                'users.email as email',   
+                                'users.email as email',  
+                                DB::raw('(select count (*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),   
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
                         ->when($type, function ($query, $type) {
