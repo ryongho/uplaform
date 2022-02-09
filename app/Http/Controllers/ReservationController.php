@@ -7,7 +7,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reservation;
 use App\Models\Service;
-use App\Models\Applies;
+use App\Models\Apply;
 use App\Models\User;
 use App\Models\PartnerInfo;
 use Illuminate\Support\Facades\Storage;
@@ -174,7 +174,7 @@ class ReservationController extends Controller
         if($type == "I"){ //타입이 진행중인경우 추가 리턴
             $x = 0;
             foreach($rows as $row){
-                $app_info = Applies::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
+                $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
                 $user_info = PartnerInfos::where('user_id',$app_info['id'])->fitst();
                 $rows[$x]['matched_name'] = $user_info['ceo_name'];
                 $rows[$x]['phone'] = $user_info['tel'];
