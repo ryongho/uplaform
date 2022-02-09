@@ -181,7 +181,8 @@ class ReservationController extends Controller
                     $user_info = PartnerInfo::where('user_id',$app_info['user_id'])->first();
                     $rows[$x]['matched_name'] = $user_info['ceo_name'];
                     $rows[$x]['phone'] = $user_info['tel'];
-                    $rows[$x]['address'] = $user_info['address'];
+                    $addrs = explode(' ',$partner_info['address']);
+                    $rows[$x]['address'] = $addrs[0];
                     $x++;
                 }
                 
