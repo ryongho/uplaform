@@ -175,12 +175,16 @@ class ReservationController extends Controller
             $x = 0;
             foreach($rows as $row){
                 $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
-                dd($app_info);
-                $user_info = PartnerInfo::where('user_id',$app_info['id'])->first();
-                $rows[$x]['matched_name'] = $user_info['ceo_name'];
-                $rows[$x]['phone'] = $user_info['tel'];
-                $rows[$x]['address'] = $user_info['address'];
-                $x++;
+                
+                if(isset($app_info)){
+                    $user_info = PartnerInfo::where('user_id',$app_info['id'])->first();
+                    $rows[$x]['matched_name'] = $user_info['ceo_name'];
+                    $rows[$x]['phone'] = $user_info['tel'];
+                    $rows[$x]['address'] = $user_info['address'];
+                    $x++;
+                }
+                
+                
             }
         }
 
