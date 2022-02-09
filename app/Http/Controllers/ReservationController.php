@@ -178,6 +178,7 @@ class ReservationController extends Controller
                 $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
         
                 if($app_info != null){
+                    dd($app_info);
                     $user_info = PartnerInfo::where('user_id',$app_info['id'])->first();
                     $rows[$x]['matched_name'] = $user_info['ceo_name'];
                     $rows[$x]['phone'] = $user_info['tel'];
