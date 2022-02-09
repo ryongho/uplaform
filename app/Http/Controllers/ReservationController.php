@@ -174,10 +174,10 @@ class ReservationController extends Controller
         if($type == "I"){ //타입이 진행중인경우 추가 리턴
             $x = 0;
             foreach($rows as $row){
-                dd($row['reservation_id']);
-                $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
                 
-                if(isset($app_info)){
+                $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
+        
+                if($app_info != null){
                     $user_info = PartnerInfo::where('user_id',$app_info['id'])->first();
                     $rows[$x]['matched_name'] = $user_info['ceo_name'];
                     $rows[$x]['phone'] = $user_info['tel'];
