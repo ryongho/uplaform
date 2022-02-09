@@ -55,13 +55,20 @@ class ApplyController extends Controller
 
         
         $rows = apply::join('reservations', 'reservations.id', '=', 'applies.reservation_id')
-                        ->select(   
+                        ->join('partner_infos', 'partner_infos.user_id', '=', 'applies.user_id')        
+                        ->select(
+                                'applies.id as reservation_id',   
                                 'applies.id as apply_id',
-                                'reservations.reservation_type',
-                                'reservations.service_date',
-                                'reservations.service_time',
-                                'reservations.learn_day',
-                                'applies.status',    
+                                'partner_infos.partner_type',
+                                'partner_infos.address',
+                                'partner_infos.activity_distance',
+                                'partner_infos.license_img',
+                                'partner_infos.reg_no',
+                                'partner_infos.biz_type',
+                                'partner_infos.position',
+                                'partner_infos.biz_name',
+                                'partner_infos.address2',
+                                'partner_infos.tel',                                
                         )         
                         ->where('reservations.id', $request->reservation_id)
                         ->get();
