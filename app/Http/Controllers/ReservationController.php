@@ -551,6 +551,28 @@ class ReservationController extends Controller
 
     }
 
+    public function update_service_address(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "변경 완료";
+        
+        $result = Reservation::where('id', $request->reservation_id)->update(['service_address' => $request->service_address]);
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
+    
+
     public function delete(Request $request)
     {
         $return = new \stdClass;        
