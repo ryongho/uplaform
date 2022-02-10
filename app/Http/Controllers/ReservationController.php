@@ -480,6 +480,29 @@ class ReservationController extends Controller
 
     }
 
+    public function cancel_admin(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+        
+        $ids = explode(",",$request->ids);
+            
+        $result = Reservation::whereIn('id', $ids)
+                ->update(['status' => 'C', 'canceled_at' => Carbon::now()]); // 취소 
+        
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "취소처리 실패 실패";
+        }else{
+            $return->status = "200";
+            $return->msg = "취소 완료";
+        }
+            
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
     public function cancel(Request $request){
         //dd($request);
         $return = new \stdClass;
