@@ -709,6 +709,29 @@ class UserController extends Controller
 
     }
 
+    public function get_email(request $request){
+        $phone = $request->phone;
+        //dd($phone); 
+        $user_info = User::select('email','sns_key')->where('phone',$phone)->where('leave','N')->first();
+        
+        $data = new \stdClass;
+
+        if($user_info == null){
+            $data->status = "500";
+            $data->msg = "아이디가 존재하지 않습니다.";
+        }else{
+            $data->status = "200";
+            $data->msg = "success";
+            $data->email = $user_info['email'];
+            $data->sns_key = $user_info['sns_key'];
+        }
+        
+        
+        return response()->json($data, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+    }
+
     
 
 

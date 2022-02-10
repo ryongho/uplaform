@@ -61,7 +61,7 @@ Route::put('/user/find_id', [UserController::class, 'find_id']); // 아이디 �
 Route::middleware('auth:sanctum')->get('/user/info', [UserController::class, 'info']); //유저 정보 가져오기
 Route::middleware('auth:sanctum')->get('/user/partner_info', [UserController::class, 'partner_info']); //파트너 정보 가져오기
 Route::middleware('auth:sanctum')->get('/user/area_info', [UserController::class, 'area_info']); //회원 추가 정보 가져오기
-
+Route::get('/user/email', [UserController::class, 'get_email']); //유저 아이디(이메일) 정보 가져오기
 
 Route::middleware('auth:sanctum')->put('/user/update', [UserController::class, 'update_user']);// 유저정보 업데이트
 Route::middleware('auth:sanctum')->put('/partner/update', [UserController::class, 'update_partner']);// 파트너정보 업데이트
