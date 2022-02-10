@@ -558,7 +558,7 @@ class ReservationController extends Controller
         $return->status = "200";
         $return->msg = "변경 완료";
         
-        $result = Reservation::where('id', $request->reservation_id)->update(['service_address' => $request->service_address]);
+        $result = Reservation::where('id', $request->reservation_id)->update(['service_addr' => $request->service_address]);
 
         if(!$result){
             $return->status = "500";
