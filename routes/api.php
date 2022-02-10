@@ -69,6 +69,8 @@ Route::middleware('auth:sanctum')->put('/user/leave', [UserController::class, 'l
 Route::middleware('auth:sanctum')->put('/user/change/type', [UserController::class, 'change_user_type']);// 유저타입 전환
 
 Route::middleware('auth:sanctum')->put('/user/update/password', [UserController::class, 'update_password']);
+Route::put('/user/update/password_by_phone', [UserController::class, 'update_password_by_phone']);
+
 
 Route::post('/image/upload', [ImageController::class, 'upload']); // 이미지 업로드
 

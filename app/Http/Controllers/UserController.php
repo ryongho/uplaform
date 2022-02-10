@@ -596,6 +596,28 @@ class UserController extends Controller
 
     }
 
+    public function update_password_by_phone(Request $request){
+
+        $return = new \stdClass;
+        
+        $value = Hash::make($request->new_password);
+        $result = User::where('phone', $request->phone)->update(['password' => $value]);
+        
+        if($result){
+            $return->status = "200";
+            $return->msg = "패스워드 변경 성공";
+        }else{
+            $return->status = "500";
+            $return->msg = "패스워드 변경 실패";
+        }   
+    
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
     
 
     public function leave(Request $request){
