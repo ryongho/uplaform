@@ -330,7 +330,7 @@ class ReservationController extends Controller
                                 'finished_at',
                                 'canceled_at',
                                 'cancel_comment',
-                                DB::raw('(select service_comment from applies where reservation_id = reservations.id) as service_comment'),
+                                DB::raw('(select service_comment from applies where reservation_id = reservations.id and status="S") as service_comment'),
                         )         
                         ->where('id' , $id)
                         ->first();
