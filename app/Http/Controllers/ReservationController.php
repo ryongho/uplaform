@@ -335,6 +335,7 @@ class ReservationController extends Controller
                         ->where('id' , $id)
                         ->first();
 
+        dd($rows);
         if(($rows['status'] == 'R' || $rows['status'] == 'S')){
             $app_info = Apply::where('reservation_id', $rows['reservation_id'])->where('status', 'S')->first();
             if($app_info != null){
