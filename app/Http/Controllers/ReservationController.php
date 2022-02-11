@@ -335,10 +335,25 @@ class ReservationController extends Controller
                         ->where('id' , $id)
                         ->first();
 
+        
+        if(($rows['status'] == 'R' || $rows['status'] == 'S')){
+            $app_info = Apply::where('reservation_id', $rows['reservation_id'])->where('status', 'S')->first();
+            if($app_info != null){
+                $user_info = User::where('id',$app_info['user_id'])->first();
+                $rows['partner_name'] = $user_info['name'];
+                $rows['partner_phone'] = $user_info['phone'];
+            }
+        }
+        
+        
         $return = new \stdClass;
 
         $return->status = "200";
         $return->data = $rows ;
+
+        
+            
+        
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
