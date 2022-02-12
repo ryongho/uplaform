@@ -145,7 +145,7 @@ class ReservationController extends Controller
                             }
                         })
                         ->offset($offset)
-                        ->orderBy('id','desc')
+                        ->orderBy('reservations.id','desc')
                         ->limit($row)->get();
 
         $cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')        
