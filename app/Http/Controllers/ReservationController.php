@@ -423,8 +423,10 @@ class ReservationController extends Controller
             $i = 0;
 
             foreach($rows as $row){
-                $service_addrs = explode(' ',$row['service_addr']);
-                $rows[$i]['service_addr'] = $service_addrs[0].' '.$service_addrs[1];
+                if($row['service_addr'] != null && $row['service_addr'] != ""){
+                    $service_addrs = explode(' ',$row['service_addr']);
+                    $rows[$i]['service_addr'] = $service_addrs[0].' '.$service_addrs[1];
+                }
                 if($row['applied'] > 0){
                     $rows[$i]['applied'] = "Y";
                 }else{
