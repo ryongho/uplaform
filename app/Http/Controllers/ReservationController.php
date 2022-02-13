@@ -526,14 +526,14 @@ class ReservationController extends Controller
         $ids = explode(",",$request->ids);
             
         $result = Reservation::whereIn('id', $ids)
-                ->update(['status' => 'S', 'canceled_at' => Carbon::now()]); // 취소 
+                ->update(['status' => 'S', 'finished_at' => Carbon::now()]); // 서비스 완료
         
         if(!$result){
             $return->status = "500";
-            $return->msg = "취소처리 실패 실패";
+            $return->msg = "완료처리 실패 실패";
         }else{
             $return->status = "200";
-            $return->msg = "취소 완료";
+            $return->msg = "서비스 완료 처리";
         }
             
         return response()->json($return, 200)->withHeaders([
