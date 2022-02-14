@@ -209,6 +209,7 @@ class ReservationController extends Controller
         $page_no = $request->page_no;
         $row = $request->row;
         $reservation_type = $request->reservation_type;
+        $offset = (($page_no-1) * $row);
         $search = new \stdClass;
 
         $rows = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
