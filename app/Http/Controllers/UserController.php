@@ -428,9 +428,9 @@ class UserController extends Controller
                 ->when($search_type, function ($query, $search_type) {
                     if($search_type == "정상"){
                         return $query->whereIn('leave', ['N']);
-                    }else if($type == "탈퇴"){
+                    }else if($search_type == "탈퇴"){
                         return $query->whereIn('leave', ['Y']);
-                    }else if($type == "삭제"){
+                    }else if($search_type == "삭제"){
                         return $query->whereIn('leave', []);
                     }
                 })
