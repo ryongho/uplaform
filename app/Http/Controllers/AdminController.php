@@ -128,8 +128,9 @@ class AdminController extends Controller
             $list->data = "현재 유저 타입 : ".$request->user_type;
         }else {
             $page_no = $request->page_no;
+            $page_no = $request->row;
 
-            $start_no = ($page_no - 1) * 30 ;
+            $start_no = ($page_no - 1) * $row ;
             $rows = User::select('id','activity','user_type','email as user_id','name','created_at','last_login','last_ip')
             ->whereIn('user_type',['3','4'])
             ->where('id','>',$start_no)
