@@ -203,6 +203,57 @@ class ReservationController extends Controller
         ]);
 
     }
+
+    public function list_by_user_admin(Request $request){
+
+        $page_no = $request->page_no;
+        $row = $request->row;
+        $reservation_type = $request->reservation_type;
+        $search = new \stdClass;
+
+        $rows = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
+                        ->select(   
+                                'reservations.id as reservation_id',
+                                'reservations.reservation_type',
+                                'reservations.service_date',
+                                'reservations.service_time',
+                                'reservations.learn_day',
+                                'reservations.service_detail',
+                                'reservations.status',
+                                'reservations.memo',
+                                'reservations.price',
+                                'reservations.created_at as created_at',
+                                'reservations.reservation_no',
+                                'reservations.service_addr',
+                                'users.name as name',
+                                'users.email as email',  
+                                DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
+                        )         
+                        ->where('reservations.reservation_type' , $reservation_type)
+                        ->where('user_id',$request->id)
+                        ->offset($offset)
+                        ->orderBy('reservations.id','desc')
+                        ->limit($row)->get();
+
+        $cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')        
+                        ->where('reservations.reservation_type' , $reservation_type)
+                        ->where('user_id',$request->id)
+                        ->count();
+        
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = $cnt;
+
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+    }
+
+
     public function list_cnt(Request $request){
 
         $w_cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
