@@ -295,6 +295,46 @@ class UserController extends Controller
 
     }
 
+    public function update_area_admin(Request $request){
+
+        $id = $request->id;
+        
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "변경 성공";
+ 
+        $result2 = AreaInfo::updateOrInsert(['user_id'=> $id],[
+            'position'=> $request->position ,
+            'interest_service'=> $request->interest_service ,
+            'house_type'=> $request->house_type ,
+            'peoples'=> $request->peoples ,
+            'house_size'=> $request->house_size ,
+            'area_size'=> $request->area_size ,
+            'address'=> $request->address ,
+            'address2'=> $request->address2 ,
+            'tel'=> $request->tel ,
+            'shop_type'=> $request->shop_type ,
+            'shop_size'=> $request->shop_size ,
+            'kitchen_size'=> $request->kitchen_size ,
+            'refrigerator'=> $request->refrigerator ,
+            'refrigerator_size'=> $request->refrigerator_size ,
+            'shop_name'=> $request->shop_name ,
+            'ceo_name'=> $request->ceo_name ,
+        ]);
+ 
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
     public function update_partner(Request $request)
     {
         $login_user = Auth::user();
@@ -524,7 +564,7 @@ class UserController extends Controller
 
         $rows = $area_info = AreaInfo::select('id as area_id','user_id','position','interest_service','house_type','house_size',
                                                 'address','updated_at','area_size','peoples','tel',
-                                                'shop_type','shop_size','refrigerator','refrigerator_size','created_at','kitchen_size','shop_name','address',
+                                                'shop_type','shop_size','refrigerator','refrigerator_size','created_at','kitchen_size','shop_name','address','address2',
                                             )
                 ->where('id',$id)->first();
 
