@@ -477,6 +477,68 @@ class UserController extends Controller
         
     }
 
+    public function detail(Request $request){
+
+        $id = $request->id;
+
+        $rows = User::select('id','email','name','phone','reg_no','gender','last_login','created_at','created_at','last_login')
+                ->where('id',$id)->first();
+
+        if($rows){
+
+            if($rows['sns_key'] != ""){ // sns로그인인 경우
+                $sns_keys = explode('_',$rows['sns_key']);
+                $rows['user_type'] = $sns_keys[0];
+            }else{
+                $rows['user_type'] = "유플랫폼";
+            }
+
+            if($rows['leave'] == "Y"){ 
+                $rows['status'] = "탈퇴";
+            }else{
+                $rows['status'] = "정상";
+            }
+
+
+            $list->status = "200";
+            $list->msg = "success";
+            $list->data = $rows;
+        }else{
+            $list->status = "500";
+            $list->msg = "해당 정보가 없습니다.";
+        }
+ 
+        return response()->json($list, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+        
+    }
+
+    public function area_info_admin(Request $request){
+
+        $id = $request->id;
+
+        $rows = $area_info = AreaInfo::select('id as area_id','user_id','position','interest_service','house_type','house_size',
+                                                'address','updated_at','area_size','peoples','tel',
+                                                'shop_type','shop_size','refrigerator','refrigerator_size','created_at','kitchen_size','shop_name','address',
+                                            )
+                ->where('id',$id)->first();
+
+        if($rows){
+            $list->status = "200";
+            $list->msg = "success";
+            $list->data = $rows;
+        }else{
+            $list->status = "500";
+            $list->msg = "해당 정보가 없습니다.";
+        }
+ 
+        return response()->json($list, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+        
+    }
+
     public function check_email(Request $request){
         
         //dd($request);
