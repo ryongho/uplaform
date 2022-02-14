@@ -304,7 +304,7 @@ class UserController extends Controller
         $return->status = "200";
         $return->msg = "변경 성공";
  
-        $result2 = AreaInfo::updateOrInsert(['user_id'=> $id],[
+        $result = AreaInfo::updateOrInsert(['user_id'=> $id],[
             'position'=> $request->position ,
             'interest_service'=> $request->interest_service ,
             'house_type'=> $request->house_type ,
