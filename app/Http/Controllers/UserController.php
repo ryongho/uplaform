@@ -321,6 +321,7 @@ class UserController extends Controller
             'refrigerator_size'=> $request->refrigerator_size ,
             'shop_name'=> $request->shop_name ,
             'ceo_name'=> $request->ceo_name ,
+            'updated_at'=>Carbon::now(),
         ]);
  
 
