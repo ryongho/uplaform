@@ -480,6 +480,8 @@ class UserController extends Controller
     public function detail(Request $request){
 
         $id = $request->id;
+        $list = new \stdClass;
+
 
         $rows = User::select('id','email','name','phone','reg_no','gender','last_login','created_at','created_at','last_login')
                 ->where('id',$id)->first();
@@ -517,6 +519,8 @@ class UserController extends Controller
     public function area_info_admin(Request $request){
 
         $id = $request->id;
+        $list = new \stdClass;
+
 
         $rows = $area_info = AreaInfo::select('id as area_id','user_id','position','interest_service','house_type','house_size',
                                                 'address','updated_at','area_size','peoples','tel',
