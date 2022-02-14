@@ -37,10 +37,13 @@ class AdminController extends Controller
         }else{
             $result = User::insert([
                 'name'=> $request->name ,
-                'email' => $user_id,                 
+                'email' => $user_id,
+                'sns_key' => $request->email,
                 'user_type' => 3, // 관리자 
-                'activity'=> $request->activity ,
-                'memo'=> $request->memo ,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'part' => $request->part,
+                'permission' => $request->permission,
                 'created_at' => Carbon::now(),
                 'password' => Hash::make($request->password)
             ]);
@@ -80,16 +83,12 @@ class AdminController extends Controller
 
             $return->status = "200";
             $return->msg = "성공";
-            //$return->dormant = $login_user->dormant;
             $return->token = $token->plainTextToken;
             $return->user_type = $login_user->user_type;
 
-            /*User::where('email',$request->user_id)->update([
+            User::where('email',$request->user_id)->update([
                 'last_login' =>Carbon::now(),
-                'last_ip' =>$request->getClientIp(),
-            ]);*/
-            
-            //dd($token->plainTextToken);    
+            ]);
         }else{
             $return->status = "500";
             $return->msg = "아이디 또는 패스워드가 일치하지 않습니다.";
@@ -128,10 +127,10 @@ class AdminController extends Controller
             $list->data = "현재 유저 타입 : ".$request->user_type;
         }else {
             $page_no = $request->page_no;
-            $page_no = $request->row;
+            $row = $request->row;
 
             $start_no = ($page_no - 1) * $row ;
-            $rows = User::select('id','activity','user_type','email as user_id','name','created_at','last_login','last_ip')
+            $rows = User::select('id','user_type','email as user_id','name','part','sns_key as email','permission','start_date','end_date','created_at')
             ->whereIn('user_type',['3','4'])
             ->where('id','>',$start_no)
             ->orderBy('id', 'desc')
@@ -167,7 +166,8 @@ class AdminController extends Controller
             $return->msg = "권한이 없습니다.";
             $return->data = "현재 유저 타입 : ".$request->user_type;
         }else {
-            $rows = User::where('id',$id)->first();
+            $rows = User::$rows = User::select('id','email as user_id','name','part','sns_key as email','permission','start_date','end_date','created_at','last_login')
+                    ->where('id',$id)->first();
 
             if($rows){
                 $list->status = "200";
@@ -204,9 +204,13 @@ class AdminController extends Controller
         }else {
             $result = User::where('id',$id)->update([
                 'name'=> $request->name ,
-                'user_type' => $request->user_type, // 관리자 
-                'activity'=> $request->activity ,
-                'memo'=> $request->memo ,
+                'email' => $request->email,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'phone' => $request->phone,
+                'part' => $request->part,
+                'permission' => $request->permission, 
+                
             ]);
      
             if($result){
