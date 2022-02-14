@@ -199,7 +199,9 @@ class UserController extends Controller
             $return->type = $login_user->user_type;
             $return->token = $token->plainTextToken;
             
-            //dd($token->plainTextToken);    
+            User::where('email',$request->email)->update([
+                'last_login' =>Carbon::now(),
+            ]);  
         }else{
             $return->status = "500";
             $return->msg = "아이디 또는 패스워드가 일치하지 않습니다.";
@@ -233,7 +235,9 @@ class UserController extends Controller
             $return->type = $login_user->user_type;
             $return->token = $token->plainTextToken;
             
-            //dd($token->plainTextToken);    
+            User::where('sns_key',$request->sns_key)->update([
+                'last_login' =>Carbon::now(),
+            ]);  
         }
 
         return response()->json($return, 200)->withHeaders([
@@ -414,7 +418,6 @@ class UserController extends Controller
                     'email',
                     'phone',
                     'name',
-                    'login',
                     'sns_key',
                     'gender',
                     'created_at',
