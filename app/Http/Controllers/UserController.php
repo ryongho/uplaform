@@ -400,10 +400,63 @@ class UserController extends Controller
     }
 
     public function list(Request $request){
-        $start_no = $request->start_no;
+        $page_no = $request->page_no;
         $row = $request->row;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $search_type = $request->search_type;
+        $search_keyword = $request->search_keyword;
+
+        $start_no = ($page_no - 1) * $row ;
         
-        $rows = User::where('id' ,">=", $start_no)->where('user_type','0')->orderBy('id', 'desc')->orderBy('id')->limit($row)->get();
+        $rows = User::select(
+                    'id',
+                    'email',
+                    'phone',
+                    'name',
+                    'login',
+                    'sns_key',
+                    'gender',
+                    'created_at',
+                    'last_login',
+                    'leave',
+                )->where('id' ,">=", $start_no)
+                ->where('user_type','0')
+                ->where('created_at','>=',$start_date)
+                ->where('created_at','<=',$end_date)
+                ->where('name','like','%'.$search_keyword.'%')
+                ->when($search_type, function ($query, $search_type) {
+                    if($search_type == "정상"){
+                        return $query->whereIn('leave', ['N']);
+                    }else if($type == "탈퇴"){
+                        return $query->whereIn('leave', ['Y']);
+                    }else if($type == "삭제"){
+                        return $query->whereIn('leave', []);
+                    }
+                })
+                ->orderBy('id', 'desc')->limit($row)->get();
+        
+        $i = 0;
+        foreach($rows as $row) {
+            if($row['sns_key'] != ""){ // sns로그인인 경우
+                $sns_keys = explode('_',$row['sns_key']);
+                $rows[$i]['user_type'] = $sns_keys[0];
+            }else{
+                $rows[$i]['user_type'] = "유플랫폼";
+            }
+            //add_info
+            $area_cnt = AreaInfo::where('user_id',$row['id'])->count();
+            if($area_cnt){
+                $rows[$i]['add_info'] = "Y";
+            }else{
+                $rows[$i]['add_info'] = "N";
+            }
+            //reservation_cnt
+            $rows[$i]['reservation_cnt'] = Reservation::where('user_id',$row['id'])->count();
+            //payment_cnt
+            $rows[$i]['payment_cnt'] = Payment::where('user_id',$row['id'])->count();
+            $i++;
+        }
 
         $list = new \stdClass;
 
