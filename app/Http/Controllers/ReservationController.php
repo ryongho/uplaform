@@ -236,6 +236,25 @@ class ReservationController extends Controller
                         ->orderBy('reservations.id','desc')
                         ->limit($row)->get();
 
+        
+        $x = 0;
+        foreach($rows as $row){
+            
+            $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
+    
+            if($app_info != null){
+                $user_info = PartnerInfo::where('user_id',$app_info['user_id'])->first();
+                $rows[$x]['matched_name'] = $user_info['ceo_name'];
+                $rows[$x]['phone'] = $user_info['tel'];
+                $addrs = explode(' ',$user_info['address']);
+                $rows[$x]['address'] = $addrs[0];
+                $x++;
+            }
+            
+            
+        }
+        
+
         $cnt = Reservation::join('users', 'users.id', '=', 'reservations.user_id')        
                         ->where('reservations.reservation_type' , $reservation_type)
                         ->where('user_id',$request->id)
