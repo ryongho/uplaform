@@ -205,7 +205,7 @@ class AdminController extends Controller
         }else {
             $result = User::where('id',$id)->update([
                 'name'=> $request->name ,
-                'email' => $request->email,
+                'email' => $request->sns_key,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'phone' => $request->phone,
