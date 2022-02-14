@@ -39,6 +39,7 @@ class AdminController extends Controller
                 'name'=> $request->name ,
                 'email' => $user_id,
                 'sns_key' => $request->email,
+                'phone' => $request->phone,
                 'user_type' => 3, // 관리자 
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
