@@ -127,6 +127,7 @@ class PaymentController extends Controller
                             'payments.pay_method',
                             'payments.card_name',
                             'payments.card_number',
+                            'reservations.status as reservation_status',
                     )
                     ->where('payments.id','>',$start_no)
                     ->where('payments.user_id',$user_id) 
