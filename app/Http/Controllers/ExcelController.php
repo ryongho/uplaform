@@ -64,12 +64,11 @@ class ExcelController extends Controller
         $i = 0;
 
         foreach($rows as $row){
-            dd($row->id);
+
             $list[$i]['id'] = $row->id;
             $list[$i]['email'] = $row->email;
             $list[$i]['phone'] = $row->phone;
             $list[$i]['name'] = $row->name;
-            $list[$i]['user_type'] = $row->user_type;
             $list[$i]['gender'] = $row->gender;
             $list[$i]['add_info'] = $row->add_info;
             $list[$i]['reservation_cnt'] = $row->reservation_cnt;
@@ -78,35 +77,40 @@ class ExcelController extends Controller
             $list[$i]['last_login'] = $row->last_login;
             $list[$i]['leave'] = $row->leave;
 
-            $i++;
-        
-            /*if($row['sns_key'] != ""){ // sns로그인인 경우
-                $sns_keys = explode('_',$row['sns_key']);
-                $rows[$i]['user_type'] = $sns_keys[0];
-                $rows[$i]['email'] = $row['sns_key'];
+
+
+            if($row->sns_key != ""){
+                $sns_keys = explode('_',$row->sns_key);
+                $list[$i]['user_type'] = $sns_keys[0];
+                $list[$i]['email'] = $row->email;
             }else{
-                $rows[$i]['user_type'] = "유플랫폼";
+                $list[$i]['user_type'] = "유플랫폼";
             }
             //add_info
-            $area_cnt = AreaInfo::where('user_id',$row['id'])->count();
+            $area_cnt = AreaInfo::where('user_id',$row->id)->count();
             if($area_cnt){
-                $rows[$i]['add_info'] = "Y";
+                $list[$i]['add_info'] = "Y";
             }else{
-                $rows[$i]['add_info'] = "N";
+                $list[$i]['add_info'] = "N";
             }
 
-            if($row['leave'] == "Y"){ 
-                $rows[$i]['status'] = "탈퇴";
+            if($row->leave == "Y"){ 
+                $list[$i]['status'] = "탈퇴";
             }else{
-                $rows[$i]['status'] = "정상";
+                $list[$i]['status'] = "정상";
             }
-            
+
             //reservation_cnt
-            $rows[$i]['reservation_cnt'] = Reservation::where('user_id',$row['id'])->count();
+            $list[$i]['reservation_cnt'] = Reservation::where('user_id',$row->id)->count();
             //payment_cnt
-            $rows[$i]['payment_cnt'] = Payment::where('user_id',$row['id'])->count();
-            $i++;*/
+            $list[$i]['payment_cnt'] = Payment::where('user_id',$row->id)->count();
+            
+            $i++;
+        
+            
         }
+
+        dd($list);
 
 
         error_reporting(E_ALL);
