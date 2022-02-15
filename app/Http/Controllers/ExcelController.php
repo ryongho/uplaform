@@ -64,7 +64,7 @@ class ExcelController extends Controller
         $i = 0;
 
         foreach($rows as $row){
-            
+            dd($row->id);
             $list[$i]['id'] = $row->id;
             $list[$i]['email'] = $row->email;
             $list[$i]['phone'] = $row->phone;
