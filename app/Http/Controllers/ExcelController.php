@@ -58,7 +58,7 @@ class ExcelController extends Controller
                     }
                 })
                 ->orderBy('id', 'desc')->get();
-        
+        dd($rows);
         $i = 0;
         foreach($rows as $row) {
             if($row['sns_key'] != ""){ // sns로그인인 경우
@@ -74,6 +74,13 @@ class ExcelController extends Controller
             }else{
                 $rows[$i]['add_info'] = "N";
             }
+
+            if($row['leave'] == "Y"){ 
+                $rows[$i]['status'] = "탈퇴";
+            }else{
+                $rows[$i]['status'] = "정상";
+            }
+            
             //reservation_cnt
             $rows[$i]['reservation_cnt'] = Reservation::where('user_id',$row['id'])->count();
             //payment_cnt
@@ -118,7 +125,8 @@ class ExcelController extends Controller
                     ->setCellValue('H1', '신청내역')
                     ->setCellValue('I1', '결제내역')
                     ->setCellValue('J1', '가입일')
-                    ->setCellValue('K1', '최근로그인');
+                    ->setCellValue('K1', '최근로그인')
+                    ->setCellValue('L1', '상태');
         $i = 2;
         foreach ($rows as $row){
 
@@ -133,7 +141,8 @@ class ExcelController extends Controller
                         ->setCellValue('H'.$i, $row['reservation_cnt'])
                         ->setCellValue('I'.$i, $row['payment_cnt'])
                         ->setCellValue('J'.$i, $row['created_at'])
-                        ->setCellValue('K'.$i, $row['last_login']);
+                        ->setCellValue('K'.$i, $row['last_login'])
+                        ->setCellValue('L'.$i, $row['leave']);
             $i++;
         }
                                 
