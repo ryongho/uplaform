@@ -27,15 +27,12 @@ class ExcelController extends Controller
     
     public function user_list(Request $request){
         ob_start();
-        $page_no = $request->page_no;
-        $row = $request->row;
+        
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $search_type = $request->search_type;
         $search_keyword = $request->search_keyword;
 
-        $start_no = ($page_no - 1) * $row ;
-        
         $rows = User::select(
                     'id',
                     'email',
@@ -46,7 +43,7 @@ class ExcelController extends Controller
                     'created_at',
                     'last_login',
                     'leave',
-                )->where('id' ,">=", $start_no)
+                )
                 ->where('user_type','0')
                 ->where('created_at','>=',$start_date)
                 ->where('created_at','<=',$end_date)
@@ -60,7 +57,7 @@ class ExcelController extends Controller
                         return $query->whereIn('leave', []);
                     }
                 })
-                ->orderBy('id', 'desc')->limit($row)->get();
+                ->orderBy('id', 'desc')->get();
         
         $i = 0;
         foreach($rows as $row) {
@@ -111,22 +108,34 @@ class ExcelController extends Controller
 
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', '이메일')
-                    ->setCellValue('B1', '이름')
-                    ->setCellValue('C1', '구분')
-                    ->setCellValue('D1', '휴대폰번호')
-                    ->setCellValue('E1', '생성일')
-                    ->setCellValue('F1', '최종로그인');
+                    ->setCellValue('A1', '번호')
+                    ->setCellValue('B1', '이메일(아이디)')
+                    ->setCellValue('C1', '휴대폰번호')
+                    ->setCellValue('D1', '이름')
+                    ->setCellValue('E1', '회원유형')
+                    ->setCellValue('F1', '성별')
+                    ->setCellValue('G1', '추가정보')
+                    ->setCellValue('H1', '신청내역')
+                    ->setCellValue('I1', '결제내역')
+                    ->setCellValue('J1', '가입일')
+                    ->setCellValue('K1', '최근로그인')
+                    ->setCellValue('L1', '상태');
         $i = 2;
         foreach ($rows as $row){
 
             $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A'.$i, $row['email'])
-                        ->setCellValue('B'.$i, $row['name'])
-                        ->setCellValue('C'.$i, $row['type'])
-                        ->setCellValue('D'.$i, $row['phone'])
-                        ->setCellValue('E'.$i, $row['created_at'])
-                        ->setCellValue('F'.$i, $row['last_login']);
+                        ->setCellValue('A'.$i, $row['id'])
+                        ->setCellValue('B'.$i, $row['email'])
+                        ->setCellValue('C'.$i, $row['phone'])
+                        ->setCellValue('D'.$i, $row['name'])
+                        ->setCellValue('E'.$i, $row['user_type'])
+                        ->setCellValue('F'.$i, $row['gender'])
+                        ->setCellValue('G'.$i, $row['add_info'])
+                        ->setCellValue('H'.$i, $row['reservation_cnt'])
+                        ->setCellValue('F'.$i, $row['payment_cnt'])
+                        ->setCellValue('F'.$i, $row['created_at'])
+                        ->setCellValue('F'.$i, $row['last_login'])
+                        ->setCellValue('F'.$i, $row['status']);
             $i++;
         }
                                 
