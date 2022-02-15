@@ -59,8 +59,28 @@ class ExcelController extends Controller
                 })
                 ->orderBy('id', 'desc')->get();
         $i = 0;
-        foreach($rows as $row) {
-            if($row['sns_key'] != ""){ // sns로그인인 경우
+
+        $list = array();
+        $i = 0;
+
+        foreach($rows as $row){
+            
+            $list[$i]['id'] = $row->id;
+            $list[$i]['email'] = $row->email;
+            $list[$i]['phone'] = $row->phone;
+            $list[$i]['name'] = $row->name;
+            $list[$i]['user_type'] = $row->user_type;
+            $list[$i]['gender'] = $row->gender;
+            $list[$i]['add_info'] = $row->add_info;
+            $list[$i]['reservation_cnt'] = $row->reservation_cnt;
+            $list[$i]['payment_cnt'] = $row->payment_cnt;
+            $list[$i]['created_at'] = $row->created_at;
+            $list[$i]['last_login'] = $row->last_login;
+            $list[$i]['leave'] = $row->leave;
+
+            $i++;
+        
+            /*if($row['sns_key'] != ""){ // sns로그인인 경우
                 $sns_keys = explode('_',$row['sns_key']);
                 $rows[$i]['user_type'] = $sns_keys[0];
                 $rows[$i]['email'] = $row['sns_key'];
@@ -85,7 +105,7 @@ class ExcelController extends Controller
             $rows[$i]['reservation_cnt'] = Reservation::where('user_id',$row['id'])->count();
             //payment_cnt
             $rows[$i]['payment_cnt'] = Payment::where('user_id',$row['id'])->count();
-            $i++;
+            $i++;*/
         }
 
 
@@ -129,14 +149,21 @@ class ExcelController extends Controller
                     ->setCellValue('L1', '상태');
         $i = 2;
 
-        foreach ($rows as $row){
-            
+        foreach ($list as $row){
+
             $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A'.$i, $row['id'])
                         ->setCellValue('B'.$i, $row['email'])
                         ->setCellValue('C'.$i, $row['phone'])
                         ->setCellValue('D'.$i, $row['name'])
-                        ;
+                        ->setCellValue('E'.$i, $row['user_type'])
+                        ->setCellValue('F'.$i, $row['gender'])
+                        ->setCellValue('G'.$i, $row['add_info'])
+                        ->setCellValue('H'.$i, $row['reservation_cnt'])
+                        ->setCellValue('I'.$i, $row['payment_cnt'])
+                        ->setCellValue('J'.$i, $row['created_at'])
+                        ->setCellValue('K'.$i, $row['last_login'])
+                        ->setCellValue('L'.$i, $row['leave']);
             $i++;
         }
                               
