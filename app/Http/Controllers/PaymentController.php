@@ -80,20 +80,18 @@ class PaymentController extends Controller
 
         $rows = Payment::join('reservations', 'reservations.id', '=', 'payments.reservation_id')
                     ->select('payments.id as payment_id',
+                            'reservations.reservation_no',
                             'payments.created_at as paid_at',
                             'reservations.reservation_type',
                             'reservations.services',
                             'reservations.price',
-                            'payments.pay_method',
-                            'payments.card_name',
-                            'payments.card_number',
+                            'payments.status',
                     )
                     ->where('payments.user_id',$user_id) 
                     ->offset($offset)
                     ->limit($row)
                     ->orderby('payments.id','desc')
                     ->get();
-
 
         $cnt = Payment::join('reservations', 'reservations.id', '=', 'payments.reservation_id')
                 ->where('payments.user_id',$user_id)->count();
