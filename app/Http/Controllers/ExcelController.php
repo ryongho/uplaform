@@ -63,6 +63,7 @@ class ExcelController extends Controller
             if($row['sns_key'] != ""){ // sns로그인인 경우
                 $sns_keys = explode('_',$row['sns_key']);
                 $rows[$i]['user_type'] = $sns_keys[0];
+                $rows[$i]['email'] = $row['sns_key'];
             }else{
                 $rows[$i]['user_type'] = "유플랫폼";
             }
@@ -128,7 +129,6 @@ class ExcelController extends Controller
                     ->setCellValue('L1', '상태');
         $i = 2;
 
-        dd($rows);  
         foreach ($rows as $row){
 
             $objPHPExcel->setActiveSheetIndex(0)
