@@ -130,20 +130,13 @@ class ExcelController extends Controller
         $i = 2;
 
         foreach ($rows as $row){
-            dd($row);
+            
             $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A'.$i, $row['id'])
                         ->setCellValue('B'.$i, $row['email'])
                         ->setCellValue('C'.$i, $row['phone'])
                         ->setCellValue('D'.$i, $row['name'])
-                        ->setCellValue('E'.$i, $row['user_type'])
-                        ->setCellValue('F'.$i, $row['gender'])
-                        ->setCellValue('G'.$i, $row['add_info'])
-                        ->setCellValue('H'.$i, $row['reservation_cnt'])
-                        ->setCellValue('I'.$i, $row['payment_cnt'])
-                        ->setCellValue('J'.$i, $row['created_at'])
-                        ->setCellValue('K'.$i, $row['last_login'])
-                        ->setCellValue('L'.$i, $row['leave']);
+                        ;
             $i++;
         }
                               
