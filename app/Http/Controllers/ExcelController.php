@@ -163,7 +163,7 @@ class ExcelController extends Controller
                         ->setCellValue('G'.$i, $row['add_info'])
                         ->setCellValue('H'.$i, $row['reservation_cnt'])
                         ->setCellValue('I'.$i, $row['payment_cnt'])
-                        ->setCellValue('J'.$i, $row['created_at'])
+                        ->setCellValue('J'.$i, "sss")
                         ->setCellValue('K'.$i, $row['last_login'])
                         ->setCellValue('L'.$i, $row['status']);
             $i++;
