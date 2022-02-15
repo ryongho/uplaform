@@ -73,7 +73,7 @@ class ExcelController extends Controller
             $list[$i]['add_info'] = $row->add_info;
             $list[$i]['reservation_cnt'] = $row->reservation_cnt;
             $list[$i]['payment_cnt'] = $row->payment_cnt;
-            $list[$i]['created_at'] = $row->created_at;
+            $list[$i]['created_at'] = $row->created_at->format('Y-m-d H:i:s');
             $list[$i]['last_login'] = $row->last_login;
             $list[$i]['leave'] = $row->leave;
 
@@ -163,7 +163,7 @@ class ExcelController extends Controller
                         ->setCellValue('G'.$i, $row['add_info'])
                         ->setCellValue('H'.$i, $row['reservation_cnt'])
                         ->setCellValue('I'.$i, $row['payment_cnt'])
-                        ->setCellValue('J'.$i, "sss")
+                        ->setCellValue('J'.$i, $row['created_at'])
                         ->setCellValue('K'.$i, $row['last_login'])
                         ->setCellValue('L'.$i, $row['status']);
             $i++;
