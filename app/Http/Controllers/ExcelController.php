@@ -109,7 +109,6 @@ class ExcelController extends Controller
         
             
         }
-        dd($list);
 
         error_reporting(E_ALL);
         ini_set('display_errors', TRUE);
