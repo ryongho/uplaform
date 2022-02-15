@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->get('/admin/user/detail', [UserController::cl
 Route::middleware('auth:sanctum')->get('/admin/user/area_info', [UserController::class, 'area_info_admin']);// 회원 추가정보
 Route::middleware('auth:sanctum')->put('/admin/user/area_info/update', [UserController::class, 'update_area_admin']);// 회원 추가정보
 Route::middleware('auth:sanctum')->get('/admin/user/reservation/list', [ReservationController::class, 'list_by_user_admin']);// 회원 추가정보
+Route::middleware('auth:sanctum')->get('/admin/user/payment/list', [PaymentController::class, 'list_by_user_admin']);// 회원 추가정보
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/admin/reservation/list_cnt', [ReservationController::class, 'list_cnt']);
 Route::middleware('auth:sanctum')->get('/admin/apply/list', [ApplyController::class, 'list']);

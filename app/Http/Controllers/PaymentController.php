@@ -67,6 +67,47 @@ class PaymentController extends Controller
 
     }
 
+    public function list_by_user_admin(Request $request){
+  
+        $user_id = $request->id;
+        $page_no = $request->page_no;
+        $row = $request->row;
+
+        $offset = (($page_no-1) * $row);
+    
+
+        $return = new \stdClass;
+
+        $rows = Payment::join('reservations', 'reservations.id', '=', 'payments.reservation_id')
+                    ->select('payments.id as payment_id',
+                            'payments.created_at as paid_at',
+                            'reservations.reservation_type',
+                            'reservations.services',
+                            'reservations.price',
+                            'payments.pay_method',
+                            'payments.card_name',
+                            'payments.card_number',
+                    )
+                    ->where('payments.user_id',$user_id) 
+                    ->offset($offset)
+                    ->orderby('payments.id','desc')
+                    ->get();
+
+
+        $cnt = Payment::join('reservations', 'reservations.id', '=', 'payments.reservation_id')
+                ->where('payments.user_id',$user_id)->count();
+    
+        $return->status = "200";
+        $return->cnt = $cnt;
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
     public function list_by_user(Request $request){
   
         $login_user = Auth::user();
