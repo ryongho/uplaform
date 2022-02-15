@@ -127,6 +127,8 @@ class ExcelController extends Controller
                     ->setCellValue('K1', '최근로그인')
                     ->setCellValue('L1', '상태');
         $i = 2;
+
+        dd($rows);  
         foreach ($rows as $row){
 
             $objPHPExcel->setActiveSheetIndex(0)
@@ -144,7 +146,7 @@ class ExcelController extends Controller
                         ->setCellValue('L'.$i, $row['leave']);
             $i++;
         }
-        dd($rows);                        
+                              
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('user_list');
 
