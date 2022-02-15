@@ -90,6 +90,7 @@ class PaymentController extends Controller
                     )
                     ->where('payments.user_id',$user_id) 
                     ->offset($offset)
+                    ->limit($row)
                     ->orderby('payments.id','desc')
                     ->get();
 
