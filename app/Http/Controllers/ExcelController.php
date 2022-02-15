@@ -110,8 +110,6 @@ class ExcelController extends Controller
             
         }
 
-        dd($list);
-
 
         error_reporting(E_ALL);
         ini_set('display_errors', TRUE);
@@ -167,7 +165,7 @@ class ExcelController extends Controller
                         ->setCellValue('I'.$i, $row['payment_cnt'])
                         ->setCellValue('J'.$i, $row['created_at'])
                         ->setCellValue('K'.$i, $row['last_login'])
-                        ->setCellValue('L'.$i, $row['leave']);
+                        ->setCellValue('L'.$i, $row['status']);
             $i++;
         }
                               
