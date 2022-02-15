@@ -58,7 +58,6 @@ class ExcelController extends Controller
                     }
                 })
                 ->orderBy('id', 'desc')->get();
-        dd($rows);
         $i = 0;
         foreach($rows as $row) {
             if($row['sns_key'] != ""){ // sns로그인인 경우
@@ -145,7 +144,7 @@ class ExcelController extends Controller
                         ->setCellValue('L'.$i, $row['leave']);
             $i++;
         }
-                                
+        dd($rows);                        
         // Rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('user_list');
 
