@@ -21,6 +21,7 @@ use App\Http\Controllers\QnaController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\FcmController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExcelController;
 
 
 use App\Models\User;
