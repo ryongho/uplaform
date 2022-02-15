@@ -130,7 +130,7 @@ class ExcelController extends Controller
         $i = 2;
 
         foreach ($rows as $row){
-
+            dd($row);
             $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A'.$i, $row['id'])
                         ->setCellValue('B'.$i, $row['email'])
