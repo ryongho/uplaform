@@ -181,7 +181,7 @@ class PartnerController extends Controller
             }
 
             //matching_cnt
-            $rows['matching_cnt'] = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
+            $rows['matching_cnt'] = Apply::where('user_id',$user_id)->where('status','S')->count();
 
 
             $list->status = "200";
