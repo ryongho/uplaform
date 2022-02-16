@@ -243,9 +243,9 @@ class ExcelController extends Controller
 
             $list[$i]['user_id'] = $row->user_id;
             $list[$i]['partner_id'] = $row->partner_id;
-            $list[$i]['approval'] = $row->approval;
+            //$list[$i]['approval'] = $row->approval;
             $list[$i]['approved_at'] = $row->approved_at;
-            $list[$i]['partner_type'] = $row->partner_type;
+            //$list[$i]['partner_type'] = $row->partner_type;
             $list[$i]['email'] = $row->email;
             $list[$i]['sns_key'] = $row->sns_key;
             $list[$i]['phone'] = $row->phone;
@@ -272,6 +272,20 @@ class ExcelController extends Controller
                 $list[$i]['status'] = "탈퇴";
             }else{
                 $list[$i]['status'] = "정상";
+            }
+
+            if($row->partner_type == "CS"){ 
+                $list[$i]['partner_type'] = "공간정리";
+            }elseif($row->partner_type == "CR"){
+                $list[$i]['partner_type'] = "위생정리";
+            }elseif($row->partner_type == "LC"){
+                $list[$i]['partner_type'] = "정리교육";
+            }
+
+            if($row->approval == "Y"){ 
+                $list[$i]['approval'] = "승인완료";
+            }elseif($row->approval == "N"){
+                $list[$i]['approval'] = "승인대기";
             }
             
             $i++;
@@ -306,19 +320,20 @@ class ExcelController extends Controller
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', '번호')
-                    ->setCellValue('B1', '승인일시')
-                    ->setCellValue('C1', '회원번호')
-                    ->setCellValue('D1', '전문가유형')
-                    ->setCellValue('E1', '이메일(아이디)')
-                    ->setCellValue('F1', '휴대폰번호')
-                    ->setCellValue('G1', '이름')
-                    ->setCellValue('H1', '회원유형')
-                    ->setCellValue('I1', '성별')
-                    ->setCellValue('J1', '매칭')
-                    ->setCellValue('K1', '정산')
-                    ->setCellValue('L1', '가입일')
-                    ->setCellValue('M1', '최종로그인')
-                    ->setCellValue('N1', '상태');
+                    ->setCellValue('B1', '회원상태')
+                    ->setCellValue('C1', '승인일시')
+                    ->setCellValue('D1', '회원번호')
+                    ->setCellValue('E1', '전문가유형')
+                    ->setCellValue('F1', '이메일(아이디)')
+                    ->setCellValue('G1', '휴대폰번호')
+                    ->setCellValue('H1', '이름')
+                    ->setCellValue('I1', '회원유형')
+                    ->setCellValue('J1', '성별')
+                    ->setCellValue('K1', '매칭')
+                    ->setCellValue('L1', '정산')
+                    ->setCellValue('M1', '가입일')
+                    ->setCellValue('N1', '최종로그인')
+                    ->setCellValue('O1', '상태');
 
         $i = 2;
 
@@ -326,18 +341,20 @@ class ExcelController extends Controller
 
             $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A'.$i, ($i-1))
-                        ->setCellValue('B'.$i, $row['approved_at'])
-                        ->setCellValue('C'.$i, $row['user_id'])
-                        ->setCellValue('D'.$i, $row['partner_type'])
-                        ->setCellValue('E'.$i, $row['email'])
-                        ->setCellValue('F'.$i, $row['phone'])
-                        ->setCellValue('G'.$i, $row['name'])
-                        ->setCellValue('H'.$i, $row['user_type'])
-                        ->setCellValue('I'.$i, $row['matching_cnt'])
-                        ->setCellValue('J'.$i, $row['pay_cnt'])
-                        ->setCellValue('L'.$i, $row['created_at'])
-                        ->setCellValue('M'.$i, $row['last_login'])
-                        ->setCellValue('N'.$i, $row['status']);
+                        ->setCellValue('B'.$i, $row['approval'])
+                        ->setCellValue('C'.$i, $row['approved_at'])
+                        ->setCellValue('D'.$i, $row['user_id'])
+                        ->setCellValue('E'.$i, $row['partner_type'])
+                        ->setCellValue('F'.$i, $row['email'])
+                        ->setCellValue('G'.$i, $row['phone'])
+                        ->setCellValue('H'.$i, $row['name'])
+                        ->setCellValue('I'.$i, $row['user_type'])
+                        ->setCellValue('I'.$i, $row['gender'])
+                        ->setCellValue('K'.$i, $row['matching_cnt'])
+                        ->setCellValue('L'.$i, $row['pay_cnt'])
+                        ->setCellValue('M'.$i, $row['created_at'])
+                        ->setCellValue('N'.$i, $row['last_login'])
+                        ->setCellValue('O'.$i, $row['status']);
             $i++;
         }
                               
