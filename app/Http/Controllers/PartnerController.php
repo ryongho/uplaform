@@ -163,7 +163,7 @@ class PartnerController extends Controller
 
         $rows = User::join('partner_infos', 'users.id', '=', 'partner_infos.user_id')
                 ->select('users.id as user_id','users.email','users.name','users.phone','users.reg_no','users.gender','users.last_login','users.created_at','partner_infos.approval','partner_infos.approved_at')
-                ->where('id',$user_id)->first();
+                ->where('users.id',$user_id)->first();
 
         if($rows){
 
