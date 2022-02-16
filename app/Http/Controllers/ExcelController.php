@@ -83,7 +83,7 @@ class ExcelController extends Controller
             if($row->sns_key != ""){
                 $sns_keys = explode('_',$row->sns_key);
                 $list[$i]['user_type'] = $sns_keys[0];
-                $list[$i]['email'] = $row->email;
+                $list[$i]['email'] = $row->sns_key;
             }else{
                 $list[$i]['user_type'] = "유플랫폼";
             }
@@ -262,6 +262,7 @@ class ExcelController extends Controller
             }else{
                 $list[$i]['user_type'] = "유플랫폼";
             }
+
             //matching_cnt
             $list[$i]['matching_cnt'] = Apply::where('user_id',$row->user_id)->where('status','S')->count();
             
@@ -351,7 +352,7 @@ class ExcelController extends Controller
                         ->setCellValue('G'.$i, $row['phone'])
                         ->setCellValue('H'.$i, $row['name'])
                         ->setCellValue('I'.$i, $row['user_type'])
-                        ->setCellValue('I'.$i, $row['gender'])
+                        ->setCellValue('J'.$i, $row['gender'])
                         ->setCellValue('K'.$i, $row['matching_cnt'])
                         ->setCellValue('L'.$i, $row['pay_cnt'])
                         ->setCellValue('M'.$i, $row['created_at'])
