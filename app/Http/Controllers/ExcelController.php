@@ -58,7 +58,6 @@ class ExcelController extends Controller
                     }
                 })
                 ->orderBy('id', 'desc')->get();
-        $i = 0;
 
         $list = array();
         $i = 0;
@@ -195,55 +194,87 @@ class ExcelController extends Controller
 
         
     }
-
-    public function payment_list(Request $request){
+    
+    public function partner_list(Request $request){
         ob_start();
-        $start_date = $request->start_date;     
+        
+        $start_date = $request->start_date;
         $end_date = $request->end_date;
-        $keyword = $request->keyword;
-        $status = $request->status;
-        
-        $rows = Payment::join('users', 'users.id', '=', 'payments.user_id')
-                    ->select('payments.id as payment_id','status','pg','pg_orderno',
-                        DB::raw('(select apply_code from applies where id = payments.apply_id ) as apply_code'),
-                        'buyer_name','buyer_phone','users.user_type as user_type','buyer_email','pay_type','payed_at','price')
-                    ->when($keyword, function ($query, $keyword) {
-                        return $query->where('users.name', 'like', "%".$keyword."%");
-                    })
-                    ->when($status, function ($query, $status) {
-                        return $query->where('status', $status);
-                    })
-                    ->whereBetween('payments.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59']) 
-                    ->orderby('payments.id','desc')
-                    ->get();
-        
+        $search_type = $request->search_type;
+        $search_keyword = $request->search_keyword;
+
+        $rows = User::join('partner_infos', 'users.id', '=', 'partner_infos.user_id')
+                ->select(
+                    'users.id as user_id',
+                    'partner_infos.id as partner_id',
+                    'partner_infos.approval',
+                    'partner_infos.approved_at',
+                    'partner_infos.partner_type',
+                    'users.email',
+                    'users.sns_key',
+                    'users.phone',
+                    'users.name',
+                    'users.gender',
+                    'users.created_at',
+                    'users.last_login',
+                    'users.leave',
+                )
+                ->where('users.user_type','1')
+                ->where('users.created_at','>=',$start_date)
+                ->where('users.created_at','<=',$end_date)
+                ->where('users.name','like','%'.$search_keyword.'%')
+                ->when($search_type, function ($query, $search_type) {
+                    if($search_type == "정상"){
+                        return $query->whereIn('users.leave', ['N']);
+                    }else if($search_type == "탈퇴"){
+                        return $query->whereIn('users.leave', ['Y']);
+                    }else if($search_type == "승인대기"){
+                        return $query->whereIn('partner_infos.approval', ['N']);
+                    }
+                })
+                ->orderBy('users.id', 'desc')->get();
+
         $list = array();
         $i = 0;
 
         foreach($rows as $row){
-            
-            $list[$i]['payment_id'] = $row->payment_id;
-            $list[$i]['status'] = $row->status;
-            $list[$i]['pg'] = $row->pg;
-            $list[$i]['pg_orderno'] = $row->pg_orderno;
-            $list[$i]['apply_code'] = $row->apply_code;
-            $list[$i]['buyer_name'] = $row->buyer_name;
-            $list[$i]['buyer_phone'] = $row->buyer_phone;
-            $list[$i]['buyer_email'] = $row->buyer_email;
-            $list[$i]['pay_type'] = $row->pay_type;
-            $list[$i]['payed_at'] = $row->payed_at;
-            $list[$i]['price'] = $row->price;
 
+            $list[$i]['user_id'] = $row->user_id;
+            $list[$i]['partner_id'] = $row->partner_id;
+            $list[$i]['approval'] = $row->approval;
+            $list[$i]['approved_at'] = $row->approved_at;
+            $list[$i]['partner_type'] = $row->partner_type;
+            $list[$i]['email'] = $row->email;
+            $list[$i]['sns_key'] = $row->sns_key;
+            $list[$i]['phone'] = $row->phone;
+            $list[$i]['name'] = $row->name;
+            $list[$i]['gender'] = $row->gender;
+            $list[$i]['created_at'] = $row->created_at->format('Y-m-d H:i:s');
+            $list[$i]['last_login'] = $row->last_login;
+            $list[$i]['leave'] = $row->leave;
 
-            if($row->user_type == 0){ // 일반회원
-                $list[$i]['user_type'] = "일반회원";
+            if($row['sns_key'] != ""){ // sns로그인인 경우
+                $sns_keys = explode('_',$row['sns_key']);
+                $list[$i]['user_type'] = $sns_keys[0];
             }else{
-                $list[$i]['user_type'] = "기업회원";
+                $list[$i]['user_type'] = "유플랫폼";
             }
-           
+            //matching_cnt
+            $list[$i]['matching_cnt'] = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
+            
+            //payment_cnt
+            $list[$i]['payment_cnt'] = Pay::where('user_id',$row['user_id'])->count();
+
+            if($row->leave == "Y"){ 
+                $list[$i]['status'] = "탈퇴";
+            }else{
+                $list[$i]['status'] = "정상";
+            }
+            
             $i++;
+        
+            
         }
-    
 
         error_reporting(E_ALL);
         ini_set('display_errors', TRUE);
@@ -271,33 +302,40 @@ class ExcelController extends Controller
 
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', '상태')
-                    ->setCellValue('B1', '신청서번호')
-                    ->setCellValue('C1', '결제번호')
-                    ->setCellValue('D1', '주문자')
-                    ->setCellValue('E1', '아이디')
-                    ->setCellValue('F1', '회원유형')
-                    ->setCellValue('G1', '결제카드사')
-                    ->setCellValue('H1', '거래금액')
-                    ->setCellValue('I1', '거래날짜');
+                    ->setCellValue('A1', '번호')
+                    ->setCellValue('B1', '이메일(아이디)')
+                    ->setCellValue('C1', '휴대폰번호')
+                    ->setCellValue('D1', '이름')
+                    ->setCellValue('E1', '회원유형')
+                    ->setCellValue('F1', '성별')
+                    ->setCellValue('G1', '추가정보')
+                    ->setCellValue('H1', '신청내역')
+                    ->setCellValue('I1', '결제내역')
+                    ->setCellValue('J1', '가입일')
+                    ->setCellValue('K1', '최근로그인')
+                    ->setCellValue('L1', '상태');
         $i = 2;
+
         foreach ($list as $row){
 
             $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A'.$i, $row['status'])
-                        ->setCellValue('B'.$i, $row['apply_code'])
-                        ->setCellValue('C'.$i, $row['pg_orderno'])
-                        ->setCellValue('D'.$i, $row['buyer_name']."(".$row['buyer_phone'].")")
-                        ->setCellValue('E'.$i, $row['buyer_email'])
-                        ->setCellValue('F'.$i, $row['user_type'])
-                        ->setCellValue('G'.$i, $row['pg'])
-                        ->setCellValue('H'.$i, $row['price'])
-                        ->setCellValue('I'.$i, $row['payed_at']);
+                        ->setCellValue('A'.$i, $row['id'])
+                        ->setCellValue('B'.$i, $row['email'])
+                        ->setCellValue('C'.$i, $row['phone'])
+                        ->setCellValue('D'.$i, $row['name'])
+                        ->setCellValue('E'.$i, $row['user_type'])
+                        ->setCellValue('F'.$i, $row['gender'])
+                        ->setCellValue('G'.$i, $row['add_info'])
+                        ->setCellValue('H'.$i, $row['reservation_cnt'])
+                        ->setCellValue('I'.$i, $row['payment_cnt'])
+                        ->setCellValue('J'.$i, $row['created_at'])
+                        ->setCellValue('K'.$i, $row['last_login'])
+                        ->setCellValue('L'.$i, $row['status']);
             $i++;
         }
-                                
+                              
         // Rename worksheet
-        $objPHPExcel->getActiveSheet()->setTitle('payment_list');
+        $objPHPExcel->getActiveSheet()->setTitle('user_list');
 
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet

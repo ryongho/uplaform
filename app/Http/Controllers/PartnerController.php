@@ -107,7 +107,7 @@ class PartnerController extends Controller
                 $rows[$i]['user_type'] = "유플랫폼";
             }
             //matching_cnt
-            $matching_cnt = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
+            $rows[$i]['matching_cnt'] = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
             
             //payment_cnt
             $rows[$i]['payment_cnt'] = Pay::where('user_id',$row['user_id'])->count();
