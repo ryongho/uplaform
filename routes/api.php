@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->get('/admin/user/reservation/list', [Reservat
 Route::middleware('auth:sanctum')->get('/admin/user/payment/list', [PaymentController::class, 'list_by_user_admin']);// 회원 결제내역
 
 Route::middleware('auth:sanctum')->get('/admin/partner/list', [PartnerController::class, 'list']);// 회원 리스트
+Route::middleware('auth:sanctum')->put('/admin/partner/approve', [PartnerController::class, 'approve']);// 회원 추가정보
 Route::get('/excel/download/partner_list', [ExcelController::class, 'partner_list']); // 회원리스트 다운로드
 Route::middleware('auth:sanctum')->get('/admin/partner/detail', [PartnerController::class, 'detail']);// 회원 상세
 Route::middleware('auth:sanctum')->get('/admin/partner/area_info', [PartnerController::class, 'area_info_admin']);// 회원 추가정보

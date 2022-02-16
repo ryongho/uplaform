@@ -127,6 +127,32 @@ class PartnerController extends Controller
         ]);;
         
     }
+    
+    public function approve(Request $request){
+
+        $user_id = $request->user_id;
+        
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "변경 성공";
+ 
+        $result = PartnerInfo::update(['user_id'=> $user_id],[
+            'approval'=> 'Y' ,
+            'approved_at'=>Carbon::now(),
+        ]);
+ 
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
 
 
     
