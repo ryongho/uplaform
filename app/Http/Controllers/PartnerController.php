@@ -137,7 +137,8 @@ class PartnerController extends Controller
         $return->status = "200";
         $return->msg = "변경 성공";
  
-        $result = PartnerInfo::update(['user_id'=> $user_id],[
+        $result = PartnerInfo::where('user_id', $user_id)
+        ->update([
             'approval'=> 'Y' ,
             'approved_at'=>Carbon::now(),
         ]);
