@@ -280,6 +280,8 @@ class ExcelController extends Controller
                 $list[$i]['partner_type'] = "위생정리";
             }elseif($row->partner_type == "LC"){
                 $list[$i]['partner_type'] = "정리교육";
+            }else{
+                $list[$i]['partner_type'] = "";
             }
 
             if($row->approval == "Y"){ 
