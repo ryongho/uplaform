@@ -155,6 +155,49 @@ class PartnerController extends Controller
 
     }
 
+    public function detail(Request $request){
+
+        $user_id = $request->user_id;
+        $list = new \stdClass;
+
+
+        $rows = User::join('partner_infos', 'users.id', '=', 'partner_infos.user_id')
+                ->select('users.id as user_id','users.email','users.name','users.phone','users.reg_no','users.gender','users.last_login','users.created_at','users.approval','users.approved_at')
+                ->where('id',$user_id)->first();
+
+        if($rows){
+
+            if($rows['sns_key'] != ""){ // sns로그인인 경우
+                $sns_keys = explode('_',$rows['sns_key']);
+                $rows['user_type'] = $sns_keys[0];
+            }else{
+                $rows['user_type'] = "유플랫폼";
+            }
+
+            if($rows['leave'] == "Y"){ 
+                $rows['status'] = "탈퇴";
+            }else{
+                $rows['status'] = "정상";
+            }
+
+            //matching_cnt
+            $rows['matching_cnt'] = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
+
+
+            $list->status = "200";
+            $list->msg = "success";
+            $list->data = $rows;
+        }else{
+            $list->status = "500";
+            $list->msg = "해당 정보가 없습니다.";
+        }
+ 
+        return response()->json($list, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+        
+    }
+
 
     
 }
