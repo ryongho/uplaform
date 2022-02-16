@@ -82,7 +82,7 @@ class PartnerController extends Controller
                     'users.created_at',
                     'users.last_login',
                     'users.leave',
-                )->where('id' ,">=", $start_no)
+                )->where('users.id' ,">=", $start_no)
                 ->where('users.user_type','1')
                 ->where('users.created_at','>=',$start_date)
                 ->where('users.created_at','<=',$end_date)
@@ -110,7 +110,7 @@ class PartnerController extends Controller
             $matching_cnt = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
             
             //payment_cnt
-            $rows[$i]['payment_cnt'] = Pay::where('user_id',$row['id'])->count();
+            $rows[$i]['payment_cnt'] = Pay::where('user_id',$row['user_id'])->count();
             $i++;
         }
 
