@@ -110,7 +110,7 @@ class PartnerController extends Controller
             $rows[$i]['matching_cnt'] = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
             
             //payment_cnt
-            $rows[$i]['payment_cnt'] = Pay::where('user_id',$row['user_id'])->count();
+            $rows[$i]['pay_cnt'] = Pay::where('user_id',$row['user_id'])->count();
             $i++;
         }
 

@@ -255,17 +255,18 @@ class ExcelController extends Controller
             $list[$i]['last_login'] = $row->last_login;
             $list[$i]['leave'] = $row->leave;
 
-            if($row['sns_key'] != ""){ // sns로그인인 경우
-                $sns_keys = explode('_',$row['sns_key']);
+            if($row->sns_key != ""){ // sns로그인인 경우
+                $sns_keys = explode('_',$row->sns_key );
                 $list[$i]['user_type'] = $sns_keys[0];
+                $list[$i]['email'] = $row->sns_key ;
             }else{
                 $list[$i]['user_type'] = "유플랫폼";
             }
             //matching_cnt
-            $list[$i]['matching_cnt'] = Apply::where('user_id',$row['user_id'])->where('status','S')->count();
+            $list[$i]['matching_cnt'] = Apply::where('user_id',$row->user_id)->where('status','S')->count();
             
             //payment_cnt
-            $list[$i]['payment_cnt'] = Pay::where('user_id',$row['user_id'])->count();
+            $list[$i]['pay_cnt'] = Pay::where('user_id',$row->user_id)->count();
 
             if($row->leave == "Y"){ 
                 $list[$i]['status'] = "탈퇴";
@@ -305,34 +306,38 @@ class ExcelController extends Controller
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', '번호')
-                    ->setCellValue('B1', '이메일(아이디)')
-                    ->setCellValue('C1', '휴대폰번호')
-                    ->setCellValue('D1', '이름')
-                    ->setCellValue('E1', '회원유형')
-                    ->setCellValue('F1', '성별')
-                    ->setCellValue('G1', '추가정보')
-                    ->setCellValue('H1', '신청내역')
-                    ->setCellValue('I1', '결제내역')
-                    ->setCellValue('J1', '가입일')
-                    ->setCellValue('K1', '최근로그인')
-                    ->setCellValue('L1', '상태');
+                    ->setCellValue('B1', '승인일시')
+                    ->setCellValue('C1', '회원번호')
+                    ->setCellValue('D1', '전문가유형')
+                    ->setCellValue('E1', '이메일(아이디)')
+                    ->setCellValue('F1', '휴대폰번호')
+                    ->setCellValue('G1', '이름')
+                    ->setCellValue('H1', '회원유형')
+                    ->setCellValue('I1', '성별')
+                    ->setCellValue('J1', '매칭')
+                    ->setCellValue('K1', '정산')
+                    ->setCellValue('L1', '가입일')
+                    ->setCellValue('M1', '최종로그인')
+                    ->setCellValue('N1', '상태');
+
         $i = 2;
 
         foreach ($list as $row){
 
             $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A'.$i, $row['id'])
-                        ->setCellValue('B'.$i, $row['email'])
-                        ->setCellValue('C'.$i, $row['phone'])
-                        ->setCellValue('D'.$i, $row['name'])
-                        ->setCellValue('E'.$i, $row['user_type'])
-                        ->setCellValue('F'.$i, $row['gender'])
-                        ->setCellValue('G'.$i, $row['add_info'])
-                        ->setCellValue('H'.$i, $row['reservation_cnt'])
-                        ->setCellValue('I'.$i, $row['payment_cnt'])
-                        ->setCellValue('J'.$i, $row['created_at'])
-                        ->setCellValue('K'.$i, $row['last_login'])
-                        ->setCellValue('L'.$i, $row['status']);
+                        ->setCellValue('A'.$i, ($i-1))
+                        ->setCellValue('B'.$i, $row['approved_at'])
+                        ->setCellValue('C'.$i, $row['user_id'])
+                        ->setCellValue('D'.$i, $row['partner_type'])
+                        ->setCellValue('E'.$i, $row['email'])
+                        ->setCellValue('F'.$i, $row['phone'])
+                        ->setCellValue('G'.$i, $row['name'])
+                        ->setCellValue('H'.$i, $row['user_type'])
+                        ->setCellValue('I'.$i, $row['matching_cnt'])
+                        ->setCellValue('J'.$i, $row['pay_cnt'])
+                        ->setCellValue('L'.$i, $row['created_at'])
+                        ->setCellValue('M'.$i, $row['last_login'])
+                        ->setCellValue('N'.$i, $row['status']);
             $i++;
         }
                               
