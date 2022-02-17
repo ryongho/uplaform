@@ -178,7 +178,7 @@ class PaymentController extends Controller
                         return $query->where('payments.card_name', 'like', "%".$card_name."%");
                     })
                     ->when($status, function ($query, $status) {
-                        if($type != "전체"){
+                        if($status != "전체"){
                             return $query->where('payments.status', $status);
                         }
                     })
