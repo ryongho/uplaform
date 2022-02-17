@@ -167,7 +167,7 @@ class PaymentController extends Controller
                     ->select('payments.id as payment_id',
                             'payments.imp_uid as payment_no',
                             'buyer_name',
-                            'payed_at',
+                            'paid_at',
                             'price',
                             'card_name',
                             'reservations.reservation_type',
