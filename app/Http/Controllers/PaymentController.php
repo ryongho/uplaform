@@ -182,7 +182,7 @@ class PaymentController extends Controller
                             return $query->where('payments.status', $status);
                         }
                     })
-                    ->when($reservation_type, function ($query, $reservation_type) {
+                    ->when($type, function ($query, $type) {
                         if($type != "전체"){
                             if($type == "고객명"){
                                 return $query->where('payment.buyer_name', 'like', '%'.$keyword.'%');
