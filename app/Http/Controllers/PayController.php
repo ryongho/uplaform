@@ -68,7 +68,7 @@ class PayController extends Controller
                         'reservations.reservation_type',
                         'reservations.price',
                         'pays.amount',
-                        'pays.status',
+                        'pays.state',
                     )
                     ->where('pays.user_id',$user_id) 
                     ->offset($offset)
