@@ -153,6 +153,7 @@ class PaymentController extends Controller
         $keyword = $request->keyword;
         $card_name = $request->card_name;
         $status = $request->status;
+        $row = $request->row;
         
         $page_no = $request->page_no;
         $start_no = ($page_no - 1) * 30 ;
