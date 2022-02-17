@@ -156,7 +156,6 @@ class PaymentController extends Controller
         $row = $request->row;
         
         $page_no = $request->page_no;
-        $start_no = ($page_no - 1) * 30 ;
         $offset = (($page_no-1) * $row);
 
         $type = $request->type;
@@ -195,6 +194,7 @@ class PaymentController extends Controller
                     })
                     ->whereBetween('payments.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59']) 
                     ->offset($offset)
+                    ->limit($row)
                     ->orderby('payments.id','desc')
                     ->get();
     
