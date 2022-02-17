@@ -231,7 +231,7 @@ class ReservationController extends Controller
                                 DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
-                        ->where('user_id',$request->id)
+                        ->where('user_id',$request->user_id)
                         ->offset($offset)
                         ->orderBy('reservations.id','desc')
                         ->limit($row)->get();
@@ -249,6 +249,7 @@ class ReservationController extends Controller
                 $rows[$x]['phone'] = $user_info['tel'];
                 $addrs = explode(' ',$user_info['address']);
                 $rows[$x]['address'] = $addrs[0];
+                $rows[$x]['clean_level'] = "N";
                 $x++;
             }
             
@@ -273,6 +274,77 @@ class ReservationController extends Controller
         ]);
 
     }
+
+    public function list_by_partner_admin(Request $request){
+
+        $page_no = $request->page_no;
+        $row = $request->row;
+        $offset = (($page_no-1) * $row);
+
+        $rows = Reservation::join('applies', 'applies.reservation_id', '=', 'reservations.id')
+                        ->join('users', 'users.id', '=', 'reservations.user_id')
+                        ->select(   
+                                'reservations.id as reservation_id',
+                                'reservations.reservation_no',
+                                'reservations.reservation_type',
+                                'reservations.reservation_status',
+                                'reservations.service_date',
+                                'reservations.service_time',
+                                'applies.matched_at',
+                                'applies.status as apply_status',
+                                'users.name as name',
+                                'users.phone as email',  
+                                'reservations.created_at as created_at',
+                                'reservations.learn_day',
+                                'reservations.service_detail',
+                                'reservations.memo',
+                                'reservations.price',
+                                'reservations.service_addr',
+                        )         
+                        ->where('applies.status' , 'S')
+                        ->where('applies.user_id',$request->user_id)
+                        ->offset($offset)
+                        ->orderBy('reservations.id','desc')
+                        ->limit($row)->get();
+
+        
+        $x = 0;
+        foreach($rows as $row){
+                $rows[$x]['clean_level'] = "N";
+                if($rows[$x]['reservation_status'] == "S"){
+                    $rows[$x]['ing_status'] = "서비스완료";
+                }else if($rows[$x]['reservation_status'] == "C"){
+                    $rows[$x]['ing_status'] = "예약취소";
+                }else if($rows[$x]['reservation_status'] == "W"){
+                    $rows[$x]['ing_status'] = "지원완료 / 확정대기중";
+                }else if($rows[$x]['reservation_status'] == "R"){
+                    $rows[$x]['ing_status'] = "확정 / 진행중";
+                }
+                
+                $x++;
+  
+        }
+        
+
+        $cnt = Reservation::join('applies', 'applies.reservation_id', '=', 'reservations.id')
+                        ->where('applies.status' , 'S')
+                        ->where('applies.user_id',$request->user_id)
+                        ->count();
+        
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = $cnt;
+
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+    }
+
+    
 
 
     public function list_cnt(Request $request){

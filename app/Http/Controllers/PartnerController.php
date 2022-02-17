@@ -265,7 +265,6 @@ class PartnerController extends Controller
         if($rows){
             $list->status = "200";
             $list->msg = "success";
-            $list->data = $rows;
         }else{
             $list->status = "500";
             $list->msg = "해당 정보가 없습니다.";
