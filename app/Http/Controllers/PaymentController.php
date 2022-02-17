@@ -164,7 +164,7 @@ class PaymentController extends Controller
         $return = new \stdClass;
 
         $rows = Payment::join('users', 'users.id', '=', 'payments.user_id')
-                    ->join('reservations', 'reservations.id', '=', 'payments.reservations_id')
+                    ->join('reservations', 'reservations.id', '=', 'payments.reservation_id')
                     ->select('payments.id as payment_id',
                             'payments.imp_uid as payment_no',
                             'buyer_name',
