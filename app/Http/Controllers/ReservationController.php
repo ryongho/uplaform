@@ -287,7 +287,7 @@ class ReservationController extends Controller
                                 'reservations.id as reservation_id',
                                 'reservations.reservation_no',
                                 'reservations.reservation_type',
-                                'reservations.reservation_status',
+                                'reservations.status as reservation_status',
                                 'reservations.service_date',
                                 'reservations.service_time',
                                 'applies.matched_at',
@@ -304,7 +304,7 @@ class ReservationController extends Controller
                         ->where('applies.status' , 'S')
                         ->where('applies.user_id',$request->user_id)
                         ->offset($offset)
-                        ->orderBy('reservations.id','desc')
+                        ->orderBy('applies.id','desc')
                         ->limit($row)->get();
 
         
