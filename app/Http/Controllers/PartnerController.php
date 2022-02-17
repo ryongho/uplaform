@@ -198,6 +198,44 @@ class PartnerController extends Controller
         
     }
 
+    public function info(Request $request){
+
+        $partner_id = $request->partner_id;
+        $list = new \stdClass;
+
+        $rows = PartnerInfo::select('partner_type',
+                                    'confirm_history',
+                                    'license_img',
+                                    'reg_img',
+                                    'biz_type',
+                                    'reg_no',
+                                    'biz_name',
+                                    'address',
+                                    'address2',
+                                    'updated_at',
+                                    'activity_distance',
+                                    'position',
+                                    'ceo_name',
+                                    'tel',
+
+                            )
+                ->where('id',$partner_id)->first();
+
+        if($rows){
+            $list->status = "200";
+            $list->msg = "success";
+            $list->data = $rows;
+        }else{
+            $list->status = "500";
+            $list->msg = "해당 정보가 없습니다.";
+        }
+ 
+        return response()->json($list, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+        
+    }
+
 
     
 }
