@@ -171,7 +171,7 @@ class PaymentController extends Controller
                             'price',
                             'card_name',
                             'reservations.reservation_type',
-                            'status',
+                            'payments.status',
                     )
                     ->when($card_name, function ($query, $card_name) {
                         return $query->where('payments.card_name', 'like', "%".$card_name."%");
