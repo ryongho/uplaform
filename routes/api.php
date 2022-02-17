@@ -53,8 +53,6 @@ Route::middleware('auth:sanctum')->put('/admin/user/area_info/update', [UserCont
 Route::middleware('auth:sanctum')->get('/admin/user/reservation/list', [ReservationController::class, 'list_by_user_admin']);// 회원 지원 / 신청 내역
 Route::middleware('auth:sanctum')->get('/admin/user/payment/list', [PaymentController::class, 'list_by_user_admin']);// 회원 결제내역
 
-
-
 Route::middleware('auth:sanctum')->get('/admin/partner/list', [PartnerController::class, 'list']);// 파트너 리스트
 Route::middleware('auth:sanctum')->put('/admin/partner/approve', [PartnerController::class, 'approve']);// 파트너 승인
 Route::get('/excel/download/partner_list', [ExcelController::class, 'partner_list']); // 파트너리스트 다운로드
@@ -64,8 +62,6 @@ Route::middleware('auth:sanctum')->put('/admin/partner/update', [PartnerControll
 Route::middleware('auth:sanctum')->get('/admin/partner/reservation/list', [ReservationController::class, 'list_by_partner_admin']);// 파트너 요청/완료내역
 Route::middleware('auth:sanctum')->get('/admin/pay/list', [PayController::class, 'list_by_partner_admin']);// 파트너 정산내역
 
-
-
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/admin/reservation/list_cnt', [ReservationController::class, 'list_cnt']);
 Route::middleware('auth:sanctum')->get('/admin/apply/list', [ApplyController::class, 'list']);
@@ -73,6 +69,10 @@ Route::middleware('auth:sanctum')->put('/admin/apply/match', [ApplyController::c
 Route::middleware('auth:sanctum')->put('/admin/reservation/update_service_address', [ReservationController::class, 'update_service_address']);
 Route::middleware('auth:sanctum')->put('/admin/reservation/cancel', [ReservationController::class, 'cancel_admin']);// 예약 취소
 Route::middleware('auth:sanctum')->put('/admin/reservation/complete', [ReservationController::class, 'complete']);// 서비스 완료
+
+
+Route::middleware('auth:sanctum')->get('/admin/payment/list', [PaymentController::class, 'list']);// 결제 리스트
+Route::middleware('auth:sanctum')->get('/admin/payment/detail', [PaymentController::class, 'detail']);// 결제 상세
 
 
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록

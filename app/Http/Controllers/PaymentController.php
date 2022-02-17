@@ -151,33 +151,55 @@ class PaymentController extends Controller
         $start_date = $request->start_date;     
         $end_date = $request->end_date;
         $keyword = $request->keyword;
+        $card_name = $request->card_name;
         $status = $request->status;
         
         $page_no = $request->page_no;
         $start_no = ($page_no - 1) * 30 ;
+        $offset = (($page_no-1) * $row);
 
         $type = $request->type;
 
         $return = new \stdClass;
 
         $rows = Payment::join('users', 'users.id', '=', 'payments.user_id')
-                    ->select('payments.id as payment_id','status','pg','pg_orderno',
-                    DB::raw('(select apply_code from applies where id = payments.apply_id ) as apply_code'),
-                    'buyer_name','buyer_phone','users.user_type','buyer_email','pay_type','payed_at','status','price')
-                    ->when($keyword, function ($query, $keyword) {
-                        return $query->where('users.name', 'like', "%".$keyword."%");
+                    ->join('reservations', 'reservations.id', '=', 'payments.reservations_id')
+                    ->select('payments.id as payment_id',
+                            'payments.imp_uid as payment_no',
+                            'buyer_name',
+                            'payed_at',
+                            'price',
+                            'card_name',
+                            'reservations.reservation_type',
+                            'status',
+                    )
+                    ->when($card_name, function ($query, $card_name) {
+                        return $query->where('payments.card_name', 'like', "%".$card_name."%");
                     })
                     ->when($status, function ($query, $status) {
-                        return $query->where('status', $status);
+                        if($type != "전체"){
+                            return $query->where('payments.status', $status);
+                        }
+                    })
+                    ->when($reservation_type, function ($query, $reservation_type) {
+                        if($type != "전체"){
+                            if($type == "고객명"){
+                                return $query->where('payment.buyer_name', 'like', '%'.$keyword.'%');
+                            }else{
+                                return $query->where('reservations.reservation_type', $type);
+                            }
+                            
+                        }
+                        
                     })
                     ->whereBetween('payments.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59']) 
-                    ->where('payments.id','>',$start_no) 
+                    ->offset($offset)
                     ->orderby('payments.id','desc')
                     ->get();
     
-
+        
         $return->status = "200";
-        $return->cnt = count($rows);
+        //$return->cnt = $cnt;
         $return->data = $rows;
 
         return response()->json($return, 200)->withHeaders([
