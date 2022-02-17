@@ -65,7 +65,7 @@ class PayController extends Controller
         $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
                     ->select(
                         'pays.created_at as created_at',
-                        'reservations.service_type',
+                        'reservations.reservation_type',
                         'reservations.price',
                         'pays.amount',
                         'pays.status',
