@@ -200,7 +200,7 @@ class PartnerController extends Controller
 
     public function info(Request $request){
 
-        $partner_id = $request->partner_id;
+        $user_id = $request->user_id;
         $list = new \stdClass;
 
         $rows = PartnerInfo::select('partner_type',
@@ -219,7 +219,7 @@ class PartnerController extends Controller
                                     'tel',
 
                             )
-                ->where('id',$partner_id)->first();
+                ->where('user_id',$user_id)->first();
 
         if($rows){
             $list->status = "200";
