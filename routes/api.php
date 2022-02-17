@@ -49,8 +49,8 @@ Route::middleware('auth:sanctum')->get('/admin/user/list', [UserController::clas
 Route::get('/excel/download/user_list', [ExcelController::class, 'user_list']); // 회원리스트 다운로드
 Route::middleware('auth:sanctum')->get('/admin/user/detail', [UserController::class, 'detail']);// 회원 상세
 Route::middleware('auth:sanctum')->get('/admin/user/area_info', [UserController::class, 'area_info_admin']);// 회원 추가정보
-Route::middleware('auth:sanctum')->put('/admin/user/area_info/update', [UserController::class, 'update_area_admin']);// 회원 추가정보
-Route::middleware('auth:sanctum')->get('/admin/user/reservation/list', [ReservationController::class, 'list_by_user_admin']);// 회원 추가정보
+Route::middleware('auth:sanctum')->put('/admin/user/area_info/update', [UserController::class, 'update_area_admin']);// 회원 추가 정보 수정
+Route::middleware('auth:sanctum')->get('/admin/user/reservation/list', [ReservationController::class, 'list_by_user_admin']);// 회원 지원 / 신청 내역
 Route::middleware('auth:sanctum')->get('/admin/user/payment/list', [PaymentController::class, 'list_by_user_admin']);// 회원 결제내역
 
 
@@ -60,8 +60,8 @@ Route::middleware('auth:sanctum')->put('/admin/partner/approve', [PartnerControl
 Route::get('/excel/download/partner_list', [ExcelController::class, 'partner_list']); // 파트너리스트 다운로드
 Route::middleware('auth:sanctum')->get('/admin/partner/detail', [PartnerController::class, 'detail']);// 파트너 상세
 Route::middleware('auth:sanctum')->get('/admin/partner/info', [PartnerController::class, 'info']);// 파트너 추가정보
-Route::middleware('auth:sanctum')->put('/admin/partner/area_info/update', [PartnerController::class, 'update_area_admin']);// 파트너추가정보
-Route::middleware('auth:sanctum')->get('/admin/partner/reservation/list', [PartnerController::class, 'list_by_user_admin']);// 파트너 추가정보
+Route::middleware('auth:sanctum')->put('/admin/partner/update', [PartnerController::class, 'update']);// 파트너 추가 정보 수정
+Route::middleware('auth:sanctum')->get('/admin/partner/reservation/list', [PartnerController::class, 'list_by_user_admin']);// 파트너 
 Route::middleware('auth:sanctum')->get('/admin/partner/payment/list', [PartnerController::class, 'list_by_user_admin']);// 파트너 결제내역
 
 

@@ -203,7 +203,10 @@ class PartnerController extends Controller
         $user_id = $request->user_id;
         $list = new \stdClass;
 
-        $rows = PartnerInfo::select('partner_type',
+        $rows = PartnerInfo::select(
+                                    'id as partner_id',
+                                    'user_id',
+                                    'partner_type',
                                     'confirm_history',
                                     'license_img',
                                     'reg_img',
@@ -220,6 +223,44 @@ class PartnerController extends Controller
 
                             )
                 ->where('user_id',$user_id)->first();
+
+        if($rows){
+            $list->status = "200";
+            $list->msg = "success";
+            $list->data = $rows;
+        }else{
+            $list->status = "500";
+            $list->msg = "해당 정보가 없습니다.";
+        }
+ 
+        return response()->json($list, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+        
+    }
+
+    public function update(Request $request){
+
+        $user_id = $request->user_id;
+        $list = new \stdClass;
+
+        $rows = PartnerInfo::where('user_id',$user_id)
+                ->update([
+                    'partner_type'=> $request->partner_type,
+                    'confirm_history'=> $request->confirm_history,
+                    'activity_distance'=> $request->activity_distance,
+                    'license_img'=> $request->license_img,
+                    'reg_img'=> $request->reg_img,
+                    'biz_type'=> $request->biz_type,
+                    'reg_no'=> $request->biz_reg_no,
+                    'biz_name'=> $request->biz_name,
+                    'address'=> $request->address,
+                    'address2'=> $request->address2 ,
+                    'ceo_name'=> $request->ceo_name,
+                    'tel'=> $request->tel,
+                    'position'=> $request->position,
+                    'updated_at' => Carbon::now(),
+                ]);
 
         if($rows){
             $list->status = "200";
