@@ -52,6 +52,42 @@ class PayController extends Controller
         
     }
 
+    public function list_by_partner_admin(Request $request){
+  
+        $user_id = $request->id;
+        $page_no = $request->page_no;
+        $row = $request->row;
+
+        $offset = (($page_no-1) * $row);
+
+        $return = new \stdClass;
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        'pays.created_at as created_at',
+                        'reservations.service_type',
+                        'reservations.price',
+                        'pays.amount',
+                        'pays.status',
+                    )
+                    ->where('pays.user_id',$user_id) 
+                    ->offset($offset)
+                    ->orderBy('pays.created_at')
+                    ->limit($row)
+                    ->get();
+    
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
 
 
     public function detail(Request $request){
