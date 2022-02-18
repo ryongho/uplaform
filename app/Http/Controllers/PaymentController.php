@@ -224,7 +224,7 @@ class PaymentController extends Controller
                             'payments.imp_uid as payment_no',
                             'merchant_uid',
                             'buyer_name',
-                            'buyer_phone',
+                            'buyer_tel',
                             'users.gender',
                             'users.reg_no',
                             'paid_at',
