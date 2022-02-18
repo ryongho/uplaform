@@ -160,12 +160,12 @@ class PayController extends Controller
         $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
                     ->select(
                         DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m" ) as month'),
+                        DB::raw('count(distinct("pays.user_id")) as partner_cnt'),
+                        DB::raw('count(case when reservations.reservation_type="CS" than 1 end) as cs_cnt'),
+                        DB::raw('count(case when reservations.reservation_type="CR" than 1 end) as cr_cnt'),
+                        DB::raw('count(case when reservations.reservation_type="LC" than 1 end) as lc_cnt'),
                         DB::raw('count(*) as count'),
-                        DB::raw('sum(amount) as amount'),
-                        DB::raw('sum(CASE  
-                        WHEN state = \'S\' THEN amount 
-                            ELSE 0 
-                        END)  as paid_amount'),
+                        DB::raw('pays.state'),
                     )
                     ->groupBy('month')
                     ->orderby('month','desc')
