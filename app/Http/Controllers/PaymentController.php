@@ -235,7 +235,7 @@ class PaymentController extends Controller
                             'reservations.canceled_at',
                             DB::raw('(select matched_at from applies where status = "S" and reservation_id = "reservations.id") as matched_at'),
                     )
-                    ->where('id',$payment_id)
+                    ->where('payments.id',$payment_id)
                     ->first();
 
 
