@@ -151,6 +151,8 @@ class PayController extends Controller
   
         $page_no = $request->page_no;
         $row = $request->row;
+        $start_month = $request->start_month;
+        $end_month = $request->end_month;
 
         $offset = (($page_no-1) * $row);
 
@@ -168,6 +170,8 @@ class PayController extends Controller
                         DB::raw('count(CASE WHEN pays.state="S" THEN 1 END) as success_cnt'),
                         DB::raw('count(CASE WHEN pays.state="W" THEN 1 END) as wait_cnt'),
                     )
+                    ->where('pays.created_at','>=',$start_month."-01 00:00:00")
+                    ->where('pays.created_at','<=',$end_month."-31 23:59:59")
                     ->groupBy('month')
                     ->orderby('month','desc')
                     ->offset($offset)
