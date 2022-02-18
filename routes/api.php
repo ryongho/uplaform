@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->get('/admin/payment/detail', [PaymentControll
 Route::middleware('auth:sanctum')->put('/admin/payment/cancel', [PaymentController::class, 'cancel']);// 결제 취소
 
 Route::middleware('auth:sanctum')->get('/admin/pay/list', [PayController::class, 'list']);// 정산내역
+Route::middleware('auth:sanctum')->get('/admin/pay/list/type', [PayController::class, 'list_type']);// 정산내역 - reservation_type 별
 
 
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록
