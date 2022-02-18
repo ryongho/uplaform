@@ -205,6 +205,8 @@ class PayController extends Controller
                         DB::raw('sum(reservations.price) as sum_price'),
                         DB::raw('sum(pays.amount) sum_amount'),
                     )
+                    ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
+                    ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
                     ->groupBy('reservations.reservation_type')
                     ->get();
 
