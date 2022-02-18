@@ -248,4 +248,38 @@ class PaymentController extends Controller
 
         
     }
+
+
+    public function cancel(Request $request){
+        
+        $return = new \stdClass;
+
+        $ids = explode(",",$request->payment_ids);
+
+        //$payment_cancel = Payment::whereIn('id', $ids)->update(['status' => 'refunded', 'refunded_at' => Carbon::now()]); // 환불
+
+        $payment_ids =  payment::whereIn('id', $ids)->select('reservation_id')->get();
+        dd($payment_ids);
+        //$reservation_cancel = Reservation::whereIn('id', $payment_ids)->update(['status' => 'C', 'canceled_at' => Carbon::now()]); // 취소 
+         
+        
+
+        if($reservation_cancel && $payment_cancel ){
+            $return->status = "200";
+            $return->msg = "success";
+            
+        }else{
+            $return->status = "500";
+            $return->msg = "success";
+            
+        }     
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
+
 }
