@@ -165,8 +165,8 @@ class PayController extends Controller
                         DB::raw('count(CASE WHEN reservations.reservation_type="CR" THEN 1 END) as cr_cnt'),
                         DB::raw('count(CASE WHEN reservations.reservation_type="LC" THEN 1 END) as lc_cnt'),
                         DB::raw('count(*) as count'),
-                        DB::raw('count(CASE WHEN pays.status="S" THEN 1 END) as success_cnt'),
-                        DB::raw('count(CASE WHEN pays.status="W" THEN 1 END) as wait_cnt'),
+                        DB::raw('count(CASE WHEN pays.state="S" THEN 1 END) as success_cnt'),
+                        DB::raw('count(CASE WHEN pays.state="W" THEN 1 END) as wait_cnt'),
                     )
                     ->groupBy('month')
                     ->orderby('month','desc')
