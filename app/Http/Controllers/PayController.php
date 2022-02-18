@@ -187,5 +187,37 @@ class PayController extends Controller
         
     }
 
+    public function list_type(Request $request){
+  
+        $year = $request->year;
+        $month = $request->month;
+
+        $return = new \stdClass;
+
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        DB::raw('reservations.reservation_type'),
+                        DB::raw('count(distinct("pays.user_id")) as partner_cnt'),
+                        DB::raw('count(*) as count'),
+                        DB::raw('count(CASE WHEN pays.state="S" THEN 1 END) as success_cnt'),
+                        DB::raw('count(CASE WHEN pays.state="W" THEN 1 END) as wait_cnt'),
+                        DB::raw('sum(reservations.price) as sum_price'),
+                        DB::raw('sum(pays.amount) sum_amount'),
+                    )
+                    ->groupBy('reservations.reservation_type')
+                    ->get();
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
 
 }
