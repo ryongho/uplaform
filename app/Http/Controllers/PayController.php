@@ -283,12 +283,12 @@ class PayController extends Controller
                     ->get();
 
         $return->status = "200";
-        $return->cnt = count($rows);
-        $return->data = $rows;
         $return->year = $year;
         $return->month = $month;
         $return->totla = $total;
         $return->data = $rows;
+        
+        
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
