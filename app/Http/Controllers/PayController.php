@@ -223,13 +223,13 @@ class PayController extends Controller
                 ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
                 ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
                 ->get();
-                
+
         $return->status = "200";
-        $return->cnt = count($rows);
-        $return->data = $rows;
         $return->year = $year;
         $return->month = $month;
         $return->totla = $total;
+        $return->data = $rows;
+        
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
@@ -271,8 +271,23 @@ class PayController extends Controller
                     ->groupBy('pays.user_id')
                     ->get();
 
+        $total = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        DB::raw('count(*) as count'),
+                        DB::raw('sum(reservations.price) as sum_price'),
+                        DB::raw('sum(pays.amount) sum_amount'),
+                    )
+                    ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
+                    ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
+                    ->where('reservation_type',$reservation_type)
+                    ->get();
+
         $return->status = "200";
         $return->cnt = count($rows);
+        $return->data = $rows;
+        $return->year = $year;
+        $return->month = $month;
+        $return->totla = $total;
         $return->data = $rows;
 
         return response()->json($return, 200)->withHeaders([
