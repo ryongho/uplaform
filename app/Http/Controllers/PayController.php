@@ -161,11 +161,12 @@ class PayController extends Controller
                     ->select(
                         DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m" ) as month'),
                         DB::raw('count(distinct("pays.user_id")) as partner_cnt'),
-                        //DB::raw('count(case when reservations.reservation_type="CS" than 1 end) as cs_cnt'),
-                        //DB::raw('count(case when reservations.reservation_type="CR" than 1 end) as cr_cnt'),
-                        //DB::raw('count(case when reservations.reservation_type="LC" than 1 end) as lc_cnt'),
+                        DB::raw('count(CASE WHEN reservations.reservation_type="CS" THEN 1 END) as cs_cnt'),
+                        DB::raw('count(CASE WHEN reservations.reservation_type="CR" THEN 1 END) as cr_cnt'),
+                        DB::raw('count(CASE WHEN reservations.reservation_type="LC" THEN 1 END) as lc_cnt'),
                         DB::raw('count(*) as count'),
-                        DB::raw('pays.state'),
+                        DB::raw('count(CASE WHEN pays.status="S" THEN 1 END) as success_cnt'),
+                        DB::raw('count(CASE WHEN pays.status="W" THEN 1 END) as wait_cnt'),
                     )
                     ->groupBy('month')
                     ->orderby('month','desc')
