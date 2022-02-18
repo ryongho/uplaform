@@ -225,5 +225,48 @@ class PayController extends Controller
         
     }
 
+    public function list_partner(Request $request){
+  
+        $year = $request->year;
+        $month = $request->month;
+        $reservation_type = $request->reservation_type;
+
+        $page_no = $request->page_no;
+        $row = $request->row;
+
+        $offset = (($page_no-1) * $row);
+
+        $return = new \stdClass;
+
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->join('users', 'users.id', '=', 'pays.user_id')
+                    ->select(
+                        DB::raw('pays.user_id as user_id'),
+                        DB::raw('users.name'),
+                        DB::raw('count(*) as count'),
+                        DB::raw('count(CASE WHEN pays.state="S" THEN 1 END) as success_cnt'),
+                        DB::raw('count(CASE WHEN pays.state="W" THEN 1 END) as wait_cnt'),
+                        DB::raw('sum(reservations.price) as sum_price'),
+                        DB::raw('sum(pays.amount) sum_amount'),
+                    )
+                    ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
+                    ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
+                    ->offset($offset)
+                    ->limit($row)
+                    ->groupBy('pays.user_id')
+                    ->get();
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
 
 }
