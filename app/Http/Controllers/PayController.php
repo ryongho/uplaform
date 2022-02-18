@@ -349,5 +349,66 @@ class PayController extends Controller
         
     }
 
+    public function list_payment(Request $request){
+  
+        $year = $request->year;
+        $month = $request->month;
+        $day = $request->day;
+        $reservation_type = $request->reservation_type;
+        $user_id = $request->user_id;
+
+        $return = new \stdClass;
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->join('users', 'users.id', '=', 'pays.user_id')
+                    ->select(
+                        'pays.id as pay_id',
+                        'pays.created_at',
+                        'users.name',
+                        'users.email',
+                        'reservations.service_detail',
+                        'reservations.service_date',
+                        'reservations.service_time',
+                        'reservations.finished_at',
+                        'pays.state',    
+                    )
+                    ->where('pays.created_at','>=',$year."-".$month."-".$day." 00:00:00")
+                    ->where('pays.created_at','<=',$year."-".$month."-".$day." 23:59:59")
+                    ->where('pays.user_id',$user_id)
+                    ->get();
+
+        $return->status = "200";
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
+    public function pay(Request $request){
+  
+        $pay_id = $request->pay_id;
+        
+        $return = new \stdClass;
+
+        $result = Pay::where('id', $pay_id)->update(['status' => 'S', 'paid_at' => Carbon::now()]); // 정산완료처리
+        
+        if($result){
+            $return->status = "200";
+            $return->msg = "success";
+        }else{
+            $return->status = "500";
+            $return->msg = "success";
+        }
+        
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
 
 }
