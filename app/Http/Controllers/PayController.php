@@ -252,6 +252,7 @@ class PayController extends Controller
                     )
                     ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
                     ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
+                    ->where('reservation_type',$reservation_type)
                     ->offset($offset)
                     ->limit($row)
                     ->groupBy('pays.user_id')
