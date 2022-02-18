@@ -236,7 +236,7 @@ class PaymentController extends Controller
                             DB::raw('(select matched_at where status = "S" and reservation_id = "reservations.id") as matched_at'),
                     )
                     ->where('id',$payment_id)
-                    ->fitst();
+                    ->first();
 
 
         $return->status = "200";
