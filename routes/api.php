@@ -70,7 +70,6 @@ Route::middleware('auth:sanctum')->put('/admin/reservation/update_service_addres
 Route::middleware('auth:sanctum')->put('/admin/reservation/cancel', [ReservationController::class, 'cancel_admin']);// 예약 취소
 Route::middleware('auth:sanctum')->put('/admin/reservation/complete', [ReservationController::class, 'complete']);// 서비스 완료
 
-
 Route::middleware('auth:sanctum')->get('/admin/payment/list', [PaymentController::class, 'list']);// 결제 리스트
 Route::middleware('auth:sanctum')->get('/admin/payment/detail', [PaymentController::class, 'detail']);// 결제 상세
 

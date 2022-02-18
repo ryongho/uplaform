@@ -218,9 +218,25 @@ class PaymentController extends Controller
         $return = new \stdClass;
         
          
-        $rows = Payment::select('status','pg_provider','pg_tid','imp_504552668921','buyer_name','buyer_tel','buyer_email','pay_method','created_at','status','paid_amount')
-                    ->where('id',$payment_id) 
-                    ->first();
+        $rows = Payment::join('users', 'users.id', '=', 'payments.user_id')
+                    ->join('reservations', 'reservations.id', '=', 'payments.reservation_id')
+                    ->select('payments.id as payment_id',
+                            'payments.imp_uid as payment_no',
+                            'merchant_uid',
+                            'buyer_name',
+                            'buyer_phone',
+                            'users.gender',
+                            'users.reg_no',
+                            'paid_at',
+                            'price',
+                            'card_name',
+                            'reservations.reservation_type',
+                            'payments.status',
+                            'reservations.canceled_at',
+                            DB::raw('(select matched_at where status = "S" and reservation_id = "reservations.id") as matched_at'),
+                    )
+                    ->where('id',$payment_id)
+                    ->fitst();
 
 
         $return->status = "200";
