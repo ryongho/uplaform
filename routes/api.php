@@ -72,7 +72,7 @@ Route::middleware('auth:sanctum')->put('/admin/reservation/complete', [Reservati
 
 Route::middleware('auth:sanctum')->get('/admin/payment/list', [PaymentController::class, 'list']);// 결제 리스트
 Route::middleware('auth:sanctum')->get('/admin/payment/detail', [PaymentController::class, 'detail']);// 결제 상세
-Route::middleware('auth:sanctum')->get('/admin/payment/cancel', [PaymentController::class, 'cancel']);// 결제 취소
+Route::middleware('auth:sanctum')->put('/admin/payment/cancel', [PaymentController::class, 'cancel']);// 결제 취소
 
 
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록
