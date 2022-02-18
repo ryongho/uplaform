@@ -393,7 +393,7 @@ class PayController extends Controller
         
         $return = new \stdClass;
 
-        $result = Pay::where('id', $pay_id)->update(['status' => 'S', 'paid_at' => Carbon::now()]); // 정산완료처리
+        $result = Pay::where('id', $pay_id)->update(['state' => 'S', 'paid_at' => Carbon::now()]); // 정산완료처리
         
         if($result){
             $return->status = "200";
