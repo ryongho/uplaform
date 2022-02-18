@@ -145,4 +145,46 @@ class PayController extends Controller
 
         
     }
+
+
+    public function list(Request $request){
+  
+        $page_no = $request->page_no;
+        $row = $request->row;
+
+        $offset = (($page_no-1) * $row);
+
+        $return = new \stdClass;
+
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m" ) as month'),
+                        DB::raw('count(*) as count'),
+                        DB::raw('sum(amount) as amount'),
+                        DB::raw('sum(CASE  
+                        WHEN state = \'S\' THEN amount 
+                            ELSE 0 
+                        END)  as paid_amount'),
+                    )
+                    ->groupBy('month')
+                    ->orderby('month','desc')
+                    ->offset($offset)
+                    ->limit($row)
+                    ->get();
+
+    
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
+
 }

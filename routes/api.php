@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->get('/admin/partner/detail', [PartnerControll
 Route::middleware('auth:sanctum')->get('/admin/partner/info', [PartnerController::class, 'info']);// 파트너 추가정보
 Route::middleware('auth:sanctum')->put('/admin/partner/update', [PartnerController::class, 'update']);// 파트너 추가 정보 수정
 Route::middleware('auth:sanctum')->get('/admin/partner/reservation/list', [ReservationController::class, 'list_by_partner_admin']);// 파트너 요청/완료내역
-Route::middleware('auth:sanctum')->get('/admin/pay/list', [PayController::class, 'list_by_partner_admin']);// 파트너 정산내역
+Route::middleware('auth:sanctum')->get('/admin/partner/pay/list', [PayController::class, 'list_by_partner_admin']);// 파트너 정산내역
 
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/admin/reservation/list_cnt', [ReservationController::class, 'list_cnt']);
@@ -73,6 +73,8 @@ Route::middleware('auth:sanctum')->put('/admin/reservation/complete', [Reservati
 Route::middleware('auth:sanctum')->get('/admin/payment/list', [PaymentController::class, 'list']);// 결제 리스트
 Route::middleware('auth:sanctum')->get('/admin/payment/detail', [PaymentController::class, 'detail']);// 결제 상세
 Route::middleware('auth:sanctum')->put('/admin/payment/cancel', [PaymentController::class, 'cancel']);// 결제 취소
+
+Route::middleware('auth:sanctum')->get('/admin/pay/list', [PayController::class, 'list']);// 정산내역
 
 
 Route::post('/user/regist/', [UserController::class, 'regist_user']); // 유저 등록
