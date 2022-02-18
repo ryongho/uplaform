@@ -297,5 +297,57 @@ class PayController extends Controller
         
     }
 
+    public function list_day(Request $request){
+  
+        $year = $request->year;
+        $month = $request->month;
+        $reservation_type = $request->reservation_type;
+        $user_id = $request->user_id;
+
+        $return = new \stdClass;
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m-%d" ) as day'),
+                        DB::raw('count(*) as count'),
+                        DB::raw('count(CASE WHEN pays.state="S" THEN 1 END) as success_cnt'),
+                        DB::raw('count(CASE WHEN pays.state="W" THEN 1 END) as wait_cnt'),
+                        DB::raw('sum(reservations.price) as sum_price'),
+                        DB::raw('sum(pays.amount) sum_amount'),
+                        DB::raw('(sum(reservations.price) - sum(pays.amount)) as fee'),
+                    )
+                    ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
+                    ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
+                    ->where('pays.user_id',$user_id)
+                    ->groupBy('day')
+                    ->orderBy('day','desc')
+                    ->get();
+
+        $total = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                ->select(
+                    DB::raw('count(*) as count'),
+                    DB::raw('sum(reservations.price) as sum_price'),
+                    DB::raw('sum(pays.amount) sum_amount'),
+                )
+                ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
+                ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
+                ->where('pays.user_id',$user_id)
+                ->get();
+
+        $return->status = "200";
+        $return->year = $year;
+        $return->month = $month;
+        $return->totla = $total;
+        $return->data = $rows;
+        
+        
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
 
 }
