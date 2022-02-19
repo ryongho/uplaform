@@ -22,6 +22,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\FcmController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\FeeController;
 
 
 use App\Models\User;
@@ -80,6 +81,7 @@ Route::middleware('auth:sanctum')->get('/admin/pay/list/partner', [PayController
 Route::middleware('auth:sanctum')->get('/admin/pay/list/day', [PayController::class, 'list_day']);// 정산내역 타입 - partner - 날짜 별
 Route::middleware('auth:sanctum')->get('/admin/pay/list/payment', [PayController::class, 'list_payment']);// 정산내역 타입 - partner - 날짜 - 정산 건 별
 Route::middleware('auth:sanctum')->put('/admin/pay', [PayController::class, 'pay']);// 정산처리
+Route::middleware('auth:sanctum')->put('/admin/update/fee', [FeeController::class, 'update']);// 수수료 업데이트
 
 
 
