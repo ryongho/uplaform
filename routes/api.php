@@ -64,7 +64,7 @@ Route::middleware('auth:sanctum')->get('/admin/partner/reservation/list', [Reser
 Route::middleware('auth:sanctum')->get('/admin/partner/pay/list', [PayController::class, 'list_by_partner_admin']);// 파트너 정산내역
 
 Route::middleware('auth:sanctum')->get('/admin/notice/list', [NoticeController::class, 'list_admin']);// 어드민 공지 리스트
-Route::middleware('auth:sanctum')->get('/admin/notice/regist', [NoticeController::class, 'regist']);// 어드민 공지 등록
+Route::middleware('auth:sanctum')->post('/admin/notice/regist', [NoticeController::class, 'regist']);// 어드민 공지 등록
 
 
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
@@ -144,7 +144,6 @@ Route::middleware('auth:sanctum')->put('/apply/complete', [ApplyController::clas
 Route::middleware('auth:sanctum')->get('/apply/list/user', [ApplyController::class, 'list_by_user']);// 예약 리스트
 Route::middleware('auth:sanctum')->get('/apply/detail', [ApplyController::class, 'detail']);// 예약 상세 내용
 
-Route::middleware('auth:sanctum')->post('/notice/regist', [NoticeController::class, 'regist']); // 공지 등록
 Route::get('/notice/list', [NoticeController::class, 'list']); // 공지 리스트
 Route::get('/notice/detail', [NoticeController::class, 'detail']); // 공지 내용 
 Route::middleware('auth:sanctum')->put('/notice/update', [NoticeController::class, 'update']);//공지 수정
