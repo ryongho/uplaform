@@ -69,7 +69,7 @@ class NoticeController extends Controller
         $end_date = $request->end_date;
 
         $rows = Notice::select('id as notice_id','title','start_date', 'end_date', 'usable', 
-                        DB::raw('(select name from users where id = notices.user_id ) as writer'), 
+                        DB::raw('(select name from users where id = notices.writer ) as writer'), 
                         'created_at',)
                 ->when($usable, function ($query, $usable) {
                     if($usable != "전체"){//확정대기
