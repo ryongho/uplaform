@@ -113,7 +113,8 @@ class NoticeController extends Controller
         $rows = Notice::select('id as notice_id','title','start_date', 'end_date', 'usable', 
                                 DB::raw('(select name from users where id = notices.writer ) as writer'), 
                                 'created_at')
-                        ->get();
+                        ->where('id',$notice_id)
+                        ->first();
 
         $return = new \stdClass;
 
