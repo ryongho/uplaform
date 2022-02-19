@@ -107,6 +107,25 @@ class NoticeController extends Controller
 
     }
 
+    public function detail_admin(Request $request){
+        $notice_id = $request->notice_id;
+
+        $rows = Notice::select('id as notice_id','title','start_date', 'end_date', 'usable', 
+                                DB::raw('(select name from users where id = notices.writer ) as writer'), 
+                                'created_at')
+                        ->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
     public function detail(Request $request){
         $notice_id = $request->notice_id;
 
@@ -137,54 +156,25 @@ class NoticeController extends Controller
         $return->msg = "관리자에게 문의";
 
         $login_user = Auth::user();
-        $user_id = $login_user->getId();
-        $user_type = $login_user->getType();
 
-        /* 중복 체크 - start*/
-        
-        
-        $id_cnt = User::where('id',$user_id)->count();
+        $result = Notice::where('id',$request->notice_id)->update([
+            'title'=> $request->title ,
+            'content'=> $request->content ,
+            'start_date'=> $request->start_date ,
+            'end_date'=> $request->end_date ,
+            'usable'=> $request->usable ,
+            'writer'=> $login_user->getId(),
+        ]);
 
-        if($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
-            $return->status = "601";
-            $return->msg = "fail";
-            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
-            $return->data = $request->name ;
-        }elseif( $user_type == 0 ){//일반회원
-            $return->status = "602";
-            $return->msg = "fail";
-            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
+        if($result){
+            $return->status = "200";
+            $return->msg = "success";
 
-            $return->data = $request->name ;
         }else{
-
-            $grant = Notice::where('id',$request->id)->where('writer',$user_id)->count();
-        
-            if($grant){
-
-                $result = Notice::where('id',$request->id)->where('writer',$user_id)->update([
-                    'title'=> $request->title ,
-                    'content'=> $request->content ,
-                    'writer'=> $user_id,
-                ]);
-
-                if($result){
-                    $return->status = "200";
-                    $return->msg = "success";
-    
-                }else{
-                    $return->status = "500";
-                    $return->msg = "fail";
-                }
-
-            }else{
-                $return->status = "500";
-                $return->msg = "fail";
-                $return->reason = "권한이 없습니다." ;
-            }            
-            
+            $return->status = "500";
+            $return->msg = "fail";
         }
-        
+
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
