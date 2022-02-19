@@ -10,6 +10,7 @@ use App\Models\Apply;
 use App\Models\User;
 use App\Models\PartnerInfo;
 use App\Models\Pay;
+use App\Models\Fee;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
@@ -232,6 +233,8 @@ class ApplyController extends Controller
 
         $apply_info = Apply::where('id', $request->apply_id)->where('user_id', $user_id)->first();
         $reservation_info = Reservation::where('id', $apply_info->reservation_id)->first();
+
+        $fee_info = Fee::where('type', $reservation_info->reservation_type)->first();
         
         if(!$apply_info){
             $return->status = "601";
@@ -257,7 +260,7 @@ class ApplyController extends Controller
                 'reservation_id'=> $apply_info->reservation_id ,
                 'state'=> "W" ,
                 'price'=> $reservation_info->price ,
-                'amount'=> ($reservation_info->price * 0.8) ,
+                'amount'=> ($reservation_info->price * ((100-$fee_info->fee) / 100)) ,
                 'created_at'=> Carbon::now(),
             ]);
 
