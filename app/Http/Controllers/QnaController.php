@@ -173,7 +173,7 @@ class QnaController extends Controller
                     ->select('qnas.id as qna_id','users.user_type',
                         'users.email','title','content','qnas.type','qnas.status',
                         'qnas.created_at','qnas.answered_at','qnas.updated_at', 
-                        DB::raw('(select name from users where id = qna.admin_id ) as admin_name'),)
+                        DB::raw('(select name from users where id = qnas.admin_id ) as admin_name'),)
                     ->join('users', 'qnas.user_id', '=', 'users.id')
                     ->where('qnas.id',$qna_id) 
                     ->first();
