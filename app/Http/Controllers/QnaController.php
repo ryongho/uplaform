@@ -109,13 +109,12 @@ class QnaController extends Controller
 
         $return = new \stdClass;
         
-         
         $rows = Qna::join('users', 'users.id', '=', 'qnas.user_id')
                 ->select('qnas.id as qna_id','users.user_type',
                         'users.email','title','content','qnas.type','qnas.status',
                         'qnas.created_at','qnas.answered_at','qnas.updated_at', 
                         DB::raw('(select name from users where id = qna.admin_id ) as admin_name'),)
-                ->when($status, function ($query, $status) {
+                /*->when($status, function ($query, $status) {
                     if($status != "전체"){//확정대기
                         return $query->where('qnas.status', $status);
                     }
@@ -127,14 +126,14 @@ class QnaController extends Controller
                 })
                 ->when($search_keyword, function ($query, $search_keyword) {
                     return $query->where('qnas.title','like', "%".$search_keyword."%");
-                })
+                })*/
                 ->where('qnas.created_at','>=', $start_date)
                 ->where('qnas.created_at','<=', $end_date.' 23:59:59')        
                 ->orderby('qnas.id','desc')
                 ->offset($offset)
                 ->limit($row)
                 ->get();
-                dd($rows);
+
         $cnt = Qna::when($status, function ($query, $status) {
                     if($status != "전체"){//확정대기
                         return $query->where('status', $status);
