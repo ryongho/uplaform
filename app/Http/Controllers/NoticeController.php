@@ -59,6 +59,42 @@ class NoticeController extends Controller
 
     }
 
+    public function list_admin(Request $request){
+
+        $page_no = $request->page_no;
+        $row = $request->row;
+        $offset = (($page_no-1) * $row);
+        $usable = $request->usable;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $rows = Notice::select('id as notice_id','title','start_date', 'end_date', 'usable', 
+                        DB::raw('(select name from users where id = notices.user_id ) as writer'), 
+                        'created_at',)
+                ->when($usable, function ($query, $usable) {
+                    if($usable != "전체"){//확정대기
+                        return $query->where('usable', $usable);
+                    }
+                })     
+                ->where('reservations.created_at','>=', $start_date)
+                ->where('reservations.created_at','<=', $end_date.' 23:59:59')        
+                ->orderby('id','desc')
+                ->offset($offset)
+                ->limit($row)
+                ->get();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = count($rows);
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
     public function detail(Request $request){
         $notice_id = $request->notice_id;
 
