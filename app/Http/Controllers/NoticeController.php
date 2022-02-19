@@ -73,6 +73,7 @@ class NoticeController extends Controller
                         'created_at',)
                 ->when($usable, function ($query, $usable) {
                     if($usable != "전체"){//확정대기
+                        dd($usable);
                         return $query->where('usable', $usable);
                     }
                 })     
@@ -83,10 +84,19 @@ class NoticeController extends Controller
                 ->limit($row)
                 ->get();
 
+        $cnt = Notice::when($usable, function ($query, $usable) {
+                        if($usable != "전체"){//확정대기
+                            return $query->where('usable', $usable);
+                        }
+                    })     
+                    ->where('created_at','>=', $start_date)
+                    ->where('created_at','<=', $end_date.' 23:59:59')        
+                    ->count();
+
         $return = new \stdClass;
 
         $return->status = "200";
-        $return->cnt = count($rows);
+        $return->cnt = $cnt;
         $return->data = $rows ;
 
         return response()->json($return, 200)->withHeaders([
