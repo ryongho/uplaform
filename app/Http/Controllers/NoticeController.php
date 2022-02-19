@@ -76,8 +76,8 @@ class NoticeController extends Controller
                         return $query->where('usable', $usable);
                     }
                 })     
-                ->where('reservations.created_at','>=', $start_date)
-                ->where('reservations.created_at','<=', $end_date.' 23:59:59')        
+                ->where('created_at','>=', $start_date)
+                ->where('created_at','<=', $end_date.' 23:59:59')        
                 ->orderby('id','desc')
                 ->offset($offset)
                 ->limit($row)
