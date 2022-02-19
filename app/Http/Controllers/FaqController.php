@@ -102,7 +102,7 @@ class FaqController extends Controller
         $end_date = $request->end_date;
 
         $rows = Faq::select('id as faq_id','type', 'title','start_date', 'end_date', 'usable', 
-                        DB::raw('(select name from users where id = notices.writer ) as writer'), 
+                        DB::raw('(select name from users where id = faqs.writer ) as writer'), 
                         'created_at',)
                 ->when($usable, function ($query, $usable) {
                     if($usable != "전체"){
@@ -151,7 +151,7 @@ class FaqController extends Controller
         $faq_id = $request->faq_id;
 
         $rows = Faq::select('id as faq_id','title','start_date', 'end_date', 'usable', 
-                                DB::raw('(select name from users where id = notices.writer ) as writer'), 
+                                DB::raw('(select name from users where id = faqs.writer ) as writer'), 
                                 'created_at')
                         ->where('id',$faq_id)
                         ->first();
