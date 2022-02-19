@@ -108,7 +108,7 @@ class QnaController extends Controller
         $search_keyword = $request->search_keyword;
 
         $return = new \stdClass;
-        dd($request);
+        
          
         $rows = Qna::join('users', 'users.id', '=', 'qnas.user_id')
                 ->select('qnas.id as qna_id','users.user_type',
@@ -134,7 +134,7 @@ class QnaController extends Controller
                 ->offset($offset)
                 ->limit($row)
                 ->get();
-
+                dd($rows);
         $cnt = Qna::when($status, function ($query, $status) {
                     if($status != "전체"){//확정대기
                         return $query->where('status', $status);
