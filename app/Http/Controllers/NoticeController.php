@@ -73,7 +73,6 @@ class NoticeController extends Controller
                         'created_at',)
                 ->when($usable, function ($query, $usable) {
                     if($usable != "전체"){//확정대기
-                        dd($usable);
                         return $query->where('usable', $usable);
                     }
                 })     
