@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->get('/admin/partner/reservation/list', [Reser
 Route::middleware('auth:sanctum')->get('/admin/partner/pay/list', [PayController::class, 'list_by_partner_admin']);// 파트너 정산내역
 
 Route::middleware('auth:sanctum')->get('/admin/notice/list', [NoticeController::class, 'list_admin']);// 어드민 공지 리스트
+Route::middleware('auth:sanctum')->get('/admin/notice/regist', [NoticeController::class, 'regist']);// 어드민 공지 등록
 
 
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
