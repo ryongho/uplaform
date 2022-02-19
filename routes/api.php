@@ -68,6 +68,10 @@ Route::middleware('auth:sanctum')->post('/admin/notice/regist', [NoticeControlle
 Route::middleware('auth:sanctum')->get('/admin/notice/detail', [NoticeController::class, 'detail_admin']);//공지 상세
 Route::middleware('auth:sanctum')->put('/admin/notice/update', [NoticeController::class, 'update']);//공지 수정
 
+Route::middleware('auth:sanctum')->get('/admin/faq/list', [FaqController::class, 'list_admin']);// 어드민 faq 리스트
+Route::middleware('auth:sanctum')->post('/admin/faq/regist', [FaqController::class, 'regist']);// 어드민 faq 등록
+Route::middleware('auth:sanctum')->get('/admin/faq/detail', [FaqController::class, 'detail_admin']);//faq 상세
+Route::middleware('auth:sanctum')->put('/admin/faq/update', [FaqController::class, 'update']);//faq 수정
 
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/admin/reservation/list_cnt', [ReservationController::class, 'list_cnt']);
@@ -158,10 +162,9 @@ Route::get('/notice/list', [NoticeController::class, 'list']); // 공지 리스�
 Route::get('/notice/detail', [NoticeController::class, 'detail']); // 공지 내용 
 Route::middleware('auth:sanctum')->put('/notice/update', [NoticeController::class, 'update']);//공지 수정
 
-Route::middleware('auth:sanctum')->post('/faq/regist', [FaqController::class, 'regist']); //faq 등록
 Route::get('/faq/list', [FaqController::class, 'list']);//faq 리스트
 Route::get('/faq/detail', [FaqController::class, 'detail']); //faq 내용
-Route::middleware('auth:sanctum')->put('/faq/update', [FaqController::class, 'update']);//faq 수정
+
 
 Route::middleware('auth:sanctum')->post('/qna/regist', [QnaController::class, 'regist']);
 Route::middleware('auth:sanctum')->get('/qna/list', [QnaController::class, 'list']);
