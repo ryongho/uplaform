@@ -108,6 +108,7 @@ class QnaController extends Controller
         $search_keyword = $request->search_keyword;
 
         $return = new \stdClass;
+        dd($request);
          
         $rows = Qna::join('users', 'users.id', '=', 'qnas.user_id')
                 ->select('qnas.id as qna_id','users.user_type',
@@ -116,20 +117,20 @@ class QnaController extends Controller
                         DB::raw('(select name from users where id = qna.admin_id ) as admin_name'),)
                 ->when($status, function ($query, $status) {
                     if($status != "전체"){//확정대기
-                        return $query->where('status', $status);
+                        return $query->where('qnas.status', $status);
                     }
                 })
                 ->when($user_type, function ($query, $user_type) {
                     if($user_type != "전체"){//확정대기
-                        return $query->where('user_type', $user_type);
+                        return $query->where('users.user_type', $user_type);
                     }
                 })
                 ->when($search_keyword, function ($query, $search_keyword) {
-                    return $query->where('title','like', "%".$search_keyword."%");
+                    return $query->where('qnas.title','like', "%".$search_keyword."%");
                 })
-                ->where('created_at','>=', $start_date)
-                ->where('created_at','<=', $end_date.' 23:59:59')        
-                ->orderby('id','desc')
+                ->where('qnas.created_at','>=', $start_date)
+                ->where('qnas.created_at','<=', $end_date.' 23:59:59')        
+                ->orderby('qnas.id','desc')
                 ->offset($offset)
                 ->limit($row)
                 ->get();
