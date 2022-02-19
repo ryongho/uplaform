@@ -24,6 +24,9 @@ class FaqController extends Controller
             'type'=> $request->type ,
             'title'=> $request->title ,
             'content'=> $request->content ,
+            'start_date'=> $request->start_date ,
+            'end_date'=> $request->end_date ,
+            'usable'=> $request->usable ,
             'writer'=> $login_user->getId(),
             'created_at'=> Carbon::now(),
         ]);
@@ -88,6 +91,82 @@ class FaqController extends Controller
 
     }
 
+    public function list_admin(Request $request){
+
+        $page_no = $request->page_no;
+        $row = $request->row;
+        $type = $request->type;
+        $offset = (($page_no-1) * $row);
+        $usable = $request->usable;
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $rows = Faq::select('id as faq_id','type', 'title','start_date', 'end_date', 'usable', 
+                        DB::raw('(select name from users where id = notices.writer ) as writer'), 
+                        'created_at',)
+                ->when($usable, function ($query, $usable) {
+                    if($usable != "전체"){
+                        return $query->where('usable', $usable);
+                    }
+                })
+                ->when($type, function ($query, $type) {
+                    if($type != "전체"){
+                        return $query->where('type', $type);
+                    }
+                })     
+                ->where('created_at','>=', $start_date)
+                ->where('created_at','<=', $end_date.' 23:59:59')        
+                ->orderby('id','desc')
+                ->offset($offset)
+                ->limit($row)
+                ->get();
+
+        $cnt = Faq::when($usable, function ($query, $usable) {
+                        if($usable != "전체"){
+                            return $query->where('usable', $usable);
+                        }
+                    })
+                    ->when($type, function ($query, $type) {
+                        if($type != "전체"){
+                            return $query->where('type', $type);
+                        }
+                    })     
+                    ->where('created_at','>=', $start_date)
+                    ->where('created_at','<=', $end_date.' 23:59:59')        
+                    ->count();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->cnt = $cnt;
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
+    public function detail_admin(Request $request){
+        $faq_id = $request->faq_id;
+
+        $rows = Faq::select('id as faq_id','title','start_date', 'end_date', 'usable', 
+                                DB::raw('(select name from users where id = notices.writer ) as writer'), 
+                                'created_at')
+                        ->where('id',$faq_id)
+                        ->first();
+
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->data = $rows ;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
     public function update(Request $request)
     {
         //dd($request);
@@ -97,57 +176,30 @@ class FaqController extends Controller
         $return->msg = "관리자에게 문의";
 
         $login_user = Auth::user();
-        $user_id = $login_user->getId();
-        $user_type = $login_user->getType();
 
-        /* 중복 체크 - start*/
-        
-        
-        $id_cnt = User::where('id',$user_id)->count();
+        $result = Faq::where('id',$request->faq_id)->update([
+            'title'=> $request->title ,
+            'type'=> $request->type ,
+            'content'=> $request->content ,
+            'start_date'=> $request->start_date ,
+            'end_date'=> $request->end_date ,
+            'usable'=> $request->usable ,
+            'writer'=> $login_user->getId(),
+        ]);
 
-        if($id_cnt == 0 || $user_id == ""){// 아이디 존재여부
-            $return->status = "601";
-            $return->msg = "fail";
-            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
-            $return->data = $request->name ;
-        }elseif( $user_type == 0 ){//일반회원
-            $return->status = "602";
-            $return->msg = "fail";
-            $return->reason = "유효하지 않은 파트너 아이디 입니다." ;
+        if($result){
+            $return->status = "200";
+            $return->msg = "success";
 
-            $return->data = $request->name ;
         }else{
-
-            $grant = Faq::where('id',$request->id)->where('writer',$user_id)->count();
-        
-            if($grant){
-
-                $result = Faq::where('id',$request->id)->where('writer',$user_id)->update([
-                    'title'=> $request->title ,
-                    'content'=> $request->content ,
-                ]);
-
-                if($result){
-                    $return->status = "200";
-                    $return->msg = "success";
-    
-                }else{
-                    $return->status = "500";
-                    $return->msg = "fail";
-                }
-
-            }else{
-                $return->status = "500";
-                $return->msg = "fail";
-                $return->reason = "권한이 없습니다." ;
-            }            
-            
+            $return->status = "500";
+            $return->msg = "fail";
         }
-        
+
 
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
-        ]);;    
+        ]);;
 
     }
 
