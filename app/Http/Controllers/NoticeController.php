@@ -22,6 +22,9 @@ class NoticeController extends Controller
         $result = Notice::insertGetId([
             'title'=> $request->title ,
             'content'=> $request->content ,
+            'start_date'=> $request->start_date ,
+            'end_date'=> $request->end_date ,
+            'usable'=> $request->usable ,
             'writer'=> $login_user->getId(),
             'created_at'=> Carbon::now(),
         ]);
