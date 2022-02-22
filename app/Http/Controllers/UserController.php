@@ -465,7 +465,7 @@ class UserController extends Controller
                     'created_at',
                     'last_login',
                     'leave',
-                )->where('id' ,">=", $start_no)
+                )
                 ->where('user_type','0')
                 ->where('created_at','>=',$start_date)
                 ->where('created_at','<=',$end_date)
