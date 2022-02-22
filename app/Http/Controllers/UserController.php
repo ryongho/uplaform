@@ -539,7 +539,7 @@ class UserController extends Controller
         $list = new \stdClass;
 
 
-        $rows = User::select('id','email','name','phone','reg_no','gender','last_login','created_at','created_at','last_login')
+        $rows = User::select('id','email','name','phone','reg_no','gender','last_login','created_at')
                 ->where('id',$id)->first();
 
         if($rows){
