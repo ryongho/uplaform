@@ -578,11 +578,11 @@ class UserController extends Controller
         $list = new \stdClass;
 
 
-        $rows = $area_info = AreaInfo::select('id as area_id','user_id','position','interest_service','house_type','house_size',
+        $rows = AreaInfo::select('id as area_id','user_id','position','interest_service','house_type','house_size',
                                                 'address','updated_at','area_size','peoples','tel',
                                                 'shop_type','shop_size','refrigerator','refrigerator_size','created_at','kitchen_size','shop_name','address','address2',
                                             )
-                ->where('id',$id)->first();
+                ->where('user_id',$id)->first();
 
         if($rows){
             $list->status = "200";
