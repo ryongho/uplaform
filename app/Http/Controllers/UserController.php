@@ -482,7 +482,7 @@ class UserController extends Controller
                 ->offset($offset)
                 ->orderBy('id', 'desc')->limit($row)->get();
 
-        $rows = User::where('user_type','0')
+        $cnt = User::where('user_type','0')
                 ->where('created_at','>=',$start_date)
                 ->where('created_at','<=',$end_date)
                 ->where('name','like','%'.$search_keyword.'%')
@@ -523,7 +523,7 @@ class UserController extends Controller
 
         $list->status = "200";
         $list->msg = "success";
-        $list->cnt = count($rows);
+        $list->cnt = $cnt;
         $list->data = $rows;
         
         
