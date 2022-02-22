@@ -231,7 +231,7 @@ class ReservationController extends Controller
                                 DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
-                        ->where('user_id',$request->user_id)
+                        ->where('user_id',$request->id)
                         ->offset($offset)
                         ->orderBy('reservations.id','desc')
                         ->limit($row)->get();
