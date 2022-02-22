@@ -449,12 +449,11 @@ class UserController extends Controller
     public function list(Request $request){
         $page_no = $request->page_no;
         $row = $request->row;
+        $offset = (($page_no-1) * $row);
         $start_date = $request->start_date;
         $end_date = $request->end_date;
         $search_type = $request->search_type;
         $search_keyword = $request->search_keyword;
-
-        $start_no = ($page_no - 1) * $row ;
         
         $rows = User::select(
                     'id',
@@ -480,7 +479,23 @@ class UserController extends Controller
                         return $query->whereIn('leave', []);
                     }
                 })
+                ->offset($offset)
                 ->orderBy('id', 'desc')->limit($row)->get();
+
+        $rows = User::where('user_type','0')
+                ->where('created_at','>=',$start_date)
+                ->where('created_at','<=',$end_date)
+                ->where('name','like','%'.$search_keyword.'%')
+                ->when($search_type, function ($query, $search_type) {
+                    if($search_type == "정상"){
+                        return $query->whereIn('leave', ['N']);
+                    }else if($search_type == "탈퇴"){
+                        return $query->whereIn('leave', ['Y']);
+                    }else if($search_type == "삭제"){
+                        return $query->whereIn('leave', []);
+                    }
+                })
+                ->count();
         
         $i = 0;
         foreach($rows as $row) {
