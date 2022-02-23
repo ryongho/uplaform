@@ -263,13 +263,17 @@ class ReservationController extends Controller
 
             $rows[$x]['house_type'] = null;
             $rows[$x]['peoples'] = null;
-            
+            $rows[$x]['learn_type'] = null;
 
             if($row['reservation_type'] == "CR"){
                 $area_info = AreaInfo::where('user_id',$row['user_id'])->first();
                 $rows[$x]['house_type'] = $area_info['house_type'];
                 $rows[$x]['peoples'] = $area_info['peoples'];
 
+            }else if($row['reservation_type'] == "LC"){
+                $services = explode(',',$row['services']);
+                $service_info = Service::whereIn('id',$row['services'])->first();
+                $rows[$x]['learn_type'] = $service_info['service_sub_type'];
             }
 
             $x++;
