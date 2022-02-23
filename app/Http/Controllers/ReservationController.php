@@ -252,6 +252,7 @@ class ReservationController extends Controller
                 $addrs = explode(' ',$partner_info['address']);
                 $rows[$x]['address'] = $addrs[0];
                 $rows[$x]['clean_level'] = "N";
+                $rows[$x]['partner_type'] = $partner_info['partner_type']; 
                 
         
             }else{
