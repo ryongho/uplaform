@@ -227,7 +227,8 @@ class ReservationController extends Controller
                                 'reservations.reservation_no',
                                 'reservations.service_addr',
                                 'users.name as name',
-                                'users.email as email',  
+                                'users.email as email',
+                                'users.id as user_id',  
                                 DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
@@ -241,18 +242,33 @@ class ReservationController extends Controller
         foreach($rows as $row){
             
             $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
+            $partner_info = PartnerInfo::where('user_id',$app_info['user_id'])->first();
     
             if($app_info != null){
-                $user_info = PartnerInfo::where('user_id',$app_info['user_id'])->first();
-                $rows[$x]['matched_at'] = $app_info['matched_at'];
-                $rows[$x]['matched_name'] = $user_info['ceo_name'];
-                $rows[$x]['phone'] = $user_info['tel'];
-                $addrs = explode(' ',$user_info['address']);
+                
+                
+                $rows[$x]['matched_name'] = $partner_info['ceo_name'];
+                $rows[$x]['phone'] = $partner_info['tel'];
+                $addrs = explode(' ',$partner_info['address']);
                 $rows[$x]['address'] = $addrs[0];
                 $rows[$x]['clean_level'] = "N";
-                $x++;
+                
+                
             }
-            
+
+            if($row['reservation_type'] == "CR"){
+                $area_info = AreaInfo::where('user_id',$row['user_id'])->first();
+
+                $rows[$x]['house_type'] = $area_info['house_type'];
+                $rows[$x]['peoples'] = $area_info['peoples'];
+
+            }else if($row['reservation_type'] == "LC"){
+
+                $rows[$x]['partner_type'] = $partner_info['partner_type'];
+                
+            }
+
+            $x++;
             
         }
         
