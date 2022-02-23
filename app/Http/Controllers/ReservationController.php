@@ -10,6 +10,7 @@ use App\Models\Service;
 use App\Models\Apply;
 use App\Models\User;
 use App\Models\PartnerInfo;
+use App\Models\AreaInfo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
