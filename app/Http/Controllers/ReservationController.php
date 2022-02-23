@@ -229,7 +229,8 @@ class ReservationController extends Controller
                                 'reservations.service_addr',
                                 'users.name as name',
                                 'users.email as email',
-                                'users.id as user_id',  
+                                'users.id as user_id',
+                                'reservations.services',  
                                 DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
@@ -273,6 +274,7 @@ class ReservationController extends Controller
             }else if($row['reservation_type'] == "LC"){
                 $services = explode(',',$row['services']);
                 $service_infos = Service::whereIn('id',$row['services'])->distinct('service_sub_type')->get();
+                
                 foreach($service_infos as $service_info){
                     $rows[$x]['learn_type'] .= $service_info['service_sub_type'];
                 }
