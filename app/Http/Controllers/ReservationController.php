@@ -242,30 +242,33 @@ class ReservationController extends Controller
         foreach($rows as $row){
             
             $app_info = Apply::where('reservation_id', $row['reservation_id'])->where('status', 'S')->first();
-            $partner_info = PartnerInfo::where('user_id',$app_info['user_id'])->first();
     
             if($app_info != null){
-                
-                
+                $partner_info = PartnerInfo::where('user_id',$app_info['user_id'])->first();    
                 $rows[$x]['matched_name'] = $partner_info['ceo_name'];
                 $rows[$x]['phone'] = $partner_info['tel'];
                 $addrs = explode(' ',$partner_info['address']);
                 $rows[$x]['address'] = $addrs[0];
                 $rows[$x]['clean_level'] = "N";
                 
-                
+        
+            }else{
+                $rows[$x]['matched_name'] = null;
+                $rows[$x]['phone'] = null;
+                $rows[$x]['address'] = null;
+                $rows[$x]['clean_level'] = null;
+                $rows[$x]['partner_type'] = null;   
             }
+
+            $rows[$x]['house_type'] = null;
+            $rows[$x]['peoples'] = null;
+            
 
             if($row['reservation_type'] == "CR"){
                 $area_info = AreaInfo::where('user_id',$row['user_id'])->first();
-
                 $rows[$x]['house_type'] = $area_info['house_type'];
                 $rows[$x]['peoples'] = $area_info['peoples'];
 
-            }else if($row['reservation_type'] == "LC"){
-
-                $rows[$x]['partner_type'] = $partner_info['partner_type'];
-                
             }
 
             $x++;
