@@ -272,8 +272,12 @@ class ReservationController extends Controller
 
             }else if($row['reservation_type'] == "LC"){
                 $services = explode(',',$row['services']);
-                $service_info = Service::whereIn('id',$row['services'])->first();
-                $rows[$x]['learn_type'] = $service_info['service_sub_type'];
+                $service_infos = Service::whereIn('id',$row['services'])->distinct('service_sub_type')->get();
+                foreach($service_infos as $service_info){
+                    $rows[$x]['learn_type'] .= $service_info['service_sub_type'];
+                }
+                
+                
             }
 
             $x++;
