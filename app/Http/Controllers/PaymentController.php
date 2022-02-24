@@ -199,10 +199,32 @@ class PaymentController extends Controller
                     ->limit($row)
                     ->orderby('payments.id','desc')
                     ->get();
-    
         
+                    $cnt = Payment::join('users', 'users.id', '=', 'payments.user_id')
+                    ->when($card_name, function ($query, $card_name) {
+                        return $query->where('payments.card_name', 'like', "%".$card_name."%");
+                    })
+                    ->when($status, function ($query, $status) {
+                        if($status != "전체"){
+                            return $query->where('payments.status', $status);
+                        }
+                    })
+                    ->when($type, function ($query, $type) {
+                        if($type != "전체"){
+                            if($type == "고객명"){
+                                return $query->where('payment.buyer_name', 'like', '%'.$keyword.'%');
+                            }else{
+                                return $query->where('reservations.reservation_type', $type);
+                            }
+                            
+                        }
+                        
+                    })
+                    ->whereBetween('payments.created_at',[$start_date.' 00:00:00',$end_date.' 23:59:59'])
+                    ->count();
+
         $return->status = "200";
-        //$return->cnt = $cnt;
+        $return->cnt = $cnt;
         $return->data = $rows;
 
         return response()->json($return, 200)->withHeaders([
