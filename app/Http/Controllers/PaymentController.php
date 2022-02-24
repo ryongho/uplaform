@@ -200,7 +200,8 @@ class PaymentController extends Controller
                     ->orderby('payments.id','desc')
                     ->get();
         
-                    $cnt = Payment::join('users', 'users.id', '=', 'payments.user_id')
+        $cnt = Payment::join('users', 'users.id', '=', 'payments.user_id')
+                    ->join('reservations', 'reservations.id', '=', 'payments.reservation_id')
                     ->when($card_name, function ($query, $card_name) {
                         return $query->where('payments.card_name', 'like', "%".$card_name."%");
                     })
