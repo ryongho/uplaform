@@ -179,6 +179,9 @@ class PayController extends Controller
                     ->get();
 
         $cnt = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m" ) as month'),
+                    )
                     ->where('pays.created_at','>=',$start_month."-01 00:00:00")
                     ->where('pays.created_at','<=',$end_month."-31 23:59:59")
                     ->groupBy('month')
