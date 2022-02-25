@@ -178,13 +178,17 @@ class PayController extends Controller
                     ->limit($row)
                     ->get();
 
-        $cnt = Pay::where('pays.created_at','>=',$start_month."-01 00:00:00")
+        $cnt = Pay::select(
+                        DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m" ) as month'),
+                    )   
+                    ->where('pays.created_at','>=',$start_month."-01 00:00:00")
                     ->where('pays.created_at','<=',$end_month."-31 23:59:59")
                     ->groupBy(DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m" ) as month'))
+                    
                     ->count();
 
         $return->status = "200";
-        $return->cnt = $cnt;
+        $return->cnt = count($rows);
         $return->data = $rows;
 
         return response()->json($return, 200)->withHeaders([
