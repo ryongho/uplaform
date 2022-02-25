@@ -178,8 +178,7 @@ class PayController extends Controller
                     ->limit($row)
                     ->get();
 
-        $cnt = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
-                    ->select(
+        $cnt = Pay::select(
                         DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m" ) as month'),
                     )
                     ->where('pays.created_at','>=',$start_month."-01 00:00:00")
