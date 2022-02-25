@@ -277,23 +277,6 @@ class PayController extends Controller
                     ->groupBy('pays.user_id')
                     ->get();
 
-        $cnt = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
-                    ->join('users', 'users.id', '=', 'pays.user_id')
-                    ->select(
-                        DB::raw('pays.user_id as user_id'),
-                        DB::raw('users.name'),
-                        DB::raw('count(*) as count'),
-                        DB::raw('count(CASE WHEN pays.state="S" THEN 1 END) as success_cnt'),
-                        DB::raw('count(CASE WHEN pays.state="W" THEN 1 END) as wait_cnt'),
-                        DB::raw('sum(reservations.price) as sum_price'),
-                        DB::raw('sum(pays.amount) sum_amount'),
-                    )
-                    ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
-                    ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
-                    ->where('reservation_type',$reservation_type)
-                    ->groupBy('pays.user_id')
-                    ->get();
-
         $total = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
                     ->select(
                         DB::raw('count(*) as count'),
@@ -308,7 +291,6 @@ class PayController extends Controller
         $return->status = "200";
         $return->year = $year;
         $return->month = $month;
-        $return->month = count($cnt);
         $return->totla = $total;
         $return->data = $rows;
         
