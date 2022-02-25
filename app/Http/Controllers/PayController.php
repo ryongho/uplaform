@@ -208,7 +208,7 @@ class PayController extends Controller
         $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
                     ->select(
                         DB::raw('reservations.reservation_type'),
-                        DB::raw('count(distinct("pays.user_id")) as partner_cnt'),
+                        DB::raw('count(distinct(pays.user_id)) as partner_cnt'),
                         DB::raw('count(*) as count'),
                         DB::raw('count(CASE WHEN pays.state="S" THEN 1 END) as success_cnt'),
                         DB::raw('count(CASE WHEN pays.state="W" THEN 1 END) as wait_cnt'),
