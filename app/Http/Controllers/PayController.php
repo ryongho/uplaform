@@ -327,7 +327,6 @@ class PayController extends Controller
         $year = $request->year;
         $month = $request->month;
         $reservation_type = $request->reservation_type;
-        $user_id = $request->user_id;
 
         $return = new \stdClass;
 
@@ -343,7 +342,6 @@ class PayController extends Controller
                     )
                     ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
                     ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
-                    ->where('pays.user_id',$user_id)
                     ->groupBy('day')
                     ->orderBy('day','desc')
                     ->get();
@@ -356,7 +354,6 @@ class PayController extends Controller
                 )
                 ->where('pays.created_at','>=',$year."-".$month."-01 00:00:00")
                 ->where('pays.created_at','<=',$year."-".$month."-31 23:59:59")
-                ->where('pays.user_id',$user_id)
                 ->get();
 
         $return->status = "200";
