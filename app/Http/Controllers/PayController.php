@@ -401,8 +401,6 @@ class PayController extends Controller
                 ->get();
 
         $return->status = "200";
-        $return->year = $year;
-        $return->month = $month;
         $return->totla = $total;
         $return->data = $rows;
         
