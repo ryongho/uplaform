@@ -381,7 +381,7 @@ class PayController extends Controller
         $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
                     ->select(
                         'created_at',
-                        DB::raw('(select count(*) from applys where reservation_id = reservations.id) as partner_cnt'),
+                        DB::raw('(select count(*) from applies where reservation_id = reservations.id) as partner_cnt'),
                         'reservations.price',
                         'pays.amount',
                         DB::raw('(sum(reservations.price) - sum(pays.amount)) as fee'),
