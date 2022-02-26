@@ -371,6 +371,50 @@ class PayController extends Controller
         
     }
 
+    public function list_by_date(Request $request){
+  
+        $date = $request->date;
+        $reservation_type = $request->reservation_type;
+
+        $return = new \stdClass;
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        DB::raw('DATE_FORMAT( pays.created_at, "%Y-%m-%d" ) as date'),
+                        DB::raw('select count(*) from applys where reservation_id = reservations.id'),
+                        'reservations.price',
+                        'pays.amount',
+                        DB::raw('(sum(reservations.price) - sum(pays.amount)) as fee'),
+                    )
+                    ->where('pays.created_at','>=', $date.' 00:00:00')
+                    ->where('pays.created_at','<=', $date.' 23:59:59')
+                    ->get();
+
+        $total = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                ->select(
+                    DB::raw('count(*) as count'),
+                    DB::raw('sum(reservations.price) as sum_price'),
+                    DB::raw('sum(pays.amount) sum_amount'),
+                )
+                ->where('pays.created_at','>=', $date.' 00:00:00')
+                ->where('pays.created_at','<=', $date.' 23:59:59')
+                ->get();
+
+        $return->status = "200";
+        $return->year = $year;
+        $return->month = $month;
+        $return->totla = $total;
+        $return->data = $rows;
+        
+        
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
     public function list_payment(Request $request){
   
         $year = $request->year;
