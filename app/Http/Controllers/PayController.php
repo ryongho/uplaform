@@ -424,7 +424,7 @@ class PayController extends Controller
         $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
                     ->select(
                         'pays.id as pay_id',
-                        DB::raw('(select name from users where user_id = users.id) as name'),
+                        DB::raw('(select name from users where pays.user_id = users.id) as name'),
                         'reservations.price',
                         'pays.amount',
                         DB::raw('(reservations.price - pays.amount) as fee'),
