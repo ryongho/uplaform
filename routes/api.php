@@ -94,6 +94,7 @@ Route::middleware('auth:sanctum')->get('/admin/pay/list/type', [PayController::c
 Route::middleware('auth:sanctum')->get('/admin/pay/list/partner', [PayController::class, 'list_partner']);// 정산내역 - partner 별
 Route::middleware('auth:sanctum')->get('/admin/pay/list/day', [PayController::class, 'list_day']);// 정산내역 타입 - partner - 날짜 별
 Route::middleware('auth:sanctum')->get('/admin/pay/list/date', [PayController::class, 'list_by_date']);// 정산내역 타입 - partner - 날짜 - 정산건별 리스트
+Route::middleware('auth:sanctum')->get('/admin/partner/list/pay', [PayController::class, 'list_by_pay']);// 정산내역 타입 - partner - 날짜 - 정산건 - 파트너리스트
 Route::middleware('auth:sanctum')->get('/admin/pay/list/payment', [PayController::class, 'list_payment']);// 정산내역 타입 - partner - 날짜 - 정산 건 별
 Route::middleware('auth:sanctum')->put('/admin/pay', [PayController::class, 'pay']);// 정산처리
 Route::middleware('auth:sanctum')->put('/admin/update/fee', [FeeController::class, 'update']);// 수수료 업데이트

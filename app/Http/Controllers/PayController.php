@@ -414,6 +414,45 @@ class PayController extends Controller
         
     }
 
+    public function list_by_pay(Request $request){
+  
+        
+        $pay_id = $request->pay_id;
+
+        $return = new \stdClass;
+
+        $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        'pays.id as pay_id',
+                        DB::raw('(select name from users where user_id = users.id) as name'),
+                        'reservations.price',
+                        'pays.amount',
+                        DB::raw('(reservations.price - pays.amount) as fee'),
+                    )
+                    ->where('pays.id', $pay_id)
+                    ->get();
+
+        $total = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                ->select(
+                    DB::raw('count(*) as count'),
+                    DB::raw('sum(reservations.price) as sum_price'),
+                    DB::raw('sum(pays.amount) sum_amount'),
+                )
+                ->where('pays.id', $pay_id)
+                ->get();
+
+        $return->status = "200";
+        $return->totla = $total;
+        $return->data = $rows;
+        
+    
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
     public function list_payment(Request $request){
   
         $year = $request->year;
