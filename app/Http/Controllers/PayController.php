@@ -380,6 +380,7 @@ class PayController extends Controller
 
         $rows = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
                     ->select(
+                        'pays.id as pay_id',
                         'pays.created_at',
                         DB::raw('(select count(*) from applies where reservation_id = reservations.id) as partner_cnt'),
                         'reservations.price',
