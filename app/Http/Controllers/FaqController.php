@@ -150,7 +150,7 @@ class FaqController extends Controller
     public function detail_admin(Request $request){
         $faq_id = $request->faq_id;
 
-        $rows = Faq::select('id as faq_id','title','start_date', 'end_date', 'usable', 
+        $rows = Faq::select('id as faq_id','title','content','start_date', 'end_date', 'usable', 
                                 DB::raw('(select name from users where id = faqs.writer ) as writer'), 
                                 'created_at')
                         ->where('id',$faq_id)
@@ -200,6 +200,26 @@ class FaqController extends Controller
         return response()->json($return, 200)->withHeaders([
             'Content-Type' => 'application/json'
         ]);;
+
+    }
+
+    public function delete(Request $request)
+    {
+        $return = new \stdClass;        
+    
+        $ids = explode(',',$request->faq_id);
+        $result = Faq::whereIn('id',$ids)->delete();
+
+        if($result){
+            $return->status = "200";
+            $return->msg = "success";
+
+        }else{
+            $return->status = "500";
+            $return->msg = "fail";
+        }
+
+        echo(json_encode($return));    
 
     }
 

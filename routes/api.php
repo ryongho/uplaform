@@ -73,6 +73,7 @@ Route::middleware('auth:sanctum')->get('/admin/faq/list', [FaqController::class,
 Route::middleware('auth:sanctum')->post('/admin/faq/regist', [FaqController::class, 'regist']);// 어드민 faq 등록
 Route::middleware('auth:sanctum')->get('/admin/faq/detail', [FaqController::class, 'detail_admin']);//faq 상세
 Route::middleware('auth:sanctum')->put('/admin/faq/update', [FaqController::class, 'update']);//faq 수정
+Route::middleware('auth:sanctum')->delete('/admin/faq/delete', [FaqController::class, 'delete']);//faq 삭제
 
 Route::middleware('auth:sanctum')->get('/admin/qna/list', [QnaController::class, 'list_admin']);// 어드민 qna 리스트
 Route::middleware('auth:sanctum')->get('/admin/qna/detail', [QnaController::class, 'detail_admin']);//qna 상세
@@ -99,7 +100,7 @@ Route::middleware('auth:sanctum')->get('/admin/partner/list/pay', [PayController
 Route::middleware('auth:sanctum')->get('/admin/pay/list/payment', [PayController::class, 'list_payment']);// 정산내역 타입 - partner - 날짜 - 정산 건 별
 Route::middleware('auth:sanctum')->put('/admin/pay', [PayController::class, 'pay']);// 정산처리
 Route::middleware('auth:sanctum')->put('/admin/update/fee', [FeeController::class, 'update']);// 수수료 업데이트
-Route::middleware('auth:sanctum')->get('/admin/get/fee', [FeeController::class, 'get_fee']);// 수수료 업데이트
+Route::middleware('auth:sanctum')->get('/admin/get/fee', [FeeController::class, 'get_fee']);// 수수료 정보
 
 
 
