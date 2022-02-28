@@ -55,6 +55,7 @@ Route::middleware('auth:sanctum')->get('/admin/user/reservation/list', [Reservat
 Route::middleware('auth:sanctum')->get('/admin/user/payment/list', [PaymentController::class, 'list_by_user_admin']);// 회원 결제내역
 
 Route::middleware('auth:sanctum')->get('/admin/user/total_cnt', [UserController::class, 'total_cnt']);//대시보드 회원 총 카운트
+Route::middleware('auth:sanctum')->get('/admin/user/dash_info', [UserController::class, 'dash_info']);//대시보드 총 카운트
 
 
 Route::middleware('auth:sanctum')->get('/admin/partner/list', [PartnerController::class, 'list']);// 파트너 리스트
