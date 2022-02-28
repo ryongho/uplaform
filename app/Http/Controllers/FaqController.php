@@ -150,7 +150,7 @@ class FaqController extends Controller
     public function detail_admin(Request $request){
         $faq_id = $request->faq_id;
 
-        $rows = Faq::select('id as faq_id','title','content','start_date', 'end_date', 'usable', 
+        $rows = Faq::select('id as faq_id','title','content','start_date', 'end_date', 'usable','type', 
                                 DB::raw('(select name from users where id = faqs.writer ) as writer'), 
                                 'created_at')
                         ->where('id',$faq_id)
