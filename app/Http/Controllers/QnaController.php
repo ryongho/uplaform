@@ -120,7 +120,7 @@ class QnaController extends Controller
                         return $query->where('qnas.status', $status);
                     }
                 })
-                ->when($user_type != null, function ($query, $user_type) {
+                ->when($user_type, function ($query, $user_type) {
                     if($user_type == "전체"){//확정대기
                         return $query->whereIn('users.user_type', [0,1]);
                     }else{
@@ -148,7 +148,7 @@ class QnaController extends Controller
                         return $query->where('status', $status);
                     }
             })
-            ->when($user_type != null, function ($query, $user_type) {
+            ->when($user_type, function ($query, $user_type) {
                 if($user_type == "전체"){//확정대기
                     return $query->whereIn('users.user_type', [0,1]);
                 }else{
