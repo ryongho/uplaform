@@ -39,6 +39,27 @@ class FeeController extends Controller
 
     }
 
+
+    public function get_fee(Request $request){
+
+        $return = new \stdClass;
+
+        $rows = Fee::select('id as fee_id','type','fee','created_at','updated_at') 
+                    ->get();
+
+
+        $return->status = "200";
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
+    
+
     
 
 
