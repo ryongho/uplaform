@@ -122,12 +122,12 @@ class QnaController extends Controller
                 })
                 ->when($user_type != null, function ($query, $user_type) {
                     if($user_type == "전체"){//확정대기
-                        return $query->whereIn('users.user_type', ['0','1']);
+                        return $query->whereIn('users.user_type', [0,1]);
                     }else{
                         if($user_type == "기업"){
-                            return $query->where('users.user_type', '1');
+                            return $query->where('users.user_type', 1);
                         }else if($user_type == "일반"){
-                            return $query->where('users.user_type', '0');
+                            return $query->where('users.user_type', 0);
                         }
                         
                     }
@@ -142,19 +142,20 @@ class QnaController extends Controller
                 ->limit($row)
                 ->get();
 
-        $cnt = Qna::when($status, function ($query, $status) {
+        $cnt = Qna::join('users', 'users.id', '=', 'qnas.user_id')
+            ->when($status, function ($query, $status) {
                     if($status != "전체"){//확정대기
                         return $query->where('status', $status);
                     }
             })
             ->when($user_type != null, function ($query, $user_type) {
                 if($user_type == "전체"){//확정대기
-                    return $query->whereIn('users.user_type', ['0','1']);
+                    return $query->whereIn('users.user_type', [0,1]);
                 }else{
                     if($user_type == "기업"){
-                        return $query->where('users.user_type', '1');
+                        return $query->where('users.user_type', 1);
                     }else if($user_type == "일반"){
-                        return $query->where('users.user_type', '0');
+                        return $query->where('users.user_type', 0);
                     }
                     
                 }
