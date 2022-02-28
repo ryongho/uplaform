@@ -78,6 +78,7 @@ Route::middleware('auth:sanctum')->delete('/admin/faq/delete', [FaqController::c
 Route::middleware('auth:sanctum')->get('/admin/qna/list', [QnaController::class, 'list_admin']);// 어드민 qna 리스트
 Route::middleware('auth:sanctum')->get('/admin/qna/detail', [QnaController::class, 'detail_admin']);//qna 상세
 Route::middleware('auth:sanctum')->put('/admin/qna/answer', [QnaController::class, 'answer']);//qna 답변
+Route::middleware('auth:sanctum')->delete('/admin/qna/delete', [QnaController::class, 'delete']);//qna 삭제
 
 Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationController::class, 'list']);
 Route::middleware('auth:sanctum')->get('/admin/reservation/list_cnt', [ReservationController::class, 'list_cnt']);
