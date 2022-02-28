@@ -147,9 +147,16 @@ class QnaController extends Controller
                         return $query->where('status', $status);
                     }
             })
-            ->when($user_type, function ($query, $user_type) {
-                if($user_type != "전체"){//확정대기
-                    return $query->where('user_type', $user_type);
+            ->when($user_type != null, function ($query, $user_type) {
+                if($user_type == "전체"){//확정대기
+                    return $query->whereIn('users.user_type', [0,1]);
+                }else{
+                    if($user_type == "기업"){
+                        return $query->where('users.user_type', 1);
+                    }else if($user_type == "일반"){
+                        return $query->where('users.user_type', 0);
+                    }
+                    
                 }
             })
             ->when($search_keyword, function ($query, $search_keyword) {
