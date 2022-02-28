@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->get('/admin/notice/list', [NoticeController::
 Route::middleware('auth:sanctum')->post('/admin/notice/regist', [NoticeController::class, 'regist']);// 어드민 공지 등록
 Route::middleware('auth:sanctum')->get('/admin/notice/detail', [NoticeController::class, 'detail_admin']);//공지 상세
 Route::middleware('auth:sanctum')->put('/admin/notice/update', [NoticeController::class, 'update']);//공지 수정
+Route::middleware('auth:sanctum')->delete('/admin/notice/delete', [NoticeController::class, 'delete']);//공지 삭제
 
 Route::middleware('auth:sanctum')->get('/admin/faq/list', [FaqController::class, 'list_admin']);// 어드민 faq 리스트
 Route::middleware('auth:sanctum')->post('/admin/faq/regist', [FaqController::class, 'regist']);// 어드민 faq 등록
