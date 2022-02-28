@@ -121,7 +121,9 @@ class QnaController extends Controller
                     }
                 })
                 ->when($user_type, function ($query, $user_type) {
-                    if($user_type != "전체"){//확정대기
+                    if($user_type == "전체"){//확정대기
+                        return $query->whereIn('users.user_type', [0,1]);
+                    }else{
                         return $query->where('users.user_type', $user_type);
                     }
                 })
