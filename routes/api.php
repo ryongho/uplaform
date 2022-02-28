@@ -46,6 +46,7 @@ Route::middleware('auth:sanctum')->get('/admin/list', [AdminController::class, '
 Route::middleware('auth:sanctum')->get('/admin/detail', [AdminController::class, 'detail']);// 관리자 상세
 Route::middleware('auth:sanctum')->post('/admin/regist', [AdminController::class, 'regist']);// 관리자 등록
 Route::middleware('auth:sanctum')->put('/admin/update', [AdminController::class, 'update']);// 관리자 수정
+Route::middleware('auth:sanctum')->delete('/admin/delete', [AdminController::class, 'delete']);//관리자 삭제
 Route::middleware('auth:sanctum')->get('/admin/user/list', [UserController::class, 'list']);// 회원 리스트
 Route::get('/excel/download/user_list', [ExcelController::class, 'user_list']); // 회원리스트 다운로드
 Route::middleware('auth:sanctum')->get('/admin/user/detail', [UserController::class, 'detail']);// 회원 상세

@@ -262,6 +262,26 @@ class AdminController extends Controller
 
     }
 
+    public function delete(Request $request)
+    {
+        $return = new \stdClass;        
+    
+        $ids = explode(',',$request->admin_id);
+        $result = User::whereIn('id',$ids)->delete();
+
+        if($result){
+            $return->status = "200";
+            $return->msg = "success";
+
+        }else{
+            $return->status = "500";
+            $return->msg = "fail";
+        }
+
+        echo(json_encode($return));    
+
+    }
+
     
 
 
