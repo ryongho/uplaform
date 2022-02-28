@@ -9,6 +9,7 @@ use App\Models\AreaInfo;
 use App\Models\PartnerInfo;
 use App\Models\Reservation;
 use App\Models\Payment;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
