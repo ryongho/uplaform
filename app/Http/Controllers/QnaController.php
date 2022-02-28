@@ -161,10 +161,10 @@ class QnaController extends Controller
                 }
             })
             ->when($search_keyword, function ($query, $search_keyword) {
-                return $query->where('title','like', "%".$search_keyword."%");
+                return $query->where('qnas.title','like', "%".$search_keyword."%");
             })
-            ->where('created_at','>=', $start_date)
-            ->where('created_at','<=', $end_date.' 23:59:59')        
+            ->where('qnas.created_at','>=', $start_date)
+            ->where('qnas.created_at','<=', $end_date.' 23:59:59')        
             ->count();
 
         $return->status = "200";
