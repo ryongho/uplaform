@@ -126,7 +126,7 @@ class QnaController extends Controller
                     }else{
                         if($user_type == "기업"){
                             return $query->where('users.user_type', 1);
-                        }else($user_type == "일반"){
+                        }else if($user_type == "일반"){
                             return $query->where('users.user_type', 0);
                         }
                         
