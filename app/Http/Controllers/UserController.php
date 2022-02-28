@@ -940,9 +940,9 @@ class UserController extends Controller
         $return = new \stdClass;
 
         $rows = User::select(
-                        DB::raw('count(CASE WHEN user_type in (0,1) THEN 1 end END)  as total_cnt'),
-                        DB::raw('count(CASE WHEN user_type = 0 THEN 1 end END)  as user_cnt'),
-                        DB::raw('count(CASE WHEN user_type = 1 THEN 1 end END)  as partner_cnt'),
+                        DB::raw('count(CASE WHEN user_type = 0 or user_type = 1 THEN 1 end END) as total_cnt'),
+                        DB::raw('count(CASE WHEN user_type = 0 THEN 1 end END) as user_cnt'),
+                        DB::raw('count(CASE WHEN user_type = 1 THEN 1 end END) as partner_cnt'),
                     )
                     ->get();
     
