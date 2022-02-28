@@ -957,6 +957,68 @@ class UserController extends Controller
 
         
     }
+
+    public function dash_info(Request $request){
+        
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        $return = new \stdClass;
+
+        $user_rows = User::join('partner_infos', 'partner_infos.user_id', '=', 'users.id')
+                    ->select(
+                        DB::raw('count(CASE WHEN user_type = 0 THEN 1 END) as user_cnt'),
+                        DB::raw('count(CASE WHEN users.user_type = 1 THEN 1 END) as partner_cnt'),
+                        DB::raw('count(CASE WHEN user_type = 1 and partner_type = "CS" THEN 1 END) as cs_cnt'),
+                        DB::raw('count(CASE WHEN user_type = 1 and partner_type = "CR" THEN 1 END) as cr_cnt'),
+                        DB::raw('count(CASE WHEN user_type = 1 and partner_type = "LC" THEN 1 END) as lc_cnt'),
+                    )
+                    ->where('users.created_at','>=',$start_date)
+                    ->where('users.created_at','<=',$end_date)
+                    ->get();
+    
+        $apply_rows = apply::join('reservations', 'reservations.id', '=', 'applies.reservation_id')
+                    ->select(
+                        DB::raw('count(CASE WHEN reservations.reservation_type = "CS" THEN 1 END) as cs_cnt'),  
+                        DB::raw('count(CASE WHEN reservations.reservation_type = "CR" THEN 1 END) as cr_cnt'),  
+                        DB::raw('count(CASE WHEN reservations.reservation_type = "LC" THEN 1 END) as lc_cnt'),  
+                    )         
+                    ->where('applies.created_at','>=',$start_date)
+                    ->where('applies.created_at','<=',$end_date)
+                    ->get();       
+                    
+        $reservation_rows = Reservation::select(
+                        DB::raw('count(CASE WHEN reservations.reservation_type = "CS" THEN 1 END) as cs_cnt'),  
+                        DB::raw('count(CASE WHEN reservations.reservation_type = "CR" THEN 1 END) as cr_cnt'),  
+                        DB::raw('count(CASE WHEN reservations.reservation_type = "LC" THEN 1 END) as lc_cnt'),  
+                    )         
+                    ->where('created_at','>=',$start_date)
+                    ->where('created_at','<=',$end_date)
+                    ->get();                   
+
+
+        $qna_rows = Qna::select(
+                        DB::raw('count(*) as qna_cnt'),  
+                        DB::raw('count(CASE WHEN status = "S" THEN 1 END) as answer_cnt'),  
+                    )         
+                    ->where('created_at','>=',$start_date)
+                    ->where('created_at','<=',$end_date)
+                    ->get();
+
+        $return->status = "200";
+    
+        $return->user = $user_rows;
+        $return->apply = $apply_rows;
+        $return->reservation = $reservation_rows;
+        $return->qna = $qna_rows;
+        
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
     
 
 
