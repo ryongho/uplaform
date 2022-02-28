@@ -110,7 +110,7 @@ class NoticeController extends Controller
     public function detail_admin(Request $request){
         $notice_id = $request->notice_id;
 
-        $rows = Notice::select('id as notice_id','title','start_date', 'end_date', 'usable', 
+        $rows = Notice::select('id as notice_id','title','content','start_date', 'end_date', 'usable', 
                                 DB::raw('(select name from users where id = notices.writer ) as writer'), 
                                 'created_at')
                         ->where('id',$notice_id)
