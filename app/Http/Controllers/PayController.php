@@ -54,7 +54,7 @@ class PayController extends Controller
 
     public function list_by_partner_admin(Request $request){
   
-        $user_id = $request->id;
+        $user_id = $request->user_id;
         $page_no = $request->page_no;
         $row = $request->row;
 
