@@ -152,7 +152,7 @@ class AdminController extends Controller
             ->get();
 
             $cnt = User::whereIn('user_type',['3','4'])
-                    ->when($searche, function ($query, $search) {
+                    ->when($search, function ($query, $search) {
                         if($search->type == "name"){
                             return $query->where('name', 'like', '%'.$search->keyword.'%');
                         }else if($search->type == "phone"){
