@@ -190,7 +190,7 @@ class AdminController extends Controller
             $return->msg = "권한이 없습니다.";
             $return->data = "현재 유저 타입 : ".$request->user_type;
         }else {
-            $rows = User::select('id','email as user_id','name','part','sns_key as email','permission','start_date','end_date','created_at','last_login')
+            $rows = User::select('id','email as user_id','name','phone','part','sns_key as email','permission','start_date','end_date','created_at','updated_at','last_login')
                     ->where('id',$id)->first();
 
             if($rows){
