@@ -75,10 +75,19 @@ class PayController extends Controller
                     ->orderBy('pays.created_at')
                     ->limit($row)
                     ->get();
-    
+        $cnt = Pay::join('reservations', 'reservations.id', '=', 'pays.reservation_id')
+                    ->select(
+                        'pays.created_at as created_at',
+                        'reservations.reservation_type',
+                        'reservations.price',
+                        'pays.amount',
+                        'pays.state',
+                    )
+                    ->where('pays.user_id',$user_id) 
+                    ->count();
 
         $return->status = "200";
-        $return->cnt = count($rows);
+        $return->cnt = $cnt;
         $return->data = $rows;
 
         return response()->json($return, 200)->withHeaders([
