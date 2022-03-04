@@ -137,7 +137,7 @@ class AdminController extends Controller
             
             $rows = User::select('id','user_type','email as user_id','phone','name','part','sns_key as email','permission','start_date','end_date','created_at')
             ->whereIn('user_type',['3','4'])
-            ->when($search->type, function ($query, $search) {
+            ->when($search, function ($query, $search) {
                 if($search->type == "name"){
                     return $query->where('name', 'like', '%'.$search->keyword.'%');
                 }else if($search->type == "phone"){
