@@ -88,12 +88,12 @@ class PartnerController extends Controller
                 ->where('users.created_at','<=',$end_date)
                 ->where('users.name','like','%'.$search_keyword.'%')
                 ->when($search_type, function ($query, $search_type) {
-                    if($search_type == "정상"){
-                        return $query->whereIn('users.leave', ['N']);
-                    }else if($search_type == "탈퇴"){
+                    if($search_type == "탈퇴"){
                         return $query->whereIn('users.leave', ['Y']);
                     }else if($search_type == "승인대기"){
                         return $query->whereIn('partner_infos.approval', ['N']);
+                    }else if($search_type == "승인완료"){
+                        return $query->whereIn('partner_infos.approval', ['Y']);
                     }
                 })
                 ->orderBy('users.id', 'desc')->limit($row)->get();
