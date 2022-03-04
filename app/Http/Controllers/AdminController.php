@@ -143,7 +143,7 @@ class AdminController extends Controller
                 }else if($search->type == "phone"){
                     return $query->where('phone', $search->keyword);
                 }else if($search->type == "email"){
-                    return $query->where('user_id', $search->keyword);
+                    return $query->where('sns_key', $search->keyword);
                 }
             })
             ->offset($offset)
@@ -158,7 +158,7 @@ class AdminController extends Controller
                         }else if($search->type == "phone"){
                             return $query->where('phone', $search->keyword);
                         }else if($search->type == "email"){
-                            return $query->where('user_id', $search->keyword);
+                            return $query->where('sns_key', $search->keyword);
                         }
                     })
                     ->count();
