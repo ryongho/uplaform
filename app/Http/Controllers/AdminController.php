@@ -119,7 +119,14 @@ class AdminController extends Controller
 
         $login_user = Auth::user();
         $user_id = $request->user_id;
+        $page_no = $request->page_no;
+        $row = $request->row;
+        $offset = (($page_no-1) * $row);
 
+        $search = new \stdClass;
+        $search->type = $request->search_type;
+        $search->keyword = $request->search_keyword;
+        
         $list = new \stdClass;
 
         if($login_user->user_type < 4){
@@ -127,22 +134,38 @@ class AdminController extends Controller
             $list->msg = "권한이 없습니다.";
             $list->data = "현재 유저 타입 : ".$request->user_type;
         }else {
-            $page_no = $request->page_no;
-            $row = $request->row;
-
-            $start_no = ($page_no - 1) * $row ;
-            $rows = User::select('id','user_type','email as user_id','name','part','sns_key as email','permission','start_date','end_date','created_at')
+            
+            $rows = User::select('id','user_type','email as user_id','phone','name','part','sns_key as email','permission','start_date','end_date','created_at')
             ->whereIn('user_type',['3','4'])
-            ->where('id','>',$start_no)
+            ->when($search->type, function ($query, $search) {
+                if($search->type == "name"){
+                    return $query->where('name', 'like', '%'.$search->keyword.'%');
+                }else if($search->type == "phone"){
+                    return $query->where('phone', $search->keyword);
+                }else if($search->type == "email"){
+                    return $query->where('email', $search_keyword);
+                }
+            })
+            ->offset($offset)
             ->orderBy('id', 'desc')
-            ->limit(30)
+            ->limit($row)
             ->get();
 
-            $cnt = User::whereIn('user_type',['3','4'])->count();
+            $cnt = User::whereIn('user_type',['3','4'])
+                    ->when($search->type, function ($query, $search) {
+                        if($search->type == "name"){
+                            return $query->where('name', 'like', '%'.$search->keyword.'%');
+                        }else if($search->type == "phone"){
+                            return $query->where('phone', $search->keyword);
+                        }else if($search->type == "email"){
+                            return $query->where('email', $search_keyword);
+                        }
+                    })
+                    ->count();
 
             $list->status = "200";
             $list->msg = "success";
-            $list->total = $cnt;
+            $list->cnt = $cnt;
             $list->data = $rows;
         }
         
