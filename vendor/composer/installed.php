@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '6cbfc9af05d434fe156f4036ae4ffc49b3e02924',
+        'reference' => 'd6b0e3d77e1765e9d18de95f9a2826f4b9130892',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -42,6 +42,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'curl/curl' => array(
+            'pretty_version' => '2.3.3',
+            'version' => '2.3.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../curl/curl',
+            'aliases' => array(),
+            'reference' => 'ec22ad27dead47093f0944f5e651df4b12846f5a',
+            'dev_requirement' => false,
         ),
         'davedevelopment/hamcrest-php' => array(
             'dev_requirement' => true,
@@ -418,7 +427,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '6cbfc9af05d434fe156f4036ae4ffc49b3e02924',
+            'reference' => 'd6b0e3d77e1765e9d18de95f9a2826f4b9130892',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(

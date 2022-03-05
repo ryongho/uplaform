@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
+    'Curl' => array($vendorDir . '/curl/curl/src'),
 );

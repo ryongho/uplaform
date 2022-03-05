@@ -555,6 +555,13 @@ class ComposerStaticInit873587aba7c60c9d1bb760f53f8e4843
                 0 => __DIR__ . '/..' . '/mockery/mockery/library',
             ),
         ),
+        'C' => 
+        array (
+            'Curl' => 
+            array (
+                0 => __DIR__ . '/..' . '/curl/curl/src',
+            ),
+        ),
     );
 
     public static $classMap = array (
@@ -568,6 +575,7 @@ class ComposerStaticInit873587aba7c60c9d1bb760f53f8e4843
         'App\\Http\\Controllers\\ExcelController' => __DIR__ . '/../..' . '/app/Http/Controllers/ExcelController.php',
         'App\\Http\\Controllers\\FaqController' => __DIR__ . '/../..' . '/app/Http/Controllers/FaqController.php',
         'App\\Http\\Controllers\\FcmController' => __DIR__ . '/../..' . '/app/Http/Controllers/FcmController.php',
+        'App\\Http\\Controllers\\FeeController' => __DIR__ . '/../..' . '/app/Http/Controllers/FeeController.php',
         'App\\Http\\Controllers\\ImageController' => __DIR__ . '/../..' . '/app/Http/Controllers/ImageController.php',
         'App\\Http\\Controllers\\NoticeController' => __DIR__ . '/../..' . '/app/Http/Controllers/NoticeController.php',
         'App\\Http\\Controllers\\PartnerController' => __DIR__ . '/../..' . '/app/Http/Controllers/PartnerController.php',
@@ -592,6 +600,7 @@ class ComposerStaticInit873587aba7c60c9d1bb760f53f8e4843
         'App\\Models\\AreaInfo' => __DIR__ . '/../..' . '/app/Models/AreaInfo.php',
         'App\\Models\\Device' => __DIR__ . '/../..' . '/app/Models/Device.php',
         'App\\Models\\Faq' => __DIR__ . '/../..' . '/app/Models/Faq.php',
+        'App\\Models\\Fee' => __DIR__ . '/../..' . '/app/Models/Fee.php',
         'App\\Models\\Notice' => __DIR__ . '/../..' . '/app/Models/Notice.php',
         'App\\Models\\PartnerInfo' => __DIR__ . '/../..' . '/app/Models/PartnerInfo.php',
         'App\\Models\\Pay' => __DIR__ . '/../..' . '/app/Models/Pay.php',
@@ -1515,6 +1524,7 @@ class ComposerStaticInit873587aba7c60c9d1bb760f53f8e4843
         'Cron\\HoursField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/HoursField.php',
         'Cron\\MinutesField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
+        'Curl\\Curl' => __DIR__ . '/..' . '/curl/curl/src/Curl/Curl.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
