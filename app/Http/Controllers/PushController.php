@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Push;
+use App\Models\User;
 use App\Models\Comparaison;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,22 @@ class PushController extends Controller
         if($result){ //DB 입력 성공
             $return->status = "200";
             $return->msg = "success";
+            if($request->type == "P"){
+                
+                $tokens = User::select('fcm_token')->where('id',$request->target_user)->get();
+
+                if(count($tokens)){
+                    $push = new \stdClass;
+
+                    $push->token = array($tokens[0]['fcm_token']);
+                    $push->title = "";
+                    $push->body = $request->content;
+                    
+                    $rows = Push::send_push($push);
+                }
+            }
+            
+            
         }else{
             $return->status = "501";
             $return->msg = "fail";
@@ -67,6 +84,29 @@ class PushController extends Controller
         ]);;
         
     }
+
+    public function test(){
+
+        $return = new \stdClass;
+        $push = new \stdClass;
+        $tokens = array();
+        $tokens[0] = "f8jSNWyrzUVtsjKMWb1QvC:APA91bEDekZtnnA7sQxiCdbgYm_bcHucseRktYHX0g_fa-YeJBSVwSFgkBGvPaE67449CQuNy3zPQxV8enOo3zl845JHHfYmKE6niFfLbM24vQu0HzobYuSIj9wuUhFFsdqnlUsmt_b5";
+        $push->token = $tokens;
+        $push->title = "test";
+        $push->body = "test_body";
+        
+        $rows = Push::send_push($push);
+        
+        $return->status = "200";
+        $return->data = $rows;
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+        
+    }
+
+    
 
 
 

@@ -171,6 +171,7 @@ Route::get('/notice/detail', [NoticeController::class, 'detail']); // 공지 내
 
 Route::middleware('auth:sanctum')->post('/push/regist', [PushController::class, 'regist']); // 푸시 등록
 Route::middleware('auth:sanctum')->get('/push/list', [PushController::class, 'list']); // 푸시 리스트
+Route::middleware('auth:sanctum')->post('/push/test', [PushController::class, 'test']); // 푸시 xptmxm
 
 Route::middleware('auth:sanctum')->put('/notice/regist', [NoticeController::class, 'regist']); // 공지 등록
 Route::get('/notice/list', [NoticeController::class, 'list']); // 공지 리스트
