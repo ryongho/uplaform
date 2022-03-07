@@ -199,9 +199,10 @@ class ReservationController extends Controller
         }
 
         if($reservation_type == "LC"){
-            $rows[$y]['learn_titles'] = "";
+            
             $y = 0;
             foreach($rows as $row){
+                $rows[$y]['learn_titles'] = "";
                 $services = explode(',',$row['services']);
                 $service_info = Service::whereIn('id', $services)->get();
                 if(count($service_info)){
