@@ -203,7 +203,7 @@ class ReservationController extends Controller
             foreach($rows as $row){
                 $services = explode(',',$row['services']);
                 $service_info = Service::whereIn('id', $services)->get();
-            
+                dd(count($service_info));
                 if(count($service_info)){
                     $n = 0;
                     foreach($service_info as $info){
