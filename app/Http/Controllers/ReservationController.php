@@ -107,6 +107,7 @@ class ReservationController extends Controller
 
 
         $rows = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
+                        ->join('area_infos', 'area_infos.user_id', '=', 'reservations.user_id')
                         ->select(   
                                 'reservations.id as reservation_id',
                                 'reservations.reservation_type',
@@ -123,6 +124,9 @@ class ReservationController extends Controller
                                 'users.name as name',
                                 'users.email as email',  
                                 DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
+                                DB::raw('(select matched_at from applies where applies.reservation_id = reservations.id and status="S") as matched_at'),
+                                'area_infos.house_type',
+
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
                         ->when($type, function ($query, $type) {
@@ -189,6 +193,18 @@ class ReservationController extends Controller
                 }
                 
                 
+            }
+        }
+        $y = 0;
+        foreach($rows as $row){
+            $services = explode(',',$row['services']);
+            $service_info = Service::whereIn('id', $services)->get();
+        
+            if($service_info != null){
+                
+                $rows[$x]['learn_titles'] .= $service_info['service_sub_type'];
+            
+                $y++;
             }
         }
 
