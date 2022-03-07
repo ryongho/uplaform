@@ -203,7 +203,7 @@ class ReservationController extends Controller
             if(count($service_info)){
                 $n = 0;
                 foreach($service_info as $info){
-                    $rows[$y]['learn_titles'] .= $info[$n]['service_sub_type'];    
+                    $rows[$y]['learn_titles'] .= $info[$n]['service_part'];    
                     $n++;
                 }
                 
