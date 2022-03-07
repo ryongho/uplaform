@@ -221,11 +221,11 @@ class ReservationController extends Controller
                 $y++;
             }
         }
-
+        $t = 0;
         foreach($rows as $row){
-            $x = 0;
-            $rows[$x]['clean_level'] = "N";
-            $x++;
+            
+            $rows[$t]['clean_level'] = "N";
+            $t++;
         }
         
 
