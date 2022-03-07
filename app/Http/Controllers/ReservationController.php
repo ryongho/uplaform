@@ -206,10 +206,8 @@ class ReservationController extends Controller
                 $services = explode(',',$row['services']);
                 $service_info = Service::whereIn('id', $services)->get();
                 if(count($service_info)){
-                    $n = 0;
                     foreach($service_info as $info){
-                        $rows[$y]['learn_titles'] .= $info[$n]['service_part'];    
-                        $n++;
+                        $rows[$y]['learn_titles'] .= $info['service_part'];    
                     }
                     
                 }
