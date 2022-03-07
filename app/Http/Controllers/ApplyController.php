@@ -341,11 +341,11 @@ class ApplyController extends Controller
         $return->status = "200";
         $return->msg = "재매칭 완료";
 
-        $result = apply::where('id', $request->old_apply_id)->update(['status' => 'W','matched_at' => '']);
-        $result = apply::where('id', $request->new_apply_id)->update(['status' => 'S','matched_at' => Carbon::now()]);
+        $result = apply::where('id', $request->old_apply_id)->update(['status' => 'W','matched_at' => '0000-00-00 00:00:00']);
+        $result2 = apply::where('id', $request->new_apply_id)->update(['status' => 'S','matched_at' => Carbon::now()]);
 
 
-        if(!$result){
+        if(!$result2){
             $return->status = "500";
             $return->msg = "변경 실패";
         }
