@@ -211,8 +211,8 @@ class ReservationController extends Controller
                         if($n > 0){
                             $rows[$y]['learn_titles'] .= " /";
                         }
-
-                        $rows[$y]['learn_titles'] .= $info['service_name'];    
+                        
+                        $rows[$y]['learn_titles'] .= $info['service_part'];    
                         
                         $n++;
                     }
@@ -220,6 +220,12 @@ class ReservationController extends Controller
                 }
                 $y++;
             }
+        }
+
+        foreach($rows as $row){
+            $x = 0;
+            $rows[$x]['clean_level'] = "N";
+            $x++;
         }
         
 
