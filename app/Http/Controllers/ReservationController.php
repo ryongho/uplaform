@@ -113,6 +113,7 @@ class ReservationController extends Controller
                                 'reservations.reservation_type',
                                 'reservations.service_date',
                                 'reservations.service_time',
+                                'reservations.services',
                                 'reservations.learn_day',
                                 'reservations.service_detail',
                                 'reservations.status',
@@ -126,6 +127,7 @@ class ReservationController extends Controller
                                 DB::raw('(select count(*) from applies where applies.reservation_id = reservations.id) as apply_cnt'),
                                 DB::raw('(select matched_at from applies where applies.reservation_id = reservations.id and status="S") as matched_at'),
                                 'area_infos.house_type',
+                                'area_infos.peoples',
 
                         )         
                         ->where('reservations.reservation_type' , $reservation_type)
@@ -195,21 +197,25 @@ class ReservationController extends Controller
                 
             }
         }
-        $y = 0;
-        foreach($rows as $row){
-            $services = explode(',',$row['services']);
-            $service_info = Service::whereIn('id', $services)->get();
-        
-            if(count($service_info)){
-                $n = 0;
-                foreach($service_info as $info){
-                    $rows[$y]['learn_titles'] .= $info[$n]['service_part'];    
-                    $n++;
+
+        if($reservation_type == "LC"){
+            $y = 0;
+            foreach($rows as $row){
+                $services = explode(',',$row['services']);
+                $service_info = Service::whereIn('id', $services)->get();
+            
+                if(count($service_info)){
+                    $n = 0;
+                    foreach($service_info as $info){
+                        $rows[$y]['learn_titles'] .= $info[$n]['service_part'];    
+                        $n++;
+                    }
+                    
                 }
-                
+                $y++;
             }
-            $y++;
         }
+        
 
         $return = new \stdClass;
 
