@@ -89,6 +89,7 @@ Route::middleware('auth:sanctum')->get('/admin/reservation/list', [ReservationCo
 Route::middleware('auth:sanctum')->get('/admin/reservation/list_cnt', [ReservationController::class, 'list_cnt']);
 Route::middleware('auth:sanctum')->get('/admin/apply/list', [ApplyController::class, 'list']);
 Route::middleware('auth:sanctum')->put('/admin/apply/match', [ApplyController::class, 'match']);
+Route::middleware('auth:sanctum')->put('/admin/apply/rematch', [ApplyController::class, 'rematch']);
 Route::middleware('auth:sanctum')->put('/admin/reservation/update_service_address', [ReservationController::class, 'update_service_address']);
 Route::middleware('auth:sanctum')->put('/admin/reservation/cancel', [ReservationController::class, 'cancel_admin']);// 예약 취소
 Route::middleware('auth:sanctum')->put('/admin/reservation/complete', [ReservationController::class, 'complete']);// 서비스 완료

@@ -334,6 +334,28 @@ class ApplyController extends Controller
 
     }
 
+    public function rematch(Request $request){
+        //dd($request);
+        $return = new \stdClass;
+
+        $return->status = "200";
+        $return->msg = "재매칭 완료";
+
+        $result = apply::where('id', $request->old_apply_id)->update(['status' => 'W','matched_at' => '']);
+        $result = apply::where('id', $request->new_apply_id)->update(['status' => 'S','matched_at' => Carbon::now()]);
+
+
+        if(!$result){
+            $return->status = "500";
+            $return->msg = "변경 실패";
+        }
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);;
+
+    }
+
 
     
 
