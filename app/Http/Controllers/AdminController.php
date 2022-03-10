@@ -129,43 +129,48 @@ class AdminController extends Controller
         
         $list = new \stdClass;
 
-
+        if($login_user->user_type < 3){
+            $list->status = "601";
+            $list->msg = "권한이 없습니다.";
+            $list->data = "현재 유저 타입 : ".$request->user_type;
+        }else {
             
-        $rows = User::select('id','user_type','email as user_id','phone','name','part','sns_key as email','permission','start_date','end_date','created_at','last_login','updated_at')
-        ->whereIn('user_type',['3','4'])
-        ->when($search, function ($query, $search) {
-            if($search->type == "name"){
-                return $query->where('name', 'like', '%'.$search->keyword.'%');
-            }else if($search->type == "phone"){
-                return $query->where('phone', $search->keyword);
-            }else if($search->type == "email"){
-                return $query->where('sns_key', $search->keyword);
-            }else if($search->type == "user_id"){
-                return $query->where('email','like', '%'.$search->keyword.'%');
-            }
-        })
-        ->offset($offset)
-        ->orderBy('id', 'desc')
-        ->limit($row)
-        ->get();
+            $rows = User::select('id','user_type','email as user_id','phone','name','part','sns_key as email','permission','start_date','end_date','created_at','last_login','updated_at')
+            ->whereIn('user_type',['3','4'])
+            ->when($search, function ($query, $search) {
+                if($search->type == "name"){
+                    return $query->where('name', 'like', '%'.$search->keyword.'%');
+                }else if($search->type == "phone"){
+                    return $query->where('phone', $search->keyword);
+                }else if($search->type == "email"){
+                    return $query->where('sns_key', $search->keyword);
+                }else if($search->type == "user_id"){
+                    return $query->where('email','like', '%'.$search->keyword.'%');
 
-        $cnt = User::whereIn('user_type',['3','4'])
-                ->when($search, function ($query, $search) {
-                    if($search->type == "name"){
-                        return $query->where('name', 'like', '%'.$search->keyword.'%');
-                    }else if($search->type == "phone"){
-                        return $query->where('phone', $search->keyword);
-                    }else if($search->type == "email"){
-                        return $query->where('sns_key', $search->keyword);
-                    }
-                })
-                ->count();
+                }
+            })
+            ->offset($offset)
+            ->orderBy('id', 'desc')
+            ->limit($row)
+            ->get();
 
-        $list->status = "200";
-        $list->msg = "success";
-        $list->cnt = $cnt;
-        $list->data = $rows;
-        
+            $cnt = User::whereIn('user_type',['3','4'])
+                    ->when($search, function ($query, $search) {
+                        if($search->type == "name"){
+                            return $query->where('name', 'like', '%'.$search->keyword.'%');
+                        }else if($search->type == "phone"){
+                            return $query->where('phone', $search->keyword);
+                        }else if($search->type == "email"){
+                            return $query->where('sns_key', $search->keyword);
+                        }
+                    })
+                    ->count();
+
+            $list->status = "200";
+            $list->msg = "success";
+            $list->cnt = $cnt;
+            $list->data = $rows;
+        }
         
         
         return response()->json($list, 200)->withHeaders([
