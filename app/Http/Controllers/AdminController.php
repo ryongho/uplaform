@@ -145,7 +145,7 @@ class AdminController extends Controller
                 }else if($search->type == "email"){
                     return $query->where('sns_key', $search->keyword);
                 }else if($search->type == "user_id"){
-                    return $query->where('email', $search->keyword);
+                    return $query->where('email','like', '%'.$search->keyword.'%');
                 }
             })
             ->offset($offset)
