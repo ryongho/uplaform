@@ -135,7 +135,7 @@ class AdminController extends Controller
             $list->data = "현재 유저 타입 : ".$request->user_type;
         }else {
             
-            $rows = User::select('id','user_type','email as user_id','phone','name','part','sns_key as email','permission','start_date','end_date','created_at')
+            $rows = User::select('id','user_type','email as user_id','phone','name','part','sns_key as email','permission','start_date','end_date','created_at','last_login','updated_at')
             ->whereIn('user_type',['3','4'])
             ->when($search, function ($query, $search) {
                 if($search->type == "name"){
@@ -144,6 +144,8 @@ class AdminController extends Controller
                     return $query->where('phone', $search->keyword);
                 }else if($search->type == "email"){
                     return $query->where('sns_key', $search->keyword);
+                }else if($search->type == "user_id"){
+                    return $query->where('email', $search->keyword);
                 }
             })
             ->offset($offset)
