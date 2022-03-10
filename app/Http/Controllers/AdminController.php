@@ -26,7 +26,7 @@ class AdminController extends Controller
         /* 중복 체크 - start*/
         $email_cnt = User::where('email',$user_id)->count();
 
-        if($login_user->user_type < 4){
+        if($login_user->user_type < 3){
             $return->status = "601";
             $return->msg = "권한이 없습니다.";
             $return->data = "현재 유저 타입 : ".$request->user_type;
@@ -188,7 +188,7 @@ class AdminController extends Controller
 
         $list = new \stdClass;
 
-        if($login_user->user_type < 4){
+        if($login_user->user_type < 3){
             $return->status = "601";
             $return->msg = "권한이 없습니다.";
             $return->data = "현재 유저 타입 : ".$request->user_type;
@@ -224,7 +224,7 @@ class AdminController extends Controller
         $login_user = Auth::user();
         $user_id = $request->user_id;
 
-        if($login_user->user_type < 4){
+        if($login_user->user_type < 3){
             $return->status = "601";
             $return->msg = "권한이 없습니다.";
             $return->data = "현재 유저 타입 : ".$request->user_type;
@@ -261,7 +261,7 @@ class AdminController extends Controller
         $login_user = Auth::user();
         $id = $request->id;
 
-        if($login_user->user_type < 4){
+        if($login_user->user_type < 3){
             $return->status = "601";
             $return->msg = "권한이 없습니다.";
             $return->data = "현재 유저 타입 : ".$request->user_type;
