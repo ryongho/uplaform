@@ -25,6 +25,7 @@ class NoticeController extends Controller
             'start_date'=> $request->start_date ,
             'end_date'=> $request->end_date ,
             'usable'=> $request->usable ,
+            'img_src'=> $request->img_src ,
             'writer'=> $login_user->getId(),
             'created_at'=> Carbon::now(),
         ]);
@@ -110,7 +111,7 @@ class NoticeController extends Controller
     public function detail_admin(Request $request){
         $notice_id = $request->notice_id;
 
-        $rows = Notice::select('id as notice_id','title','content','start_date', 'end_date', 'usable', 
+        $rows = Notice::select('id as notice_id','title','content','start_date', 'end_date', 'usable', 'img_src', 
                                 DB::raw('(select name from users where id = notices.writer ) as writer'), 
                                 'created_at')
                         ->where('id',$notice_id)
@@ -130,7 +131,7 @@ class NoticeController extends Controller
     public function detail(Request $request){
         $notice_id = $request->notice_id;
 
-        $rows = Notice::select('id as notice_id','created_at', 'title','content')->where('id','=',$notice_id)->get();
+        $rows = Notice::select('id as notice_id','created_at', 'title','content','img_src')->where('id','=',$notice_id)->get();
 
         $pre = Notice::select('id as notice_id','title')->where('id','<',$notice_id)->orderby('id','desc')->limit(1)->first();
         $next = Notice::select('id as notice_id','title')->where('id','>',$notice_id)->orderby('id','asc')->limit(1)->first();
@@ -164,6 +165,7 @@ class NoticeController extends Controller
             'start_date'=> $request->start_date ,
             'end_date'=> $request->end_date ,
             'usable'=> $request->usable ,
+            'img_src'=> $request->img_src ,
             'writer'=> $login_user->getId(),
         ]);
 
