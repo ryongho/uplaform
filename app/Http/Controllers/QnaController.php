@@ -41,6 +41,31 @@ class QnaController extends Controller
         
     }
 
+    public function update(Request $request)
+    {
+        $return = new \stdClass;
+
+        $login_user = Auth::user();
+        $user_id = $login_user->getId();
+
+        $result = Qna::where('id', $request->qna_id)->update([
+            'user_id'=> $user_id ,
+            'type'=> $request->type,
+            'title'=> $request->title ,
+            'content'=> $request->content ,
+            'file_src'=> $request->file_src ,
+        ]);
+
+        $return->status = "200";
+        $return->updated = 'Y';
+
+        return response()->json($return, 200)->withHeaders([
+            'Content-Type' => 'application/json'
+        ]);
+
+        
+    }
+
     public function answer(Request $request)
     {
         $return = new \stdClass;
